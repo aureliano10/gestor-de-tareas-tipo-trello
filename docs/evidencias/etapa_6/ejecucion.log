@@ -1,37 +1,64 @@
-CP-CRE-01: APROBADO | HTTP 201; respuesta={"id": 33, "title": "Preparar informe", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.397774Z"}; listado=[{"id": 33, "title": "Preparar informe", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.397774Z"}]
-CP-CRE-02: APROBADO | HTTP 201; respuesta={"id": 34, "title": "A", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.503768Z"}; listado=[{"id": 34, "title": "A", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.503768Z"}]
-CP-CRE-03: APROBADO | HTTP 201; respuesta={"id": 35, "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.600768Z"}; listado=[{"id": 35, "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.600768Z"}]
-CP-CRE-04: APROBADO | HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede superar los 100 caracteres", "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ctx": {"error": {}}}]}; listado=[]
-CP-CRE-05: APROBADO | HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede estar vacío ni contener solo espacios", "input": "", "ctx": {"error": {}}}]}; listado=[]
-CP-CRE-06: APROBADO | HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede estar vacío ni contener solo espacios", "input": "     ", "ctx": {"error": {}}}]}; listado=[]
-CP-CRE-07: APROBADO | HTTP 201; respuesta={"id": 36, "title": "Revisar pruebas", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.927885Z"}; listado=[{"id": 36, "title": "Revisar pruebas", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.927885Z"}]
-CP-CRE-08: APROBADO | HTTP 201; respuesta={"id": 37, "title": "Revisión de señalización #1 – ñandú", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.019551Z"}; listado=[{"id": 37, "title": "Revisión de señalización #1 – ñandú", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.019551Z"}]
-CP-MOV-01: APROBADO | En curso: HTTP 200 (En curso); Terminada: HTTP 200 (Terminada); persistido=Terminada
-CP-MOV-02: APROBADO | HTTP 422; respuesta={"detail": [{"type": "literal_error", "loc": ["body", "status"], "msg": "Input should be 'Pendiente', 'En curso' or 'Terminada'", "input": "Finalizada", "ctx": {"expected": "'Pendiente', 'En curso' or 'Terminada'"}}]}; persistido=Pendiente
-CP-MOV-03: APROBADO | HTTP 404; respuesta={"detail": "Tarea no encontrada"}
-CP-MOV-04: APROBADO | HTTP 422; respuesta={"detail": [{"type": "int_parsing", "loc": ["path", "task_id"], "msg": "Input should be a valid integer, unable to parse string as an integer", "input": "abc"}]}
-CP-ELI-01: APROBADO | HTTP 204; cuerpo=''; listado=[]
-CP-ELI-02: APROBADO | HTTP 404; respuesta={"detail": "Tarea no encontrada"}
-CP-LIS-01: APROBADO | vacío HTTP 200 []; con datos HTTP 200 [{"id": 41, "title": "Primera tarea", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.699928Z"}, {"id": 42, "title": "Segunda tarea", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.740958Z"}]
+CP-CRE-01: APROBADO | HTTP 201; tarea #152 creada en estado Pendiente, position 0 y overdue falso, presente en el listado
+CP-CRE-02: APROBADO | HTTP 201; título de un carácter aceptado con estado Pendiente
+CP-CRE-03: APROBADO | HTTP 201; título de exactamente 100 caracteres aceptado
+CP-CRE-04: APROBADO | HTTP 422; título de 101 caracteres rechazado y listado vacío
+CP-CRE-05: APROBADO | HTTP 422; título vacío rechazado y listado vacío
+CP-CRE-06: APROBADO | HTTP 422; título con solo espacios rechazado y listado vacío
+CP-CRE-07: APROBADO | HTTP 201; espacios externos recortados y título persistido como "Revisar pruebas"
+CP-CRE-08: APROBADO | HTTP 201; descripción y fecha límite (2026-11-06) almacenadas y overdue falso
+CP-CRE-09: APROBADO | HTTP 422; fecha límite pasada rechazada al crear y listado vacío
+CP-MOV-01: APROBADO | Tres estados válidos: PATCH 200 a En curso y a Terminada, con estado final "Terminada" persistido
+CP-MOV-02: APROBADO | HTTP 422 con estado y con posición inválidos; la tarea conservó su estado Pendiente y su posición 0
+CP-MOV-03: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-MOV-04: APROBADO | HTTP 422 por identificador no numérico en la ruta
+CP-MOV-05: APROBADO | HTTP 200; la columna quedó ordenada como C, A, B con posiciones [0, 1, 2]
+CP-EDI-01: APROBADO | PUT 200; título, descripción y fecha límite actualizados sin alterar el estado
+CP-EDI-02: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-EDI-03: APROBADO | HTTP 200; la edición admitió la fecha pasada (2026-10-28) y overdue quedó verdadero
+CP-SUB-01: APROBADO | HTTP 201; subtarea creada, subtask_total 1 y subtask_done 0
+CP-SUB-02: APROBADO | HTTP 200 en ambos PATCH; el avance pasó a 1/1 y volvió a 0/1 sin cambiar el estado
+CP-SUB-03: APROBADO | DELETE 204 sin cuerpo; la tarea quedó con subtask_total 0
+CP-SUB-04: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-BLO-01: APROBADO | HTTP 409 con detalle del bloqueo; la tarea conservó su estado Pendiente
+CP-BLO-02: APROBADO | HTTP 200; tarea finalizada al no tener subtareas pendientes
+CP-BLO-03: APROBADO | HTTP 201 con la subtarea creada y la tarea reabierta a "En curso"
+CP-BLO-04: APROBADO | HTTP 200 con la subtarea desmarcada y la tarea reabierta a "En curso"
+CP-FEC-01: APROBADO | overdue pasó de falso a verdadero al editar la fecha, sin cambiar el estado
+CP-FEC-02: APROBADO | El filtro overdue devolvió solo la tarea vencida y el listado completo las dos
+CP-ADJ-01: APROBADO | HTTP 201; adjunto "notas.txt" de 1024 bytes agregado a la tarea
+CP-ADJ-02: APROBADO | HTTP 200 con el contenido idéntico al subido y el nombre original en la cabecera
+CP-ADJ-03: APROBADO | DELETE 204; la tarea quedó sin adjuntos y la descarga posterior respondió 404
+CP-ADJ-04: APROBADO | HTTP 415 con el detalle de los formatos aceptados; la tarea quedó sin adjuntos
+CP-ADJ-05: APROBADO | HTTP 413 con el detalle "El archivo supera el tamaño máximo de 5 MB"; sin adjuntos
+CP-ADJ-06: APROBADO | HTTP 409 con el detalle del límite; la tarea conservó exactamente 3 adjuntos
+CP-ELI-01: APROBADO | DELETE 204 sin cuerpo; la tarea dejó de aparecer en el listado
+CP-ELI-02: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-RES-01: APROBADO | HTTP 200; la tarea eliminada volvió a estar presente en el listado
+CP-RES-02: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-LIS-01: APROBADO | El primer listado fue vacío y el segundo contuvo las tres tareas en orden de creación
 
-API: 15/15 aprobados
-CP-UI-01: APROBADO | Tarjeta visible=True; input=''; contador=1; persistió=True
+API: 38/38 aprobados
+CP-UI-01: APROBADO | tarjeta visible=True; input=''; resumen='1 tarea'; contador Pendiente='1'; persistió=True
 CP-UI-02: APROBADO | error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0
-CP-UI-03: APROBADO | En curso=True; Pendiente=0; PATCH=1; persistió=True
-CP-UI-04: APROBADO | PATCH=0; tarjeta en Pendiente=1
-CP-UI-05: APROBADO | tarjetas restantes=0; DELETE=1; tras recarga=0
+CP-UI-03: APROBADO | En curso=True; tarjetas en Pendiente=0; contador Pendiente='0'; contador En curso='1'; PATCH=1; persistió=True
+CP-UI-04: APROBADO | orden inicial=['Primera', 'Segunda']; PATCH=[{'status': 'Pendiente', 'position': 0}]; orden final=['Segunda', 'Primera']; contador Pendiente='2'
+CP-UI-05: APROBADO | PUT=1; título del detalle='Tarea corregida'; descripción='Descripción nueva'; tarjetas=['Tarea corregida']
+CP-UI-06: APROBADO | subtareas listadas=2; contador inicial='0/2'; contador al marcar='1/2'; insignia='1/2 subtareas'; contador al eliminar='1/1'; insignia final='1/1 subtareas'
+CP-UI-07: APROBADO | contador='1/3'; enlace='acta.txt'; insignia='1 archivo'; nombre descargado='acta.txt'; bytes descargados=1024
+CP-UI-08: APROBADO | diálogo='¿Querés eliminar "Eliminar desde interfaz"? Podés deshacerlo durante unos segundos.'; DELETE=1; tarjetas restantes=0; aviso='Eliminaste "Eliminar desde interfaz".\nDeshacer\n×'; restaurada=True; persistió=True
 
-UI: 5/5 aprobados
-CP-CB-01: APROBADO | válido='Tarea válida'; vacío='Value error, El título no puede estar vacío ni contener solo espacios'; espacios='Value error, El título no puede estar vacío ni contener solo espacios'; 101='Value error, El título no puede superar los 100 caracteres'; None='Input should be a valid string'
-CP-CB-02: APROBADO | creada=Pendiente; actualizada=En curso; inexistente=None
-CP-CB-03: APROBADO | primera=True; segunda=False; inexistente=False; restantes=0
-CP-CB-04: APROBADO | vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len101=101; largo='El título no puede superar los 100 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input=''; POST totales=2
-CP-CB-05: APROBADO | PATCH misma columna=0; PATCH movimiento=1; PATCH tras ids inválidos=1; En curso=1; Terminada=0
+UI: 8/8 aprobados
+CP-CB-01: APROBADO | válido='Tarea válida'; vacío='El título no puede estar vacío ni contener solo espacios'; espacios='El título no puede estar vacío ni contener solo espacios'; 101='El título no puede superar los 100 caracteres'; None='El título es obligatorio'
+CP-CB-02: APROBADO | inexistente=None; bloqueada=PendingSubtasksError('La tarea tiene subtareas pendientes'); estado bloqueado='Pendiente'; finalizada='Terminada'
+CP-CB-03: APROBADO | delete=True; listado tras delete=0; segundo delete=False; delete inexistente=False; restore=ok; listado tras restore=1; segundo restore=None; restore inexistente=None
+CP-CB-04: APROBADO | acumulado=[1, 2, 3]; cuarta alta=AttachmentLimitError('Una tarea no puede tener más de 3 archivos adjuntos'); adjuntos finales=3
+CP-CB-05: APROBADO | estado previo='Terminada'; tras desmarcar='En curso'; pendientes=0; tras marcar='Pendiente'
+CP-CB-06: APROBADO | vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len(101)=101; título largo='El título no puede superar los 100 caracteres.'; descripción larga='La descripción no puede superar los 500 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input tras alta=''; POST totales=2
+CP-CB-07: APROBADO | orden inicial=['Alfa', 'Beta']; PATCH reorden=[{'status': 'Pendiente', 'position': 0}]; orden final=['Beta', 'Alfa']; PATCH movimiento=[{'status': 'Pendiente', 'position': 0}, {'status': 'En curso', 'position': 0}]; En curso=True; PATCH totales=2; tarjetas en Terminada=0
 
-Caja blanca: 5/5 aprobados
+Caja blanca: 7/7 aprobados
 Actualizado: /home/marucha/Documentos/final_aimar/docs/Etapa_5.md
-Total: 25/25 aprobados, 0 fallidos
-  api: 15/15
-  ui: 5/5
-  caja_blanca: 5/5
-Generado: docs/casos_de_prueba.csv (25 casos)
+Total: 53/53 aprobados, 0 fallidos
+  api: 38/38
+  ui: 8/8
+  caja_blanca: 7/7

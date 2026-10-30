@@ -1,0 +1,25 @@
+== Esquema inicializado en verificacion.db ==
+== Inserción directa de título vacío ==
+Rechazado por la base: CHECK constraint failed: length(trim(title)) BETWEEN 1 AND 100
+== Inserción directa de título de 101 caracteres ==
+Rechazado por la base: CHECK constraint failed: length(trim(title)) BETWEEN 1 AND 100
+== Inserción directa de estado inválido ==
+Rechazado por la base: CHECK constraint failed: status IN ('Pendiente', 'En curso', 'Terminada')
+== Inserción directa de descripción de 501 caracteres ==
+Rechazado por la base: CHECK constraint failed: length(description) <= 500
+== Inserción directa de fecha con formato inválido ==
+Rechazado por la base: CHECK constraint failed: due_date IS NULL
+        OR due_date GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'
+== Inserción válida ==
+Aceptado por la base (correcto)
+== Tarea insertada con id 1 ==
+== Adjunto de tamaño cero ==
+Rechazado por la base: CHECK constraint failed: size_bytes > 0 AND size_bytes <= 5242880
+== Adjunto de más de 5 MB ==
+Rechazado por la base: CHECK constraint failed: size_bytes > 0 AND size_bytes <= 5242880
+== Adjunto de una tarea inexistente ==
+Rechazado por la base: FOREIGN KEY constraint failed
+== Migración de una base con el esquema anterior ==
+filas conservadas: [{'id': 1, 'title': 'Tarea previa', 'status': 'En curso', 'position': 0}]
+columnas del esquema nuevo: ['created_at', 'deleted_at', 'description', 'due_date', 'id', 'position', 'status', 'title']
+restricciones CHECK presentes: True

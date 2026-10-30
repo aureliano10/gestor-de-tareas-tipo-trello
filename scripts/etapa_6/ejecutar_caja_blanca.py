@@ -20,134 +20,265 @@ os.environ["KANBAN_DB_PATH"] = str(WB_DB_PATH)
 sys.path.insert(0, str(ROOT / "backend"))
 
 from playwright.sync_api import sync_playwright  # noqa: E402
-from pydantic import ValidationError  # noqa: E402
 from ui_helpers import (  # noqa: E402
+    FORM_DESCRIPTION,
+    FORM_ERROR,
+    FORM_SUBMIT,
+    FORM_TITLE,
     drag_task,
     drop_raw,
     open_page,
+    request_bodies,
     screenshot,
-    set_input_value,
+    set_field_value,
     task_in,
     track_requests,
+    wait_text,
+    wait_titles,
 )
 
 from app import repository  # noqa: E402
 from app.database import connection, init_db  # noqa: E402
-from app.schemas import TaskCreate  # noqa: E402
+from app.schemas import (  # noqa: E402
+    EMPTY_TITLE_MESSAGE,
+    TOO_LONG_TITLE_MESSAGE,
+    clean_title,
+)
 
 
 def clean_wb_db() -> None:
     with connection() as conn:
+        conn.execute("DELETE FROM attachments")
+        conn.execute("DELETE FROM subtasks")
         conn.execute("DELETE FROM tasks")
 
 
-def validation_message(value) -> str | None:
+def clean_title_outcome(value) -> tuple[str | None, str | None]:
     try:
-        TaskCreate(title=value)
-    except ValidationError as exc:
-        return exc.errors()[0]["msg"]
-    return None
+        return clean_title(value), None
+    except ValueError as exc:
+        return None, str(exc)
 
 
 def cb_01() -> dict:
-    valid = TaskCreate(title="  Tarea válida  ")
-    empty_message = validation_message("")
-    spaces_message = validation_message("     ")
-    long_message = validation_message("a" * 101)
-    none_message = validation_message(None)
+    valid, valid_error = clean_title_outcome("  Tarea válida  ")
+    empty, empty_error = clean_title_outcome("")
+    spaces, spaces_error = clean_title_outcome("     ")
+    long_value, long_error = clean_title_outcome("a" * 101)
+    none_value, none_error = clean_title_outcome(None)
+
     checks = {
-        "título válido recortado": valid.title == "Tarea válida",
-        "vacío rechazado": empty_message is not None
-        and "vacío" in empty_message,
-        "solo espacios rechazado": spaces_message is not None
-        and "vacío" in spaces_message,
-        "más de 100 rechazado": long_message is not None
-        and "100" in long_message,
-        "rama None no alcanzable vía Pydantic": none_message is not None,
+        "título válido recortado": valid == "Tarea válida" and valid_error is None,
+        "vacío rechazado": empty is None and empty_error == EMPTY_TITLE_MESSAGE,
+        "solo espacios rechazado": spaces is None
+        and spaces_error == EMPTY_TITLE_MESSAGE,
+        "más de 100 rechazado": long_value is None
+        and long_error == TOO_LONG_TITLE_MESSAGE,
+        "valor nulo rechazado": none_value is None
+        and none_error == "El título es obligatorio",
     }
     obtained = (
-        f"válido={valid.title!r}; vacío={empty_message!r}; "
-        f"espacios={spaces_message!r}; 101={long_message!r}; "
-        f"None={none_message!r}"
+        f"válido={valid!r}; vacío={empty_error!r}; espacios={spaces_error!r}; "
+        f"101={long_error!r}; None={none_error!r}"
     )
     return make_result(
         "CP-CB-01",
         checks,
         obtained,
-        "Ramas del validador de título. La rama value is None no es "
-        "alcanzable a través de Pydantic porque el tipo str se valida antes; "
-        "se documenta como cobertura no alcanzable.",
+        "Decisiones del validador de título. La rama del valor nulo es "
+        "defensiva: Pydantic rechaza el valor antes de ejecutarla.",
     )
 
 
 def cb_02() -> dict:
     clean_wb_db()
-    created = repository.create_task("Actualizar estado")
-    updated = repository.update_task_status(created["id"], "En curso")
-    missing = repository.update_task_status(999999, "Terminada")
+    blocked = repository.create_task("Con subtarea pendiente")
+    repository.create_subtask(blocked["id"], "Paso pendiente", done=False)
+
+    missing = repository.move_task(999999, "En curso")
+    try:
+        repository.move_task(blocked["id"], "Terminada")
+        pending_error = None
+    except repository.PendingSubtasksError as exc:
+        pending_error = exc
+
+    ready = repository.create_task("Lista para finalizar")
+    repository.create_subtask(ready["id"], "Paso hecho", done=True)
+    finished = repository.move_task(ready["id"], "Terminada")
+
     checks = {
-        "alta en Pendiente": created["status"] == "Pendiente",
-        "actualización existente": updated is not None
-        and updated["status"] == "En curso",
-        "actualización inexistente devuelve None": missing is None,
+        "id inexistente devuelve None": missing is None,
+        "finalización bloqueada lanza PendingSubtasksError": pending_error is not None
+        and pending_error.pending == 1,
+        "tarea bloqueada sigue en Pendiente": repository.get_task(blocked["id"])[
+            "status"
+        ]
+        == "Pendiente",
+        "finalización permitida devuelve Terminada": finished is not None
+        and finished["status"] == "Terminada",
     }
     obtained = (
-        f"creada={created['status']}; actualizada="
-        f"{updated['status'] if updated else None}; inexistente={missing!r}"
+        f"inexistente={missing!r}; bloqueada={pending_error!r}; "
+        f"estado bloqueado={repository.get_task(blocked['id'])['status']!r}; "
+        f"finalizada={finished['status'] if finished else None!r}"
     )
     return make_result(
         "CP-CB-02",
         checks,
         obtained,
-        "Ramas de update_task_status: fila actualizada y fila inexistente.",
-        {"created": created, "updated": updated},
+        "Tres decisiones de move_task: fila inexistente, finalización "
+        "bloqueada por subtareas pendientes y finalización permitida.",
     )
 
 
 def cb_03() -> dict:
     clean_wb_db()
-    created = repository.create_task("Eliminar tarea")
-    first = repository.delete_task(created["id"])
-    second = repository.delete_task(created["id"])
-    missing = repository.delete_task(999999)
-    remaining = repository.list_tasks()
+    created = repository.create_task("Eliminar y restaurar")
+
+    deleted = repository.delete_task(created["id"])
+    after_delete = repository.list_tasks()
+    second_delete = repository.delete_task(created["id"])
+    missing_delete = repository.delete_task(999999)
+
+    restored = repository.restore_task(created["id"])
+    after_restore = repository.list_tasks()
+    second_restore = repository.restore_task(created["id"])
+    missing_restore = repository.restore_task(999999)
+
     checks = {
-        "primera eliminación devuelve True": first is True,
-        "segunda eliminación devuelve False": second is False,
-        "id inexistente devuelve False": missing is False,
-        "listado queda vacío": remaining == [],
+        "eliminación existente devuelve True": deleted is True,
+        "la tarea sale del listado": after_delete == [],
+        "segunda eliminación devuelve False": second_delete is False,
+        "eliminación inexistente devuelve False": missing_delete is False,
+        "restauración devuelve la tarea": restored is not None
+        and restored["id"] == created["id"],
+        "la tarea vuelve al listado": len(after_restore) == 1,
+        "restauración de tarea activa devuelve None": second_restore is None,
+        "restauración inexistente devuelve None": missing_restore is None,
     }
     obtained = (
-        f"primera={first}; segunda={second}; inexistente={missing}; "
-        f"restantes={len(remaining)}"
+        f"delete={deleted}; listado tras delete={len(after_delete)}; "
+        f"segundo delete={second_delete}; delete inexistente={missing_delete}; "
+        f"restore={'ok' if restored else None}; listado tras restore="
+        f"{len(after_restore)}; segundo restore={second_restore!r}; "
+        f"restore inexistente={missing_restore!r}"
     )
     return make_result(
         "CP-CB-03",
         checks,
         obtained,
-        "Ramas de delete_task: fila eliminada y fila inexistente.",
-        {"created": created, "remaining": remaining},
+        "Borrado lógico y sus dos resultados de restauración.",
     )
 
 
-def cb_04(page, _prepared) -> dict:
+def cb_04() -> dict:
+    clean_wb_db()
+    created = repository.create_task("Tarea con adjuntos")
+
+    totals = []
+    for index in range(1, 4):
+        task = repository.create_attachment(
+            created["id"],
+            f"archivo{index}.txt",
+            f"stored{index}.txt",
+            "text/plain",
+            12,
+        )
+        totals.append(len(task["attachments"]))
+
+    try:
+        repository.create_attachment(
+            created["id"], "archivo4.txt", "stored4.txt", "text/plain", 12
+        )
+        limit_error = None
+    except repository.AttachmentLimitError as exc:
+        limit_error = exc
+
+    final_total = len(repository.get_task(created["id"])["attachments"])
+
+    checks = {
+        "tres altas válidas acumulan 1, 2 y 3": totals == [1, 2, 3],
+        "cuarta alta lanza AttachmentLimitError": limit_error is not None
+        and limit_error.limit == 3,
+        "la tarea conserva 3 adjuntos": final_total == 3,
+    }
+    obtained = (
+        f"acumulado={totals}; cuarta alta={limit_error!r}; "
+        f"adjuntos finales={final_total}"
+    )
+    return make_result(
+        "CP-CB-04",
+        checks,
+        obtained,
+        "La decisión del límite de adjuntos cubre sus dos resultados.",
+    )
+
+
+def cb_05() -> dict:
+    clean_wb_db()
+    finished = repository.create_task("Tarea terminada")
+    finished_sub = repository.create_subtask(finished["id"], "Paso único", done=True)
+    subtask_id = finished_sub["subtasks"][0]["id"]
+    repository.move_task(finished["id"], "Terminada")
+    before_reopen = repository.get_task(finished["id"])["status"]
+
+    reopened = repository.update_subtask(subtask_id, done=False)
+
+    pending = repository.create_task("Tarea pendiente")
+    pending_sub = repository.create_subtask(pending["id"], "Otro paso", done=False)
+    pending_subtask_id = pending_sub["subtasks"][0]["id"]
+    kept = repository.update_subtask(pending_subtask_id, done=True)
+
+    checks = {
+        "la tarea estaba Terminada": before_reopen == "Terminada",
+        "desmarcar reabre la tarea a En curso": reopened is not None
+        and reopened["status"] == "En curso",
+        "la subtarea quedó sin completar": reopened is not None
+        and reopened["subtask_done"] == 0,
+        "marcar no cambia una tarea Pendiente": kept is not None
+        and kept["status"] == "Pendiente",
+    }
+    obtained = (
+        f"estado previo={before_reopen!r}; tras desmarcar="
+        f"{reopened['status'] if reopened else None!r}; "
+        f"pendientes={reopened['subtask_done'] if reopened else None}; "
+        f"tras marcar={kept['status'] if kept else None!r}"
+    )
+    return make_result(
+        "CP-CB-05",
+        checks,
+        obtained,
+        "Condición compuesta de reapertura: `not done and status == Terminada`.",
+    )
+
+
+def cb_06(page, _prepared) -> dict:
     posts = track_requests(page, "POST", "/api/tasks")
     empty_expected = "El título es obligatorio y no puede contener solo espacios."
-    page.click('.task-form button[type="submit"]')
-    page.wait_for_selector(".task-form__error", timeout=5000)
-    empty_message = page.inner_text(".task-form__error")
+    long_title_expected = "El título no puede superar los 100 caracteres."
+    long_description_expected = "La descripción no puede superar los 500 caracteres."
 
-    page.fill("#task-title", "     ")
-    page.click('.task-form button[type="submit"]')
-    page.wait_for_timeout(150)
-    spaces_message = page.inner_text(".task-form__error")
+    page.click(FORM_SUBMIT)
+    empty_message = wait_text(page.locator(FORM_ERROR), empty_expected, timeout=5.0)
 
-    set_input_value(page, "a" * 101)
-    loaded_length = len(page.input_value("#task-title"))
-    page.click('.task-form button[type="submit"]')
-    page.wait_for_timeout(150)
-    long_message = page.inner_text(".task-form__error")
-    page.wait_for_timeout(300)
+    page.fill(FORM_TITLE, "     ")
+    page.click(FORM_SUBMIT)
+    spaces_message = wait_text(page.locator(FORM_ERROR), empty_expected, timeout=5.0)
+
+    set_field_value(page, FORM_TITLE, "a" * 101, max_length=101)
+    loaded_length = len(page.input_value(FORM_TITLE))
+    page.click(FORM_SUBMIT)
+    long_title_message = wait_text(
+        page.locator(FORM_ERROR), long_title_expected, timeout=5.0
+    )
+
+    page.fill(FORM_TITLE, "Tarea con descripción larga")
+    set_field_value(page, FORM_DESCRIPTION, "d" * 501, max_length=501)
+    page.click(FORM_SUBMIT)
+    long_description_message = wait_text(
+        page.locator(FORM_ERROR), long_description_expected, timeout=5.0
+    )
+    page.fill(FORM_DESCRIPTION, "")
     posts_after_invalid = len(posts)
 
     def handler(route):
@@ -161,93 +292,106 @@ def cb_04(page, _prepared) -> dict:
             route.continue_()
 
     page.route("**/api/tasks", handler)
-    page.fill("#task-title", "Tarea con error simulado")
-    page.click('.task-form button[type="submit"]')
-    page.wait_for_function(
-        "() => document.querySelector('.task-form__error')?.textContent "
-        "=== 'Error simulado de red'",
-        timeout=5000,
+    page.fill(FORM_TITLE, "Tarea con error simulado")
+    page.click(FORM_SUBMIT)
+    api_error = wait_text(
+        page.locator(FORM_ERROR), "Error simulado de red", timeout=10000
     )
-    api_error = page.inner_text(".task-form__error")
     cards_after_error = page.locator(".task").count()
     page.unroute("**/api/tasks", handler)
 
-    page.fill("#task-title", "Tarea válida UI")
-    page.click('.task-form button[type="submit"]')
-    task_in(page, "Pendiente", "Tarea válida UI").wait_for(timeout=10000)
-    valid_created = task_in(page, "Pendiente", "Tarea válida UI").count() == 1
-    input_after_valid = page.input_value("#task-title")
+    page.fill(FORM_TITLE, "Tarea válida")
+    page.click(FORM_SUBMIT)
+    task_in(page, "Pendiente", "Tarea válida").wait_for(timeout=10000)
+    valid_created = task_in(page, "Pendiente", "Tarea válida").count() == 1
+    input_after_valid = page.input_value(FORM_TITLE)
     total_posts = len(posts)
 
-    long_expected = "El título no puede superar los 100 caracteres."
     checks = {
-        "vacío muestra error": empty_message == empty_expected,
-        "solo espacios muestra error": spaces_message == empty_expected,
-        "101 caracteres cargados": loaded_length == 101,
-        "más de 100 muestra error": long_message == long_expected,
-        "sin POST en ramas inválidas": posts_after_invalid == 0,
-        "error de API visible": api_error == "Error simulado de red",
-        "sin tarjeta tras error de API": cards_after_error == 0,
-        "alta válida crea tarjeta": valid_created,
-        "campo vacío tras alta válida": input_after_valid == "",
-        "dos POST: fallido y válido": total_posts == 2,
+        "título vacío muestra el error": empty_message == empty_expected,
+        "título de solo espacios muestra el error": spaces_message == empty_expected,
+        "101 caracteres cargados en el campo": loaded_length == 101,
+        "título de 101 muestra el error de longitud": long_title_message
+        == long_title_expected,
+        "descripción de 501 muestra el error de descripción": long_description_message
+        == long_description_expected,
+        "las ramas inválidas no emiten POST": posts_after_invalid == 0,
+        "el error de la API se muestra": api_error == "Error simulado de red",
+        "sin tarjeta tras el error de la API": cards_after_error == 0,
+        "el alta válida crea la tarjeta": valid_created,
+        "el campo queda limpio tras el alta": input_after_valid == "",
+        "se emitieron dos POST: el fallido y el válido": total_posts == 2,
     }
     obtained = (
         f"vacío={empty_message!r}; espacios={spaces_message!r}; "
-        f"len101={loaded_length}; largo={long_message!r}; "
+        f"len(101)={loaded_length}; título largo={long_title_message!r}; "
+        f"descripción larga={long_description_message!r}; "
         f"POST inválidos={posts_after_invalid}; error API={api_error!r}; "
         f"tarjetas tras error={cards_after_error}; alta válida={valid_created}; "
-        f"input={input_after_valid!r}; POST totales={total_posts}"
+        f"input tras alta={input_after_valid!r}; POST totales={total_posts}"
     )
     return make_result(
-        "CP-CB-04",
+        "CP-CB-06",
         checks,
         obtained,
-        "Ramas de handleSubmit ejecutadas sobre la interfaz real.",
+        "Ramas de validateTaskInput y handleSubmit ejercitadas sobre el "
+        "formulario real.",
     )
 
 
-def cb_05(page, task) -> dict:
-    title = task["title"]
-    patches = track_requests(page, "PATCH", "/api/tasks/")
-    drag_task(page, task["id"], "Pendiente")
-    page.wait_for_timeout(400)
-    same_column = len(patches)
+def prepare_two_tasks() -> dict:
+    return {"alfa": create_task("Alfa"), "beta": create_task("Beta")}
 
-    drag_task(page, task["id"], "En curso")
-    task_in(page, "En curso", title).wait_for(timeout=10000)
-    page.wait_for_timeout(300)
-    valid_move = len(patches)
+
+def cb_07(page, prepared) -> dict:
+    page.wait_for_function(
+        '() => document.querySelectorAll(\'.column[data-status="Pendiente"] '
+        ".task').length === 2",
+        timeout=10000,
+    )
+    patches = track_requests(page, "PATCH", "/api/tasks/")
+    initial_order = wait_titles(page, "Pendiente", ["Alfa", "Beta"], timeout=5.0)
+
+    drag_task(page, prepared["beta"]["id"], "Pendiente", client_y=0)
+    reordered = wait_titles(page, "Pendiente", ["Beta", "Alfa"], timeout=10.0)
+    same_column_bodies = request_bodies(patches)
+
+    drag_task(page, prepared["alfa"]["id"], "En curso", client_y=0)
+    task_in(page, "En curso", "Alfa").wait_for(timeout=10000)
+    moved_bodies = request_bodies(patches)
+    in_progress = task_in(page, "En curso", "Alfa").count() == 1
 
     drop_raw(page, "abc", "Terminada")
     drop_raw(page, "0", "Terminada")
-    page.wait_for_timeout(400)
-    after_invalid = len(patches)
+    page.wait_for_timeout(500)
+    total_patches = len(patches)
+    finished_cards = page.locator('.column[data-status="Terminada"] .task').count()
 
     checks = {
-        "sin PATCH en misma columna": same_column == 0,
-        "un PATCH al mover de columna": valid_move == 1,
-        "sin PATCH con id inválido": after_invalid == 1,
-        "tarjeta permanece en En curso": task_in(
-            page, "En curso", title
-        ).count()
-        == 1,
-        "tarjeta no llegó a Terminada": task_in(
-            page, "Terminada", title
-        ).count()
-        == 0,
+        "orden inicial Alfa, Beta": initial_order == ["Alfa", "Beta"],
+        "reordenar emite un PATCH": len(same_column_bodies) == 1,
+        "el PATCH de reorden usa posición 0": same_column_bodies
+        == [{"status": "Pendiente", "position": 0}],
+        "el orden visible queda Beta, Alfa": reordered == ["Beta", "Alfa"],
+        "mover de columna agrega un segundo PATCH": len(moved_bodies) == 2,
+        "el PATCH de movimiento usa el estado destino": moved_bodies[1]
+        == {"status": "En curso", "position": 0},
+        "la tarjeta quedó en En curso": in_progress,
+        "los identificadores inválidos no emiten PATCH": total_patches == 2,
+        "nada llegó a Terminada": finished_cards == 0,
     }
     obtained = (
-        f"PATCH misma columna={same_column}; PATCH movimiento={valid_move}; "
-        f"PATCH tras ids inválidos={after_invalid}; "
-        f"En curso={task_in(page, 'En curso', title).count()}; "
-        f"Terminada={task_in(page, 'Terminada', title).count()}"
+        f"orden inicial={initial_order}; PATCH reorden={same_column_bodies}; "
+        f"orden final={reordered}; PATCH movimiento={moved_bodies}; "
+        f"En curso={in_progress}; PATCH totales={total_patches}; "
+        f"tarjetas en Terminada={finished_cards}"
     )
     return make_result(
-        "CP-CB-05",
+        "CP-CB-07",
         checks,
         obtained,
-        "Ramas de handleDrop: misma columna, movimiento válido e ids inválidos.",
+        "Decisiones de handleDrop y valor devuelto por dropIndex: misma "
+        "columna, columna distinta e identificadores inválidos.",
     )
 
 
@@ -282,22 +426,15 @@ def main() -> int:
     ensure_server()
     WB_DB_PATH.unlink(missing_ok=True)
     init_db()
-    backend_results = [cb_01(), cb_02(), cb_03()]
+    backend_results = [cb_01(), cb_02(), cb_03(), cb_04(), cb_05()]
 
     frontend_results = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(channel="chrome", headless=True)
         try:
+            frontend_results.append(run_frontend_case(browser, "CP-CB-06", cb_06))
             frontend_results.append(
-                run_frontend_case(browser, "CP-CB-04", cb_04)
-            )
-            frontend_results.append(
-                run_frontend_case(
-                    browser,
-                    "CP-CB-05",
-                    cb_05,
-                    prepare=lambda: create_task("Blanco mover"),
-                )
+                run_frontend_case(browser, "CP-CB-07", cb_07, prepare=prepare_two_tasks)
             )
         finally:
             browser.close()

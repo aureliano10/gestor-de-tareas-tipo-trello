@@ -1,8 +1,40 @@
 == Interfaz (/) ==
-HTTP 200
+HTTP 200 <!doctype html>
+<html lang="es">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablero de Tareas</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx?t=1793335831194"></script>
+  </body>
+</html>
+-> contiene el contenedor de la aplicación: True
 == Proxy /api/health ==
-{"status":"ok"}
+HTTP 200 {"status":"ok"}
 == Proxy POST /api/tasks ==
-{"id":1,"title":"Verificación frontend","status":"Pendiente","created_at":"2026-10-30T02:37:19.877898Z"}
-== Transformación App.jsx ==
+HTTP 201 {"id":27,"title":"Verificación frontend","description":"","status":"Pendiente","due_date":null,"position":1,"created_at":"2026-10-30T04:51:34.698159Z","overdue":false,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]}
+== Proxy GET /api/tasks ==
+HTTP 200 [{"id":25,"title":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","description":"","status":"Pendiente","due_date":null,"position":0,"created_at":"2026-10-30T04:51:06.053313Z","overdue":false,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]},{"id":27,"title":"Verificación frontend","description":"","status":"Pendiente","due_date":null,"position":1,"created_at":"2026-10-30T04:51:34.698159Z","overdue":false,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]},{"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"En curso","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":1,"subtask_done":0,"subtasks":[{"id":14,"title":"Revisar requisitos","done":false,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[{"id":4,"filename":"extra2.txt","content_type":"text/plain","size_bytes":1,"created_at":"2026-10-30T04:51:06.800267Z"},{"id":5,"filename":"extra3.txt","content_type":"text/plain","size_bytes":1,"created_at":"2026-10-30T04:51:06.848472Z"}]}]
+== Proxy PATCH /api/tasks/{id}/move ==
+HTTP 200 {"id":27,"title":"Verificación frontend","description":"","status":"En curso","due_date":null,"position":1,"created_at":"2026-10-30T04:51:34.698159Z","overdue":false,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]}
+== Proxy DELETE /api/tasks/{id} ==
+HTTP 204
+== Transformación de src/main.jsx ==
 HTTP 200
+== Transformación de src/App.jsx ==
+HTTP 200
+== Transformación de src/components/TaskDetailModal.jsx ==
+HTTP 200
+== Hoja de estilos ==
+HTTP 200
+-> reglas del checklist: True

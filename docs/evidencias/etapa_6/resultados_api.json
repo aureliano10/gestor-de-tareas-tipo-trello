@@ -2,44 +2,68 @@
   {
     "id": "CP-CRE-01",
     "passed": true,
-    "resultado_obtenido": "HTTP 201; respuesta={\"id\": 33, \"title\": \"Preparar informe\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.397774Z\"}; listado=[{\"id\": 33, \"title\": \"Preparar informe\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.397774Z\"}]",
-    "observaciones": "Alta con título 'Preparar informe'; se esperaba HTTP 201 y persistencia.",
+    "resultado_obtenido": "HTTP 201; tarea #152 creada en estado Pendiente, position 0 y overdue falso, presente en el listado",
+    "observaciones": "Alta típica; verifica RF2 y la forma completa de la respuesta.",
     "detalle": {
-      "id": 33,
+      "id": 152,
       "title": "Preparar informe",
+      "description": "",
       "status": "Pendiente",
-      "created_at": "2026-10-30T03:05:35.397774Z"
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:40.887702Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
     }
   },
   {
     "id": "CP-CRE-02",
     "passed": true,
-    "resultado_obtenido": "HTTP 201; respuesta={\"id\": 34, \"title\": \"A\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.503768Z\"}; listado=[{\"id\": 34, \"title\": \"A\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.503768Z\"}]",
-    "observaciones": "Alta con título 'A'; se esperaba HTTP 201 y persistencia.",
+    "resultado_obtenido": "HTTP 201; título de un carácter aceptado con estado Pendiente",
+    "observaciones": "Valor límite inferior válido del título.",
     "detalle": {
-      "id": 34,
+      "id": 153,
       "title": "A",
+      "description": "",
       "status": "Pendiente",
-      "created_at": "2026-10-30T03:05:35.503768Z"
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:40.976872Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
     }
   },
   {
     "id": "CP-CRE-03",
     "passed": true,
-    "resultado_obtenido": "HTTP 201; respuesta={\"id\": 35, \"title\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.600768Z\"}; listado=[{\"id\": 35, \"title\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.600768Z\"}]",
-    "observaciones": "Alta con título 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'; se esperaba HTTP 201 y persistencia.",
+    "resultado_obtenido": "HTTP 201; título de exactamente 100 caracteres aceptado",
+    "observaciones": "Valor límite superior válido del título.",
     "detalle": {
-      "id": 35,
+      "id": 154,
       "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "description": "",
       "status": "Pendiente",
-      "created_at": "2026-10-30T03:05:35.600768Z"
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:41.027481Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
     }
   },
   {
     "id": "CP-CRE-04",
     "passed": true,
-    "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"value_error\", \"loc\": [\"body\", \"title\"], \"msg\": \"Value error, El título no puede superar los 100 caracteres\", \"input\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"ctx\": {\"error\": {}}}]}; listado=[]",
-    "observaciones": "Alta rechazada con título 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'; se esperaba HTTP 422 y ningún registro.",
+    "resultado_obtenido": "HTTP 422; título de 101 caracteres rechazado y listado vacío",
+    "observaciones": "Valor límite superior inválido.",
     "detalle": {
       "detail": [
         {
@@ -60,8 +84,8 @@
   {
     "id": "CP-CRE-05",
     "passed": true,
-    "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"value_error\", \"loc\": [\"body\", \"title\"], \"msg\": \"Value error, El título no puede estar vacío ni contener solo espacios\", \"input\": \"\", \"ctx\": {\"error\": {}}}]}; listado=[]",
-    "observaciones": "Alta rechazada con título ''; se esperaba HTTP 422 y ningún registro.",
+    "resultado_obtenido": "HTTP 422; título vacío rechazado y listado vacío",
+    "observaciones": "Clase de equivalencia inválida.",
     "detalle": {
       "detail": [
         {
@@ -82,8 +106,8 @@
   {
     "id": "CP-CRE-06",
     "passed": true,
-    "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"value_error\", \"loc\": [\"body\", \"title\"], \"msg\": \"Value error, El título no puede estar vacío ni contener solo espacios\", \"input\": \"     \", \"ctx\": {\"error\": {}}}]}; listado=[]",
-    "observaciones": "Alta rechazada con título '     '; se esperaba HTTP 422 y ningún registro.",
+    "resultado_obtenido": "HTTP 422; título con solo espacios rechazado y listado vacío",
+    "observaciones": "Clase inválida y límite inferior tras recortar.",
     "detalle": {
       "detail": [
         {
@@ -104,80 +128,110 @@
   {
     "id": "CP-CRE-07",
     "passed": true,
-    "resultado_obtenido": "HTTP 201; respuesta={\"id\": 36, \"title\": \"Revisar pruebas\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.927885Z\"}; listado=[{\"id\": 36, \"title\": \"Revisar pruebas\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.927885Z\"}]",
-    "observaciones": "Alta con espacios externos; se esperaba recorte y persistencia.",
+    "resultado_obtenido": "HTTP 201; espacios externos recortados y título persistido como \"Revisar pruebas\"",
+    "observaciones": "Clase válida con normalización.",
     "detalle": {
-      "id": 36,
+      "id": 155,
       "title": "Revisar pruebas",
+      "description": "",
       "status": "Pendiente",
-      "created_at": "2026-10-30T03:05:35.927885Z"
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:41.328084Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
     }
   },
   {
     "id": "CP-CRE-08",
     "passed": true,
-    "resultado_obtenido": "HTTP 201; respuesta={\"id\": 37, \"title\": \"Revisión de señalización #1 – ñandú\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.019551Z\"}; listado=[{\"id\": 37, \"title\": \"Revisión de señalización #1 – ñandú\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.019551Z\"}]",
-    "observaciones": "Alta con acentos, eñe y símbolos; se esperaba conservación exacta.",
+    "resultado_obtenido": "HTTP 201; descripción y fecha límite (2026-11-06) almacenadas y overdue falso",
+    "observaciones": "Alta con descripción y fecha futura.",
     "detalle": {
-      "id": 37,
-      "title": "Revisión de señalización #1 – ñandú",
+      "id": 156,
+      "title": "Informe final",
+      "description": "Detalle de la tarea",
       "status": "Pendiente",
-      "created_at": "2026-10-30T03:05:36.019551Z"
+      "due_date": "2026-11-06",
+      "position": 0,
+      "created_at": "2026-10-30T05:35:41.408074Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
     }
   },
   {
-    "id": "CP-MOV-01",
+    "id": "CP-CRE-09",
     "passed": true,
-    "resultado_obtenido": "En curso: HTTP 200 (En curso); Terminada: HTTP 200 (Terminada); persistido=Terminada",
-    "observaciones": "Transición completa Pendiente → En curso → Terminada.",
-    "detalle": {
-      "en_curso": {
-        "id": 38,
-        "title": "Mover a Terminada",
-        "status": "En curso",
-        "created_at": "2026-10-30T03:05:36.120191Z"
-      },
-      "terminada": {
-        "id": 38,
-        "title": "Mover a Terminada",
-        "status": "Terminada",
-        "created_at": "2026-10-30T03:05:36.120191Z"
-      },
-      "persistido": {
-        "id": 38,
-        "title": "Mover a Terminada",
-        "status": "Terminada",
-        "created_at": "2026-10-30T03:05:36.120191Z"
-      }
-    }
-  },
-  {
-    "id": "CP-MOV-02",
-    "passed": true,
-    "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"literal_error\", \"loc\": [\"body\", \"status\"], \"msg\": \"Input should be 'Pendiente', 'En curso' or 'Terminada'\", \"input\": \"Finalizada\", \"ctx\": {\"expected\": \"'Pendiente', 'En curso' or 'Terminada'\"}}]}; persistido=Pendiente",
-    "observaciones": "Intento de estado no permitido; se esperaba rechazo y sin cambios.",
+    "resultado_obtenido": "HTTP 422; fecha límite pasada rechazada al crear y listado vacío",
+    "observaciones": "Valor límite inválido de fecha al crear.",
     "detalle": {
       "detail": [
         {
-          "type": "literal_error",
+          "type": "value_error",
           "loc": [
             "body",
-            "status"
+            "due_date"
           ],
-          "msg": "Input should be 'Pendiente', 'En curso' or 'Terminada'",
-          "input": "Finalizada",
+          "msg": "Value error, La fecha límite no puede ser anterior a hoy",
+          "input": "2026-10-29",
           "ctx": {
-            "expected": "'Pendiente', 'En curso' or 'Terminada'"
+            "error": {}
           }
         }
       ]
     }
   },
   {
+    "id": "CP-MOV-01",
+    "passed": true,
+    "resultado_obtenido": "Tres estados válidos: PATCH 200 a En curso y a Terminada, con estado final \"Terminada\" persistido",
+    "observaciones": "Transición completa entre los tres estados.",
+    "detalle": {
+      "id": 157,
+      "title": "Mover a Terminada",
+      "description": "",
+      "status": "Terminada",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:41.536499Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-MOV-02",
+    "passed": true,
+    "resultado_obtenido": "HTTP 422 con estado y con posición inválidos; la tarea conservó su estado Pendiente y su posición 0",
+    "observaciones": "Clase inválida de estado y de posición.",
+    "detalle": {
+      "id": 158,
+      "title": "Estado inválido",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:41.724433Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
     "id": "CP-MOV-03",
     "passed": true,
-    "resultado_obtenido": "HTTP 404; respuesta={\"detail\": \"Tarea no encontrada\"}",
-    "observaciones": "Actualización sobre id inexistente; se esperaba HTTP 404.",
+    "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+    "observaciones": "Movimiento sobre un identificador inexistente.",
     "detalle": {
       "detail": "Tarea no encontrada"
     }
@@ -185,8 +239,8 @@
   {
     "id": "CP-MOV-04",
     "passed": true,
-    "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"int_parsing\", \"loc\": [\"path\", \"task_id\"], \"msg\": \"Input should be a valid integer, unable to parse string as an integer\", \"input\": \"abc\"}]}",
-    "observaciones": "Identificador no numérico; se esperaba HTTP 422.",
+    "resultado_obtenido": "HTTP 422 por identificador no numérico en la ruta",
+    "observaciones": "Clase inválida de identificador.",
     "detalle": {
       "detail": [
         {
@@ -202,20 +256,479 @@
     }
   },
   {
+    "id": "CP-MOV-05",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200; la columna quedó ordenada como C, A, B con posiciones [0, 1, 2]",
+    "observaciones": "Reordenamiento sin cambio de estado.",
+    "detalle": [
+      {
+        "id": 161,
+        "title": "C",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-10-30T05:35:42.035007Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": []
+      },
+      {
+        "id": 159,
+        "title": "A",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 1,
+        "created_at": "2026-10-30T05:35:41.958717Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": []
+      },
+      {
+        "id": 160,
+        "title": "B",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 2,
+        "created_at": "2026-10-30T05:35:41.996169Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": []
+      }
+    ]
+  },
+  {
+    "id": "CP-EDI-01",
+    "passed": true,
+    "resultado_obtenido": "PUT 200; título, descripción y fecha límite actualizados sin alterar el estado",
+    "observaciones": "Flujo normal de edición.",
+    "detalle": {
+      "id": 162,
+      "title": "Tarea editada",
+      "description": "Nueva descripción",
+      "status": "Pendiente",
+      "due_date": "2026-11-02",
+      "position": 0,
+      "created_at": "2026-10-30T05:35:42.153384Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-EDI-02",
+    "passed": true,
+    "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+    "observaciones": "Edición sobre un identificador inexistente.",
+    "detalle": {
+      "detail": "Tarea no encontrada"
+    }
+  },
+  {
+    "id": "CP-EDI-03",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200; la edición admitió la fecha pasada (2026-10-28) y overdue quedó verdadero",
+    "observaciones": "La restricción de fecha futura aplica solo al alta.",
+    "detalle": {
+      "id": 163,
+      "title": "Revisar informe",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": "2026-10-28",
+      "position": 0,
+      "created_at": "2026-10-30T05:35:42.293919Z",
+      "overdue": true,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-SUB-01",
+    "passed": true,
+    "resultado_obtenido": "HTTP 201; subtarea creada, subtask_total 1 y subtask_done 0",
+    "observaciones": "Flujo normal de alta de subtarea.",
+    "detalle": {
+      "id": 164,
+      "title": "Con checklist",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:42.379565Z",
+      "overdue": false,
+      "subtask_total": 1,
+      "subtask_done": 0,
+      "subtasks": [
+        {
+          "id": 25,
+          "title": "Diseñar casos",
+          "done": false,
+          "created_at": "2026-10-30T05:35:42.417338Z"
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-SUB-02",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200 en ambos PATCH; el avance pasó a 1/1 y volvió a 0/1 sin cambiar el estado",
+    "observaciones": "Marcado y desmarcado de una subtarea.",
+    "detalle": {
+      "marked": {
+        "id": 165,
+        "title": "Marcar subtarea",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-10-30T05:35:42.467959Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 1,
+        "subtasks": [
+          {
+            "id": 26,
+            "title": "Paso",
+            "done": true,
+            "created_at": "2026-10-30T05:35:42.517818Z"
+          }
+        ],
+        "attachments": []
+      },
+      "unmarked": {
+        "id": 165,
+        "title": "Marcar subtarea",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-10-30T05:35:42.467959Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 0,
+        "subtasks": [
+          {
+            "id": 26,
+            "title": "Paso",
+            "done": false,
+            "created_at": "2026-10-30T05:35:42.517818Z"
+          }
+        ],
+        "attachments": []
+      }
+    }
+  },
+  {
+    "id": "CP-SUB-03",
+    "passed": true,
+    "resultado_obtenido": "DELETE 204 sin cuerpo; la tarea quedó con subtask_total 0",
+    "observaciones": "Flujo normal de eliminación de subtarea.",
+    "detalle": {
+      "id": 166,
+      "title": "Eliminar subtarea",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:42.706636Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-SUB-04",
+    "passed": true,
+    "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+    "observaciones": "Alta de subtarea sobre una tarea inexistente.",
+    "detalle": {
+      "detail": "Tarea no encontrada"
+    }
+  },
+  {
+    "id": "CP-BLO-01",
+    "passed": true,
+    "resultado_obtenido": "HTTP 409 con detalle del bloqueo; la tarea conservó su estado Pendiente",
+    "observaciones": "Regla de bloqueo al finalizar.",
+    "detalle": {
+      "id": 167,
+      "title": "Bloquear finalización",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:42.941608Z",
+      "overdue": false,
+      "subtask_total": 1,
+      "subtask_done": 0,
+      "subtasks": [
+        {
+          "id": 28,
+          "title": "Pendiente 1",
+          "done": false,
+          "created_at": "2026-10-30T05:35:42.977621Z"
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-BLO-02",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200; tarea finalizada al no tener subtareas pendientes",
+    "observaciones": "Complemento del bloqueo.",
+    "detalle": {
+      "id": 168,
+      "title": "Finalizar permitida",
+      "description": "",
+      "status": "Terminada",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:43.097462Z",
+      "overdue": false,
+      "subtask_total": 1,
+      "subtask_done": 1,
+      "subtasks": [
+        {
+          "id": 29,
+          "title": "Hecha",
+          "done": true,
+          "created_at": "2026-10-30T05:35:43.139401Z"
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-BLO-03",
+    "passed": true,
+    "resultado_obtenido": "HTTP 201 con la subtarea creada y la tarea reabierta a \"En curso\"",
+    "observaciones": "Reapertura al agregar una subtarea pendiente.",
+    "detalle": {
+      "id": 169,
+      "title": "Terminada y reabierta",
+      "description": "",
+      "status": "En curso",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:43.250079Z",
+      "overdue": false,
+      "subtask_total": 1,
+      "subtask_done": 0,
+      "subtasks": [
+        {
+          "id": 30,
+          "title": "Tarea adicional",
+          "done": false,
+          "created_at": "2026-10-30T05:35:43.330420Z"
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-BLO-04",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200 con la subtarea desmarcada y la tarea reabierta a \"En curso\"",
+    "observaciones": "Reapertura al desmarcar una subtarea.",
+    "detalle": {
+      "id": 170,
+      "title": "Desmarcar reabre",
+      "description": "",
+      "status": "En curso",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:43.376832Z",
+      "overdue": false,
+      "subtask_total": 1,
+      "subtask_done": 0,
+      "subtasks": [
+        {
+          "id": 31,
+          "title": "Paso",
+          "done": false,
+          "created_at": "2026-10-30T05:35:43.419625Z"
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-FEC-01",
+    "passed": true,
+    "resultado_obtenido": "overdue pasó de falso a verdadero al editar la fecha, sin cambiar el estado",
+    "observaciones": "El vencimiento se deriva y no se almacena.",
+    "detalle": {
+      "id": 171,
+      "title": "Con vencimiento",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": "2026-10-28",
+      "position": 0,
+      "created_at": "2026-10-30T05:35:43.543620Z",
+      "overdue": true,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-FEC-02",
+    "passed": true,
+    "resultado_obtenido": "El filtro overdue devolvió solo la tarea vencida y el listado completo las dos",
+    "observaciones": "Verifica el parámetro de consulta de vencidas.",
+    "detalle": {
+      "filtered": [
+        {
+          "id": 173,
+          "title": "Con fecha pasada",
+          "description": "",
+          "status": "Pendiente",
+          "due_date": "2026-10-29",
+          "position": 1,
+          "created_at": "2026-10-30T05:35:43.710577Z",
+          "overdue": true,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": []
+        }
+      ]
+    }
+  },
+  {
+    "id": "CP-ADJ-01",
+    "passed": true,
+    "resultado_obtenido": "HTTP 201; adjunto \"notas.txt\" de 1024 bytes agregado a la tarea",
+    "observaciones": "Subida con extensión permitida.",
+    "detalle": {
+      "id": 174,
+      "title": "Con adjunto",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:43.912157Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": [
+        {
+          "id": 16,
+          "filename": "notas.txt",
+          "content_type": "text/plain",
+          "size_bytes": 1024,
+          "created_at": "2026-10-30T05:35:43.961813Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CP-ADJ-02",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200 con el contenido idéntico al subido y el nombre original en la cabecera",
+    "observaciones": "Verifica la integridad del archivo almacenado.",
+    "detalle": "attachment; filename=\"notas.txt\""
+  },
+  {
+    "id": "CP-ADJ-03",
+    "passed": true,
+    "resultado_obtenido": "DELETE 204; la tarea quedó sin adjuntos y la descarga posterior respondió 404",
+    "observaciones": "Verifica también que el archivo físico deja de estar disponible.",
+    "detalle": {
+      "id": 176,
+      "title": "Eliminar adjunto",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:44.180144Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-ADJ-04",
+    "passed": true,
+    "resultado_obtenido": "HTTP 415 con el detalle de los formatos aceptados; la tarea quedó sin adjuntos",
+    "observaciones": "Clase inválida de extensión.",
+    "detalle": "Formato no permitido. Se aceptan: .pdf, .png, .jpg, .jpeg, .txt, .docx"
+  },
+  {
+    "id": "CP-ADJ-05",
+    "passed": true,
+    "resultado_obtenido": "HTTP 413 con el detalle \"El archivo supera el tamaño máximo de 5 MB\"; sin adjuntos",
+    "observaciones": "Valor límite superior de tamaño.",
+    "detalle": "El archivo supera el tamaño máximo de 5 MB"
+  },
+  {
+    "id": "CP-ADJ-06",
+    "passed": true,
+    "resultado_obtenido": "HTTP 409 con el detalle del límite; la tarea conservó exactamente 3 adjuntos",
+    "observaciones": "Valor límite superior de cantidad.",
+    "detalle": "Una tarea no puede tener más de 3 archivos adjuntos"
+  },
+  {
     "id": "CP-ELI-01",
     "passed": true,
-    "resultado_obtenido": "HTTP 204; cuerpo=''; listado=[]",
-    "observaciones": "Eliminación de una tarea existente; se esperaba HTTP 204.",
-    "detalle": {
-      "id": 40,
-      "listado": []
-    }
+    "resultado_obtenido": "DELETE 204 sin cuerpo; la tarea dejó de aparecer en el listado",
+    "observaciones": "Eliminación lógica de una tarea existente.",
+    "detalle": []
   },
   {
     "id": "CP-ELI-02",
     "passed": true,
-    "resultado_obtenido": "HTTP 404; respuesta={\"detail\": \"Tarea no encontrada\"}",
-    "observaciones": "Eliminación sobre id inexistente; se esperaba HTTP 404.",
+    "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+    "observaciones": "Eliminación sobre un identificador inexistente.",
+    "detalle": {
+      "detail": "Tarea no encontrada"
+    }
+  },
+  {
+    "id": "CP-RES-01",
+    "passed": true,
+    "resultado_obtenido": "HTTP 200; la tarea eliminada volvió a estar presente en el listado",
+    "observaciones": "Flujo normal de restauración.",
+    "detalle": {
+      "id": 181,
+      "title": "Restaurar esta tarea",
+      "description": "",
+      "status": "Pendiente",
+      "due_date": null,
+      "position": 0,
+      "created_at": "2026-10-30T05:35:45.325217Z",
+      "overdue": false,
+      "subtask_total": 0,
+      "subtask_done": 0,
+      "subtasks": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "CP-RES-02",
+    "passed": true,
+    "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+    "observaciones": "La restauración solo aplica a tareas eliminadas.",
     "detalle": {
       "detail": "Tarea no encontrada"
     }
@@ -223,24 +736,51 @@
   {
     "id": "CP-LIS-01",
     "passed": true,
-    "resultado_obtenido": "vacío HTTP 200 []; con datos HTTP 200 [{\"id\": 41, \"title\": \"Primera tarea\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.699928Z\"}, {\"id\": 42, \"title\": \"Segunda tarea\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.740958Z\"}]",
-    "observaciones": "Listado vacío y con dos tareas en orden de creación.",
-    "detalle": {
-      "vacio": [],
-      "tareas": [
-        {
-          "id": 41,
-          "title": "Primera tarea",
-          "status": "Pendiente",
-          "created_at": "2026-10-30T03:05:36.699928Z"
-        },
-        {
-          "id": 42,
-          "title": "Segunda tarea",
-          "status": "Pendiente",
-          "created_at": "2026-10-30T03:05:36.740958Z"
-        }
-      ]
-    }
+    "resultado_obtenido": "El primer listado fue vacío y el segundo contuvo las tres tareas en orden de creación",
+    "observaciones": "Verifica el listado y la persistencia en SQLite.",
+    "detalle": [
+      {
+        "id": 183,
+        "title": "Primera tarea",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-10-30T05:35:45.630341Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": []
+      },
+      {
+        "id": 184,
+        "title": "Segunda tarea",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 1,
+        "created_at": "2026-10-30T05:35:45.676320Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": []
+      },
+      {
+        "id": 185,
+        "title": "Tercera tarea",
+        "description": "",
+        "status": "Pendiente",
+        "due_date": null,
+        "position": 2,
+        "created_at": "2026-10-30T05:35:45.723704Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": []
+      }
+    ]
   }
 ]

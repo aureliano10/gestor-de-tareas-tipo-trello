@@ -1,30 +1,28 @@
 import { useState } from "react";
+import { todayISO } from "../format.js";
+import TaskFields, { validateTaskInput } from "./TaskFields.jsx";
 
-const MAX_TITLE_LENGTH = 100;
+const EMPTY_TASK = { title: "", description: "", dueDate: "" };
 
 export default function TaskForm({ onCreate }) {
-  const [title, setTitle] = useState("");
+  const [values, setValues] = useState(EMPTY_TASK);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const cleanTitle = title.trim();
 
-    if (!cleanTitle) {
-      setError("El título es obligatorio y no puede contener solo espacios.");
-      return;
-    }
-    if (cleanTitle.length > MAX_TITLE_LENGTH) {
-      setError(`El título no puede superar los ${MAX_TITLE_LENGTH} caracteres.`);
+    const message = validateTaskInput(values);
+    if (message) {
+      setError(message);
       return;
     }
 
     setError("");
     setSubmitting(true);
     try {
-      await onCreate(cleanTitle);
-      setTitle("");
+      await onCreate(values);
+      setValues(EMPTY_TASK);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -33,27 +31,35 @@ export default function TaskForm({ onCreate }) {
   }
 
   return (
-    <form className="task-form" onSubmit={handleSubmit} noValidate>
-      <div className="task-form__field">
-        <label htmlFor="task-title">Nueva tarea</label>
-        <input
-          id="task-title"
-          name="title"
-          type="text"
-          placeholder="Ej. Preparar informe de pruebas"
-          value={title}
-          maxLength={MAX_TITLE_LENGTH}
-          onChange={(event) => {
-            setTitle(event.target.value);
-            setError("");
-          }}
-        />
+    <form
+      className="task-form"
+      onSubmit={handleSubmit}
+      noValidate
+      data-testid="task-form"
+    >
+      <h2 className="task-form__heading">Nueva tarea</h2>
+
+      <TaskFields
+        idPrefix="new-task"
+        values={values}
+        onChange={setValues}
+        disabled={submitting}
+        minDueDate={todayISO()}
+      />
+
+      <div className="task-form__actions">
+        <button
+          type="submit"
+          className="btn"
+          data-testid="task-submit"
+          disabled={submitting}
+        >
+          {submitting ? "Agregando..." : "Agregar tarea"}
+        </button>
       </div>
-      <button type="submit" disabled={submitting}>
-        {submitting ? "Agregando..." : "Agregar"}
-      </button>
+
       {error && (
-        <p className="task-form__error" role="alert">
+        <p className="task-form__error" role="alert" data-testid="task-form-error">
           {error}
         </p>
       )}

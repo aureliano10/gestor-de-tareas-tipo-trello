@@ -1,20 +1,55 @@
 == GET /api/health ==
-{"status":"ok"}
-== POST tarea válida ==
-{"id":1,"title":"Informe de verificación","status":"Pendiente","created_at":"2026-10-30T02:36:21.393980Z"}
-== POST título 100 caracteres ==
-HTTP 201
-== POST título 101 caracteres ==
-HTTP 422
-== POST solo espacios ==
-HTTP 422
-== PATCH a En curso ==
-{"id":1,"title":"Informe de verificación","status":"En curso","created_at":"2026-10-30T02:36:21.393980Z"}
-== PATCH estado inválido ==
-HTTP 422
-== PATCH tarea inexistente ==
-HTTP 404
-== DELETE tarea existente ==
+HTTP 200 {"status":"ok"}
+== POST tarea válida con espacios en el título ==
+HTTP 201 {"id":24,"title":"Informe de verificación","description":"Prueba funcional de la API","status":"Pendiente","due_date":"2026-12-31","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":false,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]}
+== POST título de 100 caracteres ==
+HTTP 201 {"id":25,"title":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","description":"","status":"Pendiente","due_date":null,"position":1,"created_at":"2026-10-30T04:51:06.053313Z","overdue":false,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]}
+== POST título de 101 caracteres ==
+HTTP 422 {"detail":[{"type":"value_error","loc":["body","title"],"msg":"Value error, El título no puede superar los 100 caracteres","input":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","ctx":{"error":{}}}]}
+== POST título de solo espacios ==
+HTTP 422 {"detail":[{"type":"value_error","loc":["body","title"],"msg":"Value error, El título no puede estar vacío ni contener solo espacios","input":"   ","ctx":{"error":{}}}]}
+== POST con fecha límite pasada ==
+HTTP 422 {"detail":[{"type":"value_error","loc":["body","due_date"],"msg":"Value error, La fecha límite no puede ser anterior a hoy","input":"2020-01-01","ctx":{"error":{}}}]}
+== PUT edición de la tarea (se permite fecha pasada) ==
+HTTP 200 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"Pendiente","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]}
+== GET tareas vencidas (estado derivado) ==
+HTTP 200 [{"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"Pendiente","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":0,"subtask_done":0,"subtasks":[],"attachments":[]}]
+-> vencidas devueltas: 1
+== POST subtarea ==
+HTTP 201 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"Pendiente","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":1,"subtask_done":0,"subtasks":[{"id":14,"title":"Revisar requisitos","done":false,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[]}
+== PATCH /move a Terminada con subtarea pendiente ==
+HTTP 409 {"detail":"No se puede finalizar: la tarea tiene 1 subtarea pendiente"}
+== PATCH subtarea completada ==
+HTTP 200 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"Pendiente","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":1,"subtask_done":1,"subtasks":[{"id":14,"title":"Revisar requisitos","done":true,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[]}
+== PATCH /move a Terminada sin subtareas pendientes ==
+HTTP 200 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"Terminada","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":false,"subtask_total":1,"subtask_done":1,"subtasks":[{"id":14,"title":"Revisar requisitos","done":true,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[]}
+== PATCH subtarea desmarcada sobre una tarea finalizada ==
+HTTP 200 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"En curso","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":1,"subtask_done":0,"subtasks":[{"id":14,"title":"Revisar requisitos","done":false,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[]}
+-> estado de la tarea: En curso
+== PATCH /move con estado inválido ==
+HTTP 422 {"detail":[{"type":"literal_error","loc":["body","status"],"msg":"Input should be 'Pendiente', 'En curso' or 'Terminada'","input":"Archivada","ctx":{"expected":"'Pendiente', 'En curso' or 'Terminada'"}}]}
+== PATCH /move sobre tarea inexistente ==
+HTTP 404 {"detail":"Tarea no encontrada"}
+== POST adjunto con extensión no permitida ==
+HTTP 415 {"detail":"Formato no permitido. Se aceptan: .pdf, .png, .jpg, .jpeg, .txt, .docx"}
+== POST adjunto vacío ==
+HTTP 422 {"detail":"El archivo está vacío"}
+== POST adjunto válido ==
+HTTP 201 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"En curso","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":1,"subtask_done":0,"subtasks":[{"id":14,"title":"Revisar requisitos","done":false,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[{"id":3,"filename":"notas.txt","content_type":"text/plain","size_bytes":19,"created_at":"2026-10-30T04:51:06.751323Z"}]}
+== POST cuarto adjunto (límite de 3 por tarea) ==
+HTTP 409 {"detail":"Una tarea no puede tener más de 3 archivos adjuntos"}
+== GET descarga del adjunto ==
+HTTP 200 contenido de prueba
+-> contenido: 'contenido de prueba'
+== GET adjunto inexistente ==
+HTTP 404 {"detail":"Archivo adjunto no encontrado"}
+== DELETE adjunto ==
 HTTP 204
+== DELETE tarea ==
+HTTP 204
+== POST restauración de la tarea eliminada ==
+HTTP 200 {"id":24,"title":"Informe de verificación","description":"Descripción editada","status":"En curso","due_date":"2020-05-04","position":0,"created_at":"2026-10-30T04:51:06.004475Z","overdue":true,"subtask_total":1,"subtask_done":0,"subtasks":[{"id":14,"title":"Revisar requisitos","done":false,"created_at":"2026-10-30T04:51:06.327911Z"}],"attachments":[{"id":4,"filename":"extra2.txt","content_type":"text/plain","size_bytes":1,"created_at":"2026-10-30T04:51:06.800267Z"},{"id":5,"filename":"extra3.txt","content_type":"text/plain","size_bytes":1,"created_at":"2026-10-30T04:51:06.848472Z"}]}
 == DELETE tarea inexistente ==
-HTTP 404
+HTTP 404 {"detail":"Tarea no encontrada"}
+== POST restauración de una tarea no eliminada ==
+HTTP 404 {"detail":"Tarea no encontrada"}

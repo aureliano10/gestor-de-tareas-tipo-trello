@@ -2,36 +2,57 @@
   {
     "id": "CP-UI-01",
     "passed": true,
-    "resultado_obtenido": "Tarjeta visible=True; input=''; contador=1; persistió=True",
-    "observaciones": "Alta desde el formulario y verificación tras recargar.",
+    "resultado_obtenido": "tarjeta visible=True; input=''; resumen='1 tarea'; contador Pendiente='1'; persistió=True",
+    "observaciones": "Alta desde el formulario con verificación visual y persistencia.",
     "detalle": null
   },
   {
     "id": "CP-UI-02",
     "passed": true,
     "resultado_obtenido": "error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0",
-    "observaciones": "Intento de alta con espacios; se esperaba validación en cliente.",
+    "observaciones": "Clase inválida y valor límite inferior sobre la interfaz.",
     "detalle": null
   },
   {
     "id": "CP-UI-03",
     "passed": true,
-    "resultado_obtenido": "En curso=True; Pendiente=0; PATCH=1; persistió=True",
-    "observaciones": "Arrastre de Pendiente a En curso y persistencia.",
+    "resultado_obtenido": "En curso=True; tarjetas en Pendiente=0; contador Pendiente='0'; contador En curso='1'; PATCH=1; persistió=True",
+    "observaciones": "Arrastre entre columnas con actualización de contadores y persistencia.",
     "detalle": null
   },
   {
     "id": "CP-UI-04",
     "passed": true,
-    "resultado_obtenido": "PATCH=0; tarjeta en Pendiente=1",
-    "observaciones": "Arrastre dentro de la misma columna; no debía generar cambios.",
+    "resultado_obtenido": "orden inicial=['Primera', 'Segunda']; PATCH=[{'status': 'Pendiente', 'position': 0}]; orden final=['Segunda', 'Primera']; contador Pendiente='2'",
+    "observaciones": "Condición de borde: soltar en la misma columna reordena emitiendo un PATCH con la posición calculada.",
     "detalle": null
   },
   {
     "id": "CP-UI-05",
     "passed": true,
-    "resultado_obtenido": "tarjetas restantes=0; DELETE=1; tras recarga=0",
-    "observaciones": "Eliminación desde la tarjeta y verificación tras recargar.",
+    "resultado_obtenido": "PUT=1; título del detalle='Tarea corregida'; descripción='Descripción nueva'; tarjetas=['Tarea corregida']",
+    "observaciones": "Edición desde el detalle con actualización del tablero.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-06",
+    "passed": true,
+    "resultado_obtenido": "subtareas listadas=2; contador inicial='0/2'; contador al marcar='1/2'; insignia='1/2 subtareas'; contador al eliminar='1/1'; insignia final='1/1 subtareas'",
+    "observaciones": "Alta, marcado y eliminación de subtareas con el avance reflejado en el detalle y en la tarjeta.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-07",
+    "passed": true,
+    "resultado_obtenido": "contador='1/3'; enlace='acta.txt'; insignia='1 archivo'; nombre descargado='acta.txt'; bytes descargados=1024",
+    "observaciones": "Subida de un archivo de 1 KB y descarga con el nombre original.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-08",
+    "passed": true,
+    "resultado_obtenido": "diálogo='¿Querés eliminar \"Eliminar desde interfaz\"? Podés deshacerlo durante unos segundos.'; DELETE=1; tarjetas restantes=0; aviso='Eliminaste \"Eliminar desde interfaz\".\\nDeshacer\\n×'; restaurada=True; persistió=True",
+    "observaciones": "Borrado lógico con confirmación previa y restauración desde el aviso.",
     "detalle": null
   }
 ]
