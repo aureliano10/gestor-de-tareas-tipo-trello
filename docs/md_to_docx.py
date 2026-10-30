@@ -14,17 +14,23 @@ from docx import Document
 from docx.shared import Pt
 
 
-BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+INLINE_RE = re.compile(r"(\*\*.+?\*\*|`[^`]+`)")
 NUMBERED_RE = re.compile(r"^\d+\.\s+")
 
 
 def add_inline(paragraph, text: str) -> None:
     position = 0
-    for match in BOLD_RE.finditer(text):
+    for match in INLINE_RE.finditer(text):
         if match.start() > position:
             paragraph.add_run(text[position : match.start()])
-        run = paragraph.add_run(match.group(1))
-        run.bold = True
+        token = match.group(0)
+        if token.startswith("**"):
+            run = paragraph.add_run(token[2:-2])
+            run.bold = True
+        else:
+            run = paragraph.add_run(token[1:-1])
+            run.font.name = "Consolas"
+            run.font.size = Pt(9.5)
         position = match.end()
     if position < len(text):
         paragraph.add_run(text[position:])
