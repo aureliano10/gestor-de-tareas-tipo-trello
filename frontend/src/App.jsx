@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   createSubtask,
   createTask,
   deleteAttachment,
   deleteSubtask,
   deleteTask,
+  getTags,
   getTasks,
   moveTask,
   restoreTask,
@@ -19,22 +20,57 @@ import TaskForm from "./components/TaskForm.jsx";
 import Toast from "./components/Toast.jsx";
 
 const UNDO_WINDOW_MS = 7000;
+const SEARCH_DEBOUNCE_MS = 300;
+
+const PRIORITY_FILTERS = ["Baja", "Media", "Alta"];
+const SORT_OPTIONS = [
+  { value: "position", label: "Posición" },
+  { value: "priority", label: "Prioridad" },
+  { value: "due", label: "Vencimiento" },
+  { value: "created", label: "Creación" },
+];
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [overdueOnly, setOverdueOnly] = useState(false);
+
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
+  const [tagFilter, setTagFilter] = useState("");
+  const [sort, setSort] = useState("position");
+  const [tagOptions, setTagOptions] = useState([]);
+
   const [detailId, setDetailId] = useState(null);
   const [pendingDelete, setPendingDelete] = useState(null);
   const [undone, setUndone] = useState(null);
 
-  const load = useCallback(async (overdue, { silent = false } = {}) => {
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const params = useMemo(
+    () => ({
+      overdue: overdueOnly,
+      q: debouncedQuery,
+      priority: priorityFilter,
+      tag: tagFilter,
+      sort,
+    }),
+    [overdueOnly, debouncedQuery, priorityFilter, tagFilter, sort],
+  );
+
+  const load = useCallback(async (filters, { silent = false } = {}) => {
     if (!silent) {
       setLoading(true);
     }
     try {
-      setTasks(await getTasks(overdue));
+      const [list, names] = await Promise.all([getTasks(filters), getTags()]);
+      setTasks(list);
+      setTagOptions(names);
       setError("");
     } catch (err) {
       setError(err.message);
@@ -46,12 +82,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    load(overdueOnly);
-  }, [load, overdueOnly]);
+    load(params);
+  }, [load, params]);
 
   const refresh = useCallback(
-    () => load(overdueOnly, { silent: true }),
-    [load, overdueOnly],
+    () => load(params, { silent: true }),
+    [load, params],
   );
 
   /**
@@ -142,15 +178,75 @@ export default function App() {
       <TaskForm onCreate={handleCreate} onUpload={handleUpload} />
 
       <div className="toolbar">
-        <label className="toggle">
+        <div className="toolbar__filters">
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={overdueOnly}
+              data-testid="overdue-filter"
+              onChange={(event) => setOverdueOnly(event.target.checked)}
+            />
+            <span>Ver solo tareas vencidas</span>
+          </label>
+
           <input
-            type="checkbox"
-            checked={overdueOnly}
-            data-testid="overdue-filter"
-            onChange={(event) => setOverdueOnly(event.target.checked)}
+            type="search"
+            className="filter__input"
+            placeholder="Buscar por título o descripción"
+            aria-label="Buscar tareas"
+            value={query}
+            data-testid="task-search"
+            onChange={(event) => setQuery(event.target.value)}
           />
-          <span>Ver solo tareas vencidas</span>
-        </label>
+
+          <label className="filter">
+            <span>Prioridad</span>
+            <select
+              value={priorityFilter}
+              data-testid="priority-filter"
+              onChange={(event) => setPriorityFilter(event.target.value)}
+            >
+              <option value="">Todas</option>
+              {PRIORITY_FILTERS.map((priority) => (
+                <option key={priority} value={priority}>
+                  {priority}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="filter">
+            <span>Etiqueta</span>
+            <select
+              value={tagFilter}
+              data-testid="tag-filter"
+              onChange={(event) => setTagFilter(event.target.value)}
+            >
+              <option value="">Todas</option>
+              {tagOptions.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="filter">
+            <span>Orden</span>
+            <select
+              value={sort}
+              data-testid="sort-select"
+              onChange={(event) => setSort(event.target.value)}
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
         <span className="toolbar__summary" data-testid="task-count">
           {tasks.length} {tasks.length === 1 ? "tarea" : "tareas"}
         </span>

@@ -12,6 +12,7 @@ export default function TaskCard({ task, onOpen, onDelete }) {
   }
 
   const hasChecklist = task.subtask_total > 0;
+  const hasTags = task.tags && task.tags.length > 0;
 
   return (
     <article
@@ -30,6 +31,12 @@ export default function TaskCard({ task, onOpen, onDelete }) {
       {task.description && <p className="task__description">{task.description}</p>}
 
       <div className="task__badges">
+        <span
+          className={`badge badge--priority badge--priority-${task.priority.toLowerCase()}`}
+          data-testid="priority-badge"
+        >
+          {task.priority}
+        </span>
         <DueBadge task={task} />
         {hasChecklist && (
           <span
@@ -48,6 +55,25 @@ export default function TaskCard({ task, onOpen, onDelete }) {
           </span>
         )}
       </div>
+
+      {(task.assignee || hasTags) && (
+        <div className="task__meta">
+          {task.assignee && (
+            <span className="task__assignee" data-testid="task-assignee">
+              {task.assignee}
+            </span>
+          )}
+          {hasTags && (
+            <div className="task__tags">
+              {task.tags.map((tag) => (
+                <span key={tag} className="tag-chip" data-testid="task-tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="task__footer">
         <span className="task__id">#{task.id}</span>

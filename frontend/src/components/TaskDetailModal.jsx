@@ -10,12 +10,32 @@ import {
 import DueBadge from "./DueBadge.jsx";
 import TaskFields, { validateTaskInput } from "./TaskFields.jsx";
 
+const MAX_LINKS = 5;
+const MAX_LINK_URL_LENGTH = 500;
+const MAX_LINK_LABEL_LENGTH = 60;
+
 function draftFrom(task) {
   return {
     title: task.title,
     description: task.description,
     dueDate: task.due_date ?? "",
+    priority: task.priority,
+    assignee: task.assignee,
   };
+}
+
+function linkPayload(links) {
+  return links.map((link) => ({ url: link.url, label: link.label }));
+}
+
+function formatDateTime(iso) {
+  return new Date(iso).toLocaleString("es-AR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export default function TaskDetailModal({
@@ -36,6 +56,10 @@ export default function TaskDetailModal({
 
   const [subtaskTitle, setSubtaskTitle] = useState("");
   const [subtaskError, setSubtaskError] = useState("");
+
+  const [linkUrl, setLinkUrl] = useState("");
+  const [linkLabel, setLinkLabel] = useState("");
+  const [linkError, setLinkError] = useState("");
 
   const [attachError, setAttachError] = useState("");
 
@@ -116,6 +140,71 @@ export default function TaskDetailModal({
     }
   }
 
+  async function applyLinks(nextLinks) {
+    setLinkError("");
+    try {
+      await onUpdate(task.id, {
+        title: task.title,
+        description: task.description,
+        dueDate: task.due_date ?? "",
+        priority: task.priority,
+        assignee: task.assignee,
+        tags: task.tags,
+        links: nextLinks,
+      });
+      return true;
+    } catch (err) {
+      setLinkError(err.message);
+      return false;
+    }
+  }
+
+  async function handleAddLink(event) {
+    event.preventDefault();
+    const url = linkUrl.trim();
+    const label = linkLabel.trim();
+
+    if (!url) {
+      setLinkError("Ingresá una URL para el enlace.");
+      return;
+    }
+    if (!/^https?:\/\//i.test(url)) {
+      setLinkError("El enlace debe comenzar con http:// o https://.");
+      return;
+    }
+    if (url.length > MAX_LINK_URL_LENGTH) {
+      setLinkError(`El enlace no puede superar los ${MAX_LINK_URL_LENGTH} caracteres.`);
+      return;
+    }
+    if (label.length > MAX_LINK_LABEL_LENGTH) {
+      setLinkError(
+        `El nombre del enlace no puede superar los ${MAX_LINK_LABEL_LENGTH} caracteres.`,
+      );
+      return;
+    }
+    if (task.links.some((link) => link.url.toLowerCase() === url.toLowerCase())) {
+      setLinkError("El enlace ya está agregado a la tarea.");
+      return;
+    }
+    if (task.links.length >= MAX_LINKS) {
+      setLinkError(`Una tarea no puede tener más de ${MAX_LINKS} enlaces.`);
+      return;
+    }
+
+    const saved = await applyLinks([
+      ...linkPayload(task.links),
+      { url, label },
+    ]);
+    if (saved) {
+      setLinkUrl("");
+      setLinkLabel("");
+    }
+  }
+
+  async function handleRemoveLink(link) {
+    await applyLinks(linkPayload(task.links.filter((item) => item.id !== link.id)));
+  }
+
   async function handleFileChange(event) {
     const file = event.target.files?.[0];
     event.target.value = "";
@@ -159,6 +248,7 @@ export default function TaskDetailModal({
       ? Math.round((task.subtask_done / task.subtask_total) * 100)
       : 0;
   const uploadDisabled = task.attachments.length >= MAX_ATTACHMENTS;
+  const prioritySlug = task.priority.toLowerCase();
 
   return (
     <div className="overlay" onClick={onClose} role="presentation">
@@ -241,7 +331,18 @@ export default function TaskDetailModal({
               </form>
             ) : (
               <div className="detail">
-                <DueBadge task={task} />
+                <div className="detail__badges">
+                  <span
+                    className={`badge badge--priority badge--priority-${prioritySlug}`}
+                    data-testid="detail-priority"
+                  >
+                    Prioridad: {task.priority}
+                  </span>
+                  <DueBadge task={task} />
+                </div>
+                <p className="detail__assignee" data-testid="detail-assignee">
+                  Responsable: {task.assignee || "sin asignar"}
+                </p>
                 <p className="detail__description">
                   {task.description || "Sin descripción."}
                 </p>
@@ -334,6 +435,82 @@ export default function TaskDetailModal({
           <section className="panel">
             <div className="panel__header">
               <h3>
+                Enlaces
+                <span className="panel__counter">
+                  {task.links.length}/{MAX_LINKS}
+                </span>
+              </h3>
+            </div>
+
+            {task.links.length === 0 ? (
+              <p className="muted">Sin enlaces.</p>
+            ) : (
+              <ul className="links">
+                {task.links.map((link) => (
+                  <li key={link.id} className="links__item">
+                    <a
+                      className="links__name"
+                      href={link.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {link.label || link.url}
+                    </a>
+                    {link.label && <span className="links__url">{link.url}</span>}
+                    <button
+                      type="button"
+                      className="icon-button"
+                      onClick={() => handleRemoveLink(link)}
+                      aria-label={`Quitar enlace ${link.url}`}
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <form className="inline-form" onSubmit={handleAddLink} noValidate>
+              <input
+                type="text"
+                value={linkUrl}
+                maxLength={MAX_LINK_URL_LENGTH}
+                placeholder="https://ejemplo.com"
+                data-testid="link-url-input"
+                onChange={(event) => {
+                  setLinkUrl(event.target.value);
+                  setLinkError("");
+                }}
+              />
+              <input
+                type="text"
+                value={linkLabel}
+                maxLength={MAX_LINK_LABEL_LENGTH}
+                placeholder="Nombre"
+                data-testid="link-label-input"
+                onChange={(event) => {
+                  setLinkLabel(event.target.value);
+                  setLinkError("");
+                }}
+              />
+              <button type="submit" className="btn" data-testid="link-add">
+                Agregar
+              </button>
+            </form>
+
+            {linkError && (
+              <p className="field-error" role="alert" data-testid="link-error">
+                {linkError}
+              </p>
+            )}
+            <p className="hint">
+              Hasta {MAX_LINKS} enlaces. Deben empezar con http:// o https://.
+            </p>
+          </section>
+
+          <section className="panel">
+            <div className="panel__header">
+              <h3>
                 Archivos adjuntos
                 <span className="panel__counter">
                   {task.attachments.length}/{MAX_ATTACHMENTS}
@@ -394,6 +571,33 @@ export default function TaskDetailModal({
               Hasta {MAX_ATTACHMENTS} archivos de 5 MB. Formatos:{" "}
               {ALLOWED_EXTENSIONS.join(", ")}.
             </p>
+          </section>
+
+          <section className="panel">
+            <div className="panel__header">
+              <h3>Historial</h3>
+            </div>
+
+            {task.activity.length === 0 ? (
+              <p className="muted">Sin actividad registrada.</p>
+            ) : (
+              <ol className="timeline" data-testid="activity-timeline">
+                {task.activity.map((entry) => (
+                  <li key={entry.id} className="timeline__item">
+                    <span className="timeline__dot" aria-hidden="true" />
+                    <div className="timeline__content">
+                      <p className="timeline__action">{entry.action}</p>
+                      {entry.detail && (
+                        <p className="timeline__detail">{entry.detail}</p>
+                      )}
+                      <time className="timeline__date" dateTime={entry.created_at}>
+                        {formatDateTime(entry.created_at)}
+                      </time>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            )}
           </section>
         </div>
 
