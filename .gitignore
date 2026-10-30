@@ -1,0 +1,21 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Base de datos local
+*.db
+backend/tasks.db
+
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# Entorno y logs
+.env
+*.log
+
+# Sistema
+.DS_Store
