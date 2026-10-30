@@ -60,8 +60,9 @@ export default function App() {
    */
   const mutate = useCallback(
     async (action) => {
-      await action();
+      const result = await action();
       await refresh();
+      return result;
     },
     [refresh],
   );
@@ -138,7 +139,7 @@ export default function App() {
         <p>Organizá tus actividades, seguí su avance y sumá lo que necesites.</p>
       </header>
 
-      <TaskForm onCreate={handleCreate} />
+      <TaskForm onCreate={handleCreate} onUpload={handleUpload} />
 
       <div className="toolbar">
         <label className="toggle">

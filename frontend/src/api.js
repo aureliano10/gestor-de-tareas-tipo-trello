@@ -34,29 +34,87 @@ async function readError(response) {
   return `Error ${response.status}`;
 }
 
-export function getTasks(overdue = false) {
-  return request(`/tasks${overdue ? "?overdue=true" : ""}`);
+export function getTasks(options = {}) {
+  const { overdue = false, q, priority, tag, sort } =
+    typeof options === "boolean" ? { overdue: options } : options;
+
+  const params = new URLSearchParams();
+  if (overdue) {
+    params.set("overdue", "true");
+  }
+  if (q) {
+    params.set("q", q);
+  }
+  if (priority) {
+    params.set("priority", priority);
+  }
+  if (tag) {
+    params.set("tag", tag);
+  }
+  if (sort) {
+    params.set("sort", sort);
+  }
+
+  const query = params.toString();
+  return request(`/tasks${query ? `?${query}` : ""}`);
 }
 
-export function createTask({ title, description, dueDate }) {
+export function getTags() {
+  return request("/tags");
+}
+
+export function createTask({
+  title,
+  description,
+  dueDate,
+  priority,
+  assignee,
+  subtasks,
+  tags,
+  links,
+}) {
   return request("/tasks", {
     method: "POST",
     body: JSON.stringify({
       title,
       description,
       due_date: dueDate || null,
+      priority: priority ?? "Media",
+      assignee,
+      subtasks,
+      tags,
+      links,
     }),
   });
 }
 
-export function updateTask(id, { title, description, dueDate }) {
+export function updateTask(id, values) {
+  const body = {};
+  if ("title" in values) {
+    body.title = values.title;
+  }
+  if ("description" in values) {
+    body.description = values.description;
+  }
+  if ("dueDate" in values) {
+    body.due_date = values.dueDate || null;
+  }
+  if ("priority" in values) {
+    body.priority = values.priority;
+  }
+  if ("assignee" in values) {
+    body.assignee = values.assignee;
+  }
+  if ("tags" in values) {
+    body.tags = values.tags;
+  }
+  if ("links" in values) {
+    body.links = values.links;
+  }
+
   return request(`/tasks/${id}`, {
     method: "PUT",
-    body: JSON.stringify({
-      title,
-      description,
-      due_date: dueDate || null,
-    }),
+    body: JSON.stringify(body),
   });
 }
 
