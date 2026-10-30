@@ -30,9 +30,9 @@ Las ocho funcionalidades están disponibles tanto en la interfaz visual como en 
 
 El sistema se organiza en dos aplicaciones independientes que se comunican mediante HTTP:
 
-- **Backend (API REST):** implementado con Python y FastAPI. Expone los endpoints de tareas, subtareas y adjuntos, aplica las validaciones y las reglas de negocio, y persiste la información en SQLite y los adjuntos en disco.
+- **Backend (API REST):** implementado con Python y FastAPI. Expone los endpoints de tareas, subtareas, adjuntos y etiquetas, aplica las validaciones y las reglas de negocio, y persiste la información en SQLite y los adjuntos en disco.
 - **Frontend (interfaz):** implementado con React. Consume la API mediante `fetch` y presenta el tablero Kanban con las columnas Pendiente, En curso y Terminada.
-- **Base de datos:** SQLite, con las tablas `tasks`, `subtasks` y `attachments`.
+- **Base de datos:** SQLite, con las tablas `tasks`, `subtasks`, `attachments`, `tags`, `task_tags`, `links` y `activity`.
 
 Dentro del backend, el código se organiza en capas con una única dirección de dependencia:
 
@@ -51,6 +51,7 @@ La comunicación entre frontend y backend se resuelve mediante un proxy de desar
 | `backend/app/routers/tasks.py` | Endpoints de tareas y traducción de errores de dominio a respuestas HTTP. |
 | `backend/app/routers/subtasks.py` | Endpoints de subtareas. |
 | `backend/app/routers/attachments.py` | Subida, descarga y eliminación de archivos adjuntos. |
+| `backend/app/routers/tags.py` | Endpoint de consulta de las etiquetas existentes. |
 | `backend/storage/` | Carpeta donde se guardan los archivos adjuntos (se crea al iniciar la aplicación). |
 | `frontend/src/App.jsx` | Estado principal de la aplicación, carga de datos y coordinación de las operaciones. |
 | `frontend/src/api.js` | Funciones de comunicación con la API. |
@@ -70,6 +71,8 @@ La separación en capas busca que el código sea comprensible y que cada parte p
 | `title` | TEXT | Obligatorio; `length(trim(title))` entre 1 y 100. |
 | `description` | TEXT | Obligatorio (por defecto `''`); longitud máxima 500. |
 | `status` | TEXT | Obligatorio (por defecto `Pendiente`); solo valores `Pendiente`, `En curso` o `Terminada`. |
+| `priority` | TEXT | Obligatorio (por defecto `Media`); solo valores `Baja`, `Media` o `Alta`. |
+| `assignee` | TEXT | Obligatorio (por defecto `''`); longitud máxima 60. |
 | `due_date` | TEXT | Opcional; si está presente debe tener el formato `AAAA-MM-DD`. |
 | `position` | INTEGER | Obligatorio (por defecto 0); no puede ser negativo. |
 | `deleted_at` | TEXT | Opcional; si tiene valor, la tarea está eliminada (borrado lógico). |
@@ -97,6 +100,46 @@ La separación en capas busca que el código sea comprensible y que cada parte p
 | `size_bytes` | INTEGER | Obligatorio; mayor que 0 y menor o igual a 5 MB. |
 | `created_at` | TEXT | Obligatorio; fecha y hora de subida en formato ISO 8601. |
 
+### Tabla `tags`
+
+| Columna | Tipo | Restricción |
+|---------|------|-------------|
+| `id` | INTEGER | Clave primaria autoincremental. |
+| `name` | TEXT | Obligatorio y único; `length(trim(name))` entre 1 y 30. |
+
+Catálogo de etiquetas reutilizables: una etiqueta se guarda una sola vez y se comparte entre todas las tareas que la usan. La búsqueda de coincidencias no distingue mayúsculas de minúsculas (`COLLATE NOCASE`).
+
+### Tabla `task_tags`
+
+| Columna | Tipo | Restricción |
+|---------|------|-------------|
+| `task_id` | INTEGER | Obligatorio; referencia a `tasks(id)` con `ON DELETE CASCADE`. |
+| `tag_id` | INTEGER | Obligatorio; referencia a `tags(id)` con `ON DELETE CASCADE`. |
+
+La clave primaria es compuesta (`task_id`, `tag_id`), de modo que una etiqueta no puede repetirse dentro de la misma tarea.
+
+### Tabla `links`
+
+| Columna | Tipo | Restricción |
+|---------|------|-------------|
+| `id` | INTEGER | Clave primaria autoincremental. |
+| `task_id` | INTEGER | Obligatorio; referencia a `tasks(id)` con `ON DELETE CASCADE`. |
+| `url` | TEXT | Obligatorio; comienza con `http://` o `https://` y mide entre 8 y 500 caracteres. |
+| `label` | TEXT | Obligatorio (por defecto `''`); nombre opcional del enlace, de hasta 60 caracteres. |
+| `created_at` | TEXT | Obligatorio; fecha y hora de creación en formato ISO 8601. |
+
+### Tabla `activity`
+
+| Columna | Tipo | Restricción |
+|---------|------|-------------|
+| `id` | INTEGER | Clave primaria autoincremental. |
+| `task_id` | INTEGER | Obligatorio; referencia a `tasks(id)` con `ON DELETE CASCADE`. |
+| `action` | TEXT | Obligatorio; descripción breve de la acción registrada. |
+| `detail` | TEXT | Obligatorio (por defecto `''`); detalle adicional de la acción. |
+| `created_at` | TEXT | Obligatorio; fecha y hora del registro en formato ISO 8601. |
+
+Las cuatro tablas se relacionan con `tasks` mediante claves foráneas con `ON DELETE CASCADE`, de modo que al eliminar una tarea también se eliminan físicamente sus filas de `task_tags`, `links` y `activity`. La migración es aditiva: las columnas `priority` y `assignee` se agregan a `tasks` con `ALTER TABLE ... ADD COLUMN` y las tablas nuevas se crean con `CREATE TABLE IF NOT EXISTS`, sin recrear las tablas existentes ni romper las claves foráneas de `subtasks` y `attachments`.
+
 El estado `overdue` (vencido) no se almacena: se calcula cada vez que se devuelve una tarea, comparando su fecha límite con la fecha actual y verificando que no esté terminada. El estado de una tarea se guarda únicamente en la columna `status`, de modo que una tarea no puede tener dos estados a la vez.
 
 ## Validaciones y reglas de negocio
@@ -114,12 +157,18 @@ El estado `overdue` (vencido) no se almacena: se calcula cada vez que se devuelv
 | Fecha límite al crear | No puede ser anterior a la fecha actual. | Frontend y backend |
 | Fecha límite al editar | Sí se admite una fecha anterior a la actual. | Backend |
 | Vencimiento | Calculado como fecha límite pasada y tarea no terminada. | Backend |
+| Prioridad | Debe ser `Baja`, `Media` o `Alta`; por defecto `Media`. | Backend y base de datos |
+| Responsable | Opcional; longitud máxima de 60 caracteres. | Backend y base de datos |
+| Etiquetas | Hasta 5 por tarea, de hasta 30 caracteres cada una; se deduplican sin distinguir mayúsculas y se reutilizan entre tareas. | Frontend y backend |
+| Enlaces | Hasta 5 por tarea; la URL debe comenzar con `http://` o `https://` y tener hasta 500 caracteres, el nombre es opcional y de hasta 60, y la URL no puede repetirse dentro de la tarea. | Frontend y backend |
+| Subtareas en el alta | Hasta 20 subtareas cargadas junto con la tarea. | Backend |
+| Historial de actividad | Se registra automáticamente y con fecha cada acción; se devuelven las últimas 20, de la más reciente a la más antigua. | Backend |
 | Adjuntos: extensión | Solo `.pdf`, `.png`, `.jpg`, `.jpeg`, `.txt` y `.docx`. | Frontend y backend |
 | Adjuntos: tamaño | Máximo 5 MB por archivo. | Frontend y backend |
 | Adjuntos: cantidad | Máximo 3 archivos por tarea. | Backend |
 | Reordenamiento | Las posiciones dentro de una columna se mantienen entre 0 y n-1, sin huecos. | Backend |
 | Eliminación | Borrado lógico con `deleted_at`, que permite restaurar la tarea. | Backend |
-| Integridad en la base | Restricciones `CHECK` de título, descripción, estado, fecha, posición y tamaño, y claves foráneas con borrado en cascada. | Base de datos |
+| Integridad en la base | Restricciones `CHECK` de título, descripción, estado, prioridad, responsable, fecha, posición, etiquetas, enlaces y tamaño, unicidad de nombres de etiqueta, clave primaria compuesta en `task_tags` y claves foráneas con borrado en cascada. | Base de datos |
 | Identificador al operar | La tarea, subtarea o adjunto debe existir y no estar eliminado. | Backend |
 
 Las validaciones se aplican en el backend como fuente de verdad, ya que la API puede ser consumida sin pasar por la interfaz. El frontend además valida antes de enviar para dar una respuesta inmediata al usuario. La base de datos mantiene restricciones `CHECK` como última barrera de integridad.
@@ -132,6 +181,14 @@ Las validaciones se aplican en el backend como fuente de verdad, ya que la API p
 | Descripción de más de 500 caracteres | HTTP 422 con mensaje de validación. |
 | Fecha límite anterior a la actual al crear | HTTP 422 con mensaje de validación. |
 | Estado no permitido o posición negativa | HTTP 422 con mensaje de validación. |
+| Prioridad no permitida | HTTP 422 con el detalle `La prioridad debe ser Baja, Media o Alta`. |
+| Responsable de más de 60 caracteres | HTTP 422 con mensaje de validación. |
+| Etiqueta vacía o de más de 30 caracteres | HTTP 422 con mensaje de validación. |
+| Más de 5 etiquetas por tarea | HTTP 409 con el detalle del límite de 5 etiquetas. |
+| Enlace sin `http://` o `https://`, de más de 500 caracteres o con nombre de más de 60 | HTTP 422 con mensaje de validación. |
+| Enlace repetido dentro de la misma tarea | HTTP 409 con el detalle `El enlace ya está agregado a la tarea`. |
+| Más de 5 enlaces por tarea | HTTP 409 con el detalle del límite de 5 enlaces. |
+| Más de 20 subtareas en el alta de una tarea | HTTP 409 con el detalle del límite de 20 subtareas. |
 | Intento de finalizar una tarea con subtareas pendientes | HTTP 409 con el detalle `No se puede finalizar: la tarea tiene N subtareas pendientes`. |
 | Adjunto con extensión no permitida | HTTP 415 con el detalle de los formatos aceptados. |
 | Adjunto vacío | HTTP 422 con el detalle `El archivo está vacío`. |
@@ -146,9 +203,9 @@ Las validaciones se aplican en el backend como fuente de verdad, ya que la API p
 | Método | Ruta | Descripción | Códigos de respuesta |
 |--------|------|-------------|----------------------|
 | GET | `/api/health` | Verifica que el servicio esté activo. | 200 |
-| GET | `/api/tasks` | Devuelve la lista de tareas; acepta `?overdue=true` para ver solo las vencidas. | 200 |
-| POST | `/api/tasks` | Crea una tarea nueva con estado `Pendiente`. | 201, 422 |
-| PUT | `/api/tasks/{id}` | Edita título, descripción y fecha límite de una tarea. | 200, 404, 422 |
+| GET | `/api/tasks` | Devuelve la lista de tareas; acepta los filtros `overdue`, `q`, `priority` y `tag`, y el orden `sort` (`position`, `priority`, `due` o `created`). | 200 |
+| POST | `/api/tasks` | Crea una tarea nueva con prioridad, responsable, subtareas, etiquetas y enlaces; nace en estado `Pendiente`. | 201, 409, 422 |
+| PUT | `/api/tasks/{id}` | Edita título, descripción, fecha límite, prioridad, responsable, etiquetas y enlaces de una tarea. | 200, 404, 409, 422 |
 | PATCH | `/api/tasks/{id}/move` | Mueve la tarea de estado o la reordena (`status` y `position`). | 200, 404, 409, 422 |
 | POST | `/api/tasks/{id}/restore` | Restaura una tarea eliminada. | 200, 404 |
 | DELETE | `/api/tasks/{id}` | Elimina una tarea (borrado lógico). | 204, 404 |
@@ -158,19 +215,20 @@ Las validaciones se aplican en el backend como fuente de verdad, ya que la API p
 | POST | `/api/tasks/{id}/attachments` | Sube un archivo adjunto (multipart). | 201, 404, 409, 413, 415, 422 |
 | GET | `/api/tasks/{id}/attachments/{attachment_id}` | Descarga un archivo adjunto. | 200, 404 |
 | DELETE | `/api/tasks/{id}/attachments/{attachment_id}` | Elimina un archivo adjunto. | 204, 404 |
+| GET | `/api/tags` | Devuelve los nombres de las etiquetas existentes, ordenados alfabéticamente, para sugerirlas al asignarlas. | 200 |
 
-Las respuestas de tareas incluyen el detalle completo: subtareas, adjuntos, posición, fecha límite, estado `overdue` y conteo de subtareas realizadas. Las operaciones sobre subtareas y adjuntos devuelven la tarea actualizada, de modo que el frontend puede refrescar la tarjeta con una sola respuesta.
+Las respuestas de tareas incluyen el detalle completo: subtareas, adjuntos, prioridad, responsable, etiquetas, enlaces, historial de actividad, posición, fecha límite, estado `overdue` y conteo de subtareas realizadas. El historial devuelve las últimas 20 acciones, de la más reciente a la más antigua. Las operaciones sobre subtareas y adjuntos devuelven la tarea actualizada, de modo que el frontend puede refrescar la tarjeta con una sola respuesta.
 
 ## Interfaz de usuario
 
 El frontend presenta:
 
-- Un formulario para crear tareas, con título obligatorio, descripción y fecha límite opcionales, validación y contador de caracteres.
+- Un formulario para crear tareas, con título obligatorio, descripción y fecha límite opcionales, y la posibilidad de cargar subtareas, etiquetas, enlaces, prioridad y responsable, con validación y contador de caracteres.
 - Un tablero con tres columnas: Pendiente, En curso y Terminada, con el contador de tareas de cada una.
 - Tarjetas arrastrables entre columnas que además permiten reordenarlas dentro de la misma columna.
-- Un filtro para ver solo las tareas vencidas.
-- Una insignia de vencimiento y un indicador de avance del checklist en cada tarjeta.
-- Un detalle de tarea que permite editarla, gestionar el checklist, adjuntar y descargar archivos.
+- Un filtro para ver solo las tareas vencidas, una búsqueda por texto, filtros por prioridad y etiqueta, y la opción de ordenar el listado.
+- Una insignia de vencimiento, la prioridad y el responsable visibles, las etiquetas y el indicador de avance del checklist en cada tarjeta.
+- Un detalle de tarea que permite editarla (título, descripción, fecha límite, prioridad, responsable, etiquetas y enlaces), gestionar el checklist, adjuntar y descargar archivos, y consultar su historial de actividad.
 - Un diálogo de confirmación antes de eliminar y un aviso con la opción de deshacer la eliminación.
 - Mensajes de error visibles ante fallas de validación o de conexión.
 
@@ -209,7 +267,7 @@ Durante el desarrollo se verificó el funcionamiento del sistema completo:
 
 ## Conclusión de la etapa
 
-Se completó el desarrollo del sistema con las ocho funcionalidades planificadas, las validaciones definidas en la Etapa 1 y el manejo de situaciones correctas e incorrectas, incluyendo los errores de regla de negocio (409), de formato (415) y de tamaño (413). El código quedó organizado en capas, con el modelo de datos documentado y el sistema ejecutable de punta a punta, lo que habilita las actividades de verificación y pruebas de las etapas siguientes.
+Se completó el desarrollo del sistema con las funcionalidades planificadas, las validaciones definidas en la Etapa 1 y el manejo de situaciones correctas e incorrectas, incluyendo los errores de regla de negocio (409), de formato (415) y de tamaño (413). El código quedó organizado en capas, con el modelo de datos documentado y el sistema ejecutable de punta a punta, lo que habilita las actividades de verificación y pruebas de las etapas siguientes.
 
 ## Próxima etapa
 

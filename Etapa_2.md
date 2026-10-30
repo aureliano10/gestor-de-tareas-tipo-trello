@@ -23,18 +23,25 @@ Definir el alcance funcional del sistema, las tecnologías que se van a utilizar
 | 6 | Fecha límite y vencimiento | RF10 | Asignar una fecha límite y señalar visualmente las tareas vencidas. |
 | 7 | Archivos adjuntos | RF11, RF12, RF13 | Incorporar archivos a una tarea, descargarlos y eliminarlos. |
 | 8 | Eliminar tarea con deshacer | RF14, RF15 | Quitar una actividad del tablero con confirmación previa y recuperarla durante unos segundos. |
+| 9 | Prioridad | RF16 | Asignar a cada tarea una prioridad `Baja`, `Media` o `Alta`, con `Media` por defecto. |
+| 10 | Responsable | RF17 | Indicar el responsable de la tarea como texto libre de hasta 60 caracteres. |
+| 11 | Etiquetas | RF18 | Asociar hasta 5 etiquetas por tarea, reutilizables entre tareas y sugeridas a partir de las existentes. |
+| 12 | Enlaces | RF19 | Asociar hasta 5 enlaces por tarea, con una URL `http://` o `https://` y un nombre opcional. |
+| 13 | Historial de actividad | RF20 | Registrar automáticamente y con fecha las acciones de cada tarea y devolver las últimas 20. |
+| 14 | Búsqueda, filtros y orden | RF21, RF22 | Buscar tareas por texto, filtrarlas por prioridad, etiqueta y vencimiento, y ordenar el listado. |
+| 15 | Alta enriquecida | RF23 | Cargar en el alta de una tarea sus subtareas, etiquetas, enlaces, prioridad y responsable. |
 
-Las funcionalidades 2, 5 y 6 se relacionan entre sí: el estado de la tarea, el bloqueo de la finalización y la fecha límite forman parte del seguimiento del avance de cada actividad.
+Las funcionalidades 2, 5 y 6 se relacionan entre sí: el estado de la tarea, el bloqueo de la finalización y la fecha límite forman parte del seguimiento del avance de cada actividad. Las funcionalidades 9 a 12 (prioridad, responsable, etiquetas y enlaces) amplían los datos de cada tarea, la 13 conserva su historial, la 14 facilita encontrar y ordenar las tareas del tablero y la 15 permite cargar todos esos datos al crear la tarea.
 
 ## Alcance del sistema
 
-El sistema es un tablero de tareas tipo Kanban con tres columnas fijas (`Pendiente`, `En curso` y `Terminada`). Cada tarea se representa con una tarjeta que puede arrastrarse entre columnas y abrirse para ver su detalle. En el detalle se editan los datos de la tarea, se gestiona su checklist de subtareas y se administran sus archivos adjuntos. Las funcionalidades de fecha límite, vencimiento, eliminación con confirmación y deshacer complementan el uso diario del tablero.
+El sistema es un tablero de tareas tipo Kanban con tres columnas fijas (`Pendiente`, `En curso` y `Terminada`). Cada tarea se representa con una tarjeta que puede arrastrarse entre columnas y abrirse para ver su detalle. En el detalle se editan los datos de la tarea, se gestiona su checklist de subtareas y se administran sus archivos adjuntos. Sobre los datos de cada tarea se registran además su prioridad, su responsable, sus etiquetas y sus enlaces, y se conserva un historial automático de las acciones realizadas. Las funcionalidades de fecha límite, vencimiento, búsqueda, filtros, orden, eliminación con confirmación y deshacer complementan el uso diario del tablero.
 
-Quedan fuera del alcance de esta entrega la autenticación de usuarios, la colaboración en tiempo real y el historial de cambios, que se evalúan como posibles extensiones futuras.
+Quedan fuera del alcance de esta entrega la autenticación de usuarios y la colaboración en tiempo real, que se evalúan como posibles extensiones futuras.
 
 ## Requisitos funcionales
 
-Los requisitos RF1 a RF15 fueron definidos en la Etapa 1. En esta etapa se agrupan por funcionalidad tal como muestra la tabla anterior, de modo que cada requisito queda asociado a una funcionalidad concreta y puede trazarse hasta los casos de prueba de la Etapa 5.
+Los requisitos RF1 a RF15 fueron definidos en la Etapa 1. En esta etapa se agrupan por funcionalidad tal como muestra la tabla anterior, de modo que cada requisito queda asociado a una funcionalidad concreta y puede trazarse hasta los casos de prueba de la Etapa 5. Sobre esa base se incorporaron los requisitos RF16 a RF23, que cubren la prioridad, el responsable, las etiquetas, los enlaces, el historial de actividad, la búsqueda y los filtros, el orden del listado y el alta enriquecida.
 
 ## Integrantes responsables de cada tarea
 
@@ -61,6 +68,41 @@ frontend/src/       Interfaz del tablero y comunicación con la API
 docs/               Documentación de cada etapa y evidencias
 scripts/etapa_6/    Scripts de ejecución de los casos de prueba
 ```
+
+## Modelo de datos
+
+El diseño prevé las tablas `tasks`, `subtasks` y `attachments` de la primera entrega y las cuatro tablas nuevas que dan soporte a las funcionalidades 9 a 13: `tags`, `task_tags`, `links` y `activity`. Todas las tablas relacionadas con las tareas usan `ON DELETE CASCADE` hacia `tasks`.
+
+La tabla `tasks` incorpora dos columnas nuevas:
+
+| Columna | Tipo | Restricción |
+|---------|------|-------------|
+| `priority` | TEXT | Obligatorio (por defecto `Media`); solo valores `Baja`, `Media` o `Alta`. |
+| `assignee` | TEXT | Obligatorio (por defecto `''`); longitud máxima 60. |
+
+Tablas nuevas:
+
+| Tabla | Columnas | Relación |
+|-------|----------|----------|
+| `tags` | `id`, `name` (único y de hasta 30 caracteres) | Catálogo de etiquetas reutilizables entre tareas. |
+| `task_tags` | `task_id`, `tag_id` (clave primaria compuesta) | Une tareas y etiquetas; ambas referencias con `ON DELETE CASCADE`. |
+| `links` | `id`, `task_id`, `url`, `label`, `created_at` | Enlaces de una tarea; `task_id` referencia a `tasks(id)`. |
+| `activity` | `id`, `task_id`, `action`, `detail`, `created_at` | Historial de acciones de una tarea; `task_id` referencia a `tasks(id)`. |
+
+La migración del esquema es aditiva: las columnas nuevas de `tasks` se agregan con `ALTER TABLE ... ADD COLUMN`, sin recrear la tabla ni romper las claves foráneas existentes.
+
+## Endpoints de la API
+
+Además de los endpoints de tareas, subtareas y adjuntos ya previstos, el diseño incorpora `GET /api/tags` para sugerir las etiquetas existentes y amplía los campos y los parámetros de consulta de las tareas:
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/tasks` | Lista las tareas; acepta los filtros `q`, `priority`, `tag` y `overdue`, y el orden `sort` (`position`, `priority`, `due` o `created`). |
+| POST | `/api/tasks` | Crea una tarea con `title`, `description`, `due_date`, `priority`, `assignee`, `subtasks` (hasta 20), `tags` (hasta 5) y `links` (hasta 5). |
+| PUT | `/api/tasks/{id}` | Edita `title`, `description`, `due_date`, `priority`, `assignee`, `tags` y `links`. |
+| GET | `/api/tags` | Devuelve los nombres de las etiquetas existentes para sugerirlas al asignarlas. |
+
+La respuesta de cada tarea incluye también `priority`, `assignee`, `tags`, `links` y `activity`, con las últimas 20 acciones del historial ordenadas de la más reciente a la más antigua.
 
 ## Repositorio utilizado
 
@@ -94,7 +136,7 @@ Como el alcance incluye funcionalidades con varias capas (checklist, adjuntos y 
 
 ## Conclusión de la etapa
 
-Se definieron las ocho funcionalidades que dará el sistema, los responsables de cada parte, las tecnologías, la estrategia y los tipos de pruebas que se aplicarán. Con este marco quedan preparadas las condiciones para desarrollar el sistema en la Etapa 3 y verificar que cumpla con los requisitos acordados.
+Se definieron las funcionalidades que dará el sistema, los responsables de cada parte, las tecnologías, la estrategia y los tipos de pruebas que se aplicarán. Con este marco quedan preparadas las condiciones para desarrollar el sistema en la Etapa 3 y verificar que cumpla con los requisitos acordados.
 
 ## Próxima etapa
 

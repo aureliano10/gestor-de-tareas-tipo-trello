@@ -8,11 +8,15 @@ Sistema gestor de tareas tipo Kanban desarrollado para la materia **Verificació
 
 - Crear tareas con título obligatorio (máximo 100 caracteres), descripción y fecha límite opcionales.
 - Mover tareas entre las columnas **Pendiente**, **En curso** y **Terminada**, y reordenarlas dentro de cada columna.
-- Editar el título, la descripción y la fecha límite de una tarea.
+- Editar el título, la descripción, la fecha límite, la prioridad, el responsable, las etiquetas y los enlaces de una tarea.
+- Asignar una prioridad (**Baja**, **Media** o **Alta**, por defecto **Media**) y un responsable (texto libre de hasta 60 caracteres).
+- Asociar hasta 5 etiquetas por tarea (de hasta 30 caracteres, reutilizables y sugeridas desde las existentes) y hasta 5 enlaces (con URL `http://` o `https://` y un nombre opcional).
 - Agregar un checklist de subtareas, marcarlas como completadas y eliminarlas.
 - Impedir que una tarea se finalice mientras tenga subtareas pendientes.
 - Señalar las tareas vencidas a partir de su fecha límite.
 - Adjuntar archivos a una tarea y descargarlos o eliminarlos.
+- Buscar tareas por texto y filtrarlas por prioridad, etiqueta y vencimiento, con orden por posición, prioridad, fecha límite o creación.
+- Registrar un historial de actividad por tarea y cargar subtareas, etiquetas, enlaces, prioridad y responsable al crear la tarea.
 - Eliminar tareas con confirmación previa y deshacer la eliminación durante unos segundos.
 
 ## Tecnologías
@@ -34,6 +38,7 @@ backend/
       tasks.py             # Endpoints REST de tareas
       subtasks.py          # Endpoints REST de subtareas
       attachments.py       # Endpoints REST de archivos adjuntos
+      tags.py              # Endpoint de consulta de etiquetas
   requirements.txt
   storage/                 # Archivos adjuntos (se crea al iniciar la aplicación)
 frontend/
@@ -103,12 +108,13 @@ npm run build
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/health` | Estado del servicio |
-| GET | `/api/tasks` | Lista las tareas; acepta `?overdue=true` para ver solo las vencidas |
-| POST | `/api/tasks` | Crea una tarea |
-| PUT | `/api/tasks/{id}` | Edita el título, la descripción y la fecha límite |
+| GET | `/api/tasks` | Lista las tareas; acepta los filtros `?q=`, `?priority=`, `?tag=` y `?overdue=true`, y el orden `?sort=` (`position`, `priority`, `due` o `created`) |
+| POST | `/api/tasks` | Crea una tarea (admite `priority`, `assignee`, `subtasks`, `tags` y `links`) |
+| PUT | `/api/tasks/{id}` | Edita el título, la descripción, la fecha límite, la prioridad, el responsable, las etiquetas y los enlaces |
 | PATCH | `/api/tasks/{id}/move` | Mueve la tarea de estado o la reordena (`status` y `position`) |
 | DELETE | `/api/tasks/{id}` | Elimina una tarea |
 | POST | `/api/tasks/{id}/restore` | Restaura una tarea eliminada |
+| GET | `/api/tags` | Devuelve los nombres de las etiquetas existentes |
 | POST | `/api/tasks/{id}/subtasks` | Agrega una subtarea a la tarea |
 | PATCH | `/api/subtasks/{id}` | Actualiza el título o el estado de una subtarea |
 | DELETE | `/api/subtasks/{id}` | Elimina una subtarea |
@@ -127,6 +133,12 @@ npm run build
 - Al crear una tarea, la fecha límite no puede ser anterior a hoy; al editarla sí se admite una fecha pasada.
 - Una tarea está vencida cuando su fecha límite ya pasó y la tarea no está terminada. Es un estado calculado, no almacenado.
 - Cada tarea admite hasta 3 archivos adjuntos, de 5 MB como máximo, con extensión `.pdf`, `.png`, `.jpg`, `.jpeg`, `.txt` o `.docx`.
+- La prioridad debe ser `Baja`, `Media` o `Alta`; si no se indica, se usa `Media`.
+- El responsable es opcional y admite hasta 60 caracteres.
+- Cada tarea admite hasta 5 etiquetas, de hasta 30 caracteres cada una, que se reutilizan entre tareas sin distinguir mayúsculas; las existentes se ofrecen como sugerencias en `GET /api/tags`.
+- Cada tarea admite hasta 5 enlaces; la URL debe comenzar con `http://` o `https://`, no superar los 500 caracteres y no repetirse dentro de la tarea; el nombre es opcional y admite hasta 60 caracteres.
+- El alta de una tarea admite hasta 20 subtareas cargadas junto con los demás datos.
+- Cada tarea conserva un historial de actividad automático; la API devuelve las últimas 20 acciones, de la más reciente a la más antigua.
 - El título se recorta antes de guardarse y las posiciones dentro de una columna se mantienen sin huecos.
 - Las operaciones sobre tareas, subtareas o adjuntos inexistentes responden con HTTP 404.
-- Los datos inválidos responden con HTTP 422.
+- Los datos inválidos responden con HTTP 422; superar los límites de etiquetas, enlaces o subtareas responde con HTTP 409.
