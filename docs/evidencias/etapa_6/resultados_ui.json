@@ -1,0 +1,37 @@
+[
+  {
+    "id": "CP-UI-01",
+    "passed": true,
+    "resultado_obtenido": "Tarjeta visible=True; input=''; contador=1; persistió=True",
+    "observaciones": "Alta desde el formulario y verificación tras recargar.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-02",
+    "passed": true,
+    "resultado_obtenido": "error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0",
+    "observaciones": "Intento de alta con espacios; se esperaba validación en cliente.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-03",
+    "passed": true,
+    "resultado_obtenido": "En curso=True; Pendiente=0; PATCH=1; persistió=True",
+    "observaciones": "Arrastre de Pendiente a En curso y persistencia.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-04",
+    "passed": true,
+    "resultado_obtenido": "PATCH=0; tarjeta en Pendiente=1",
+    "observaciones": "Arrastre dentro de la misma columna; no debía generar cambios.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-05",
+    "passed": true,
+    "resultado_obtenido": "tarjetas restantes=0; DELETE=1; tras recarga=0",
+    "observaciones": "Eliminación desde la tarjeta y verificación tras recargar.",
+    "detalle": null
+  }
+]

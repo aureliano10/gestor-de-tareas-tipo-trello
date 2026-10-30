@@ -1,0 +1,356 @@
+{
+  "total": 25,
+  "aprobados": 25,
+  "fallidos": 0,
+  "por_grupo": {
+    "api": {
+      "total": 15,
+      "aprobados": 15
+    },
+    "ui": {
+      "total": 5,
+      "aprobados": 5
+    },
+    "caja_blanca": {
+      "total": 5,
+      "aprobados": 5
+    }
+  },
+  "casos": [
+    {
+      "id": "CP-CRE-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; respuesta={\"id\": 33, \"title\": \"Preparar informe\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.397774Z\"}; listado=[{\"id\": 33, \"title\": \"Preparar informe\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.397774Z\"}]",
+      "observaciones": "Alta con título 'Preparar informe'; se esperaba HTTP 201 y persistencia.",
+      "detalle": {
+        "id": 33,
+        "title": "Preparar informe",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:35.397774Z"
+      }
+    },
+    {
+      "id": "CP-CRE-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; respuesta={\"id\": 34, \"title\": \"A\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.503768Z\"}; listado=[{\"id\": 34, \"title\": \"A\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.503768Z\"}]",
+      "observaciones": "Alta con título 'A'; se esperaba HTTP 201 y persistencia.",
+      "detalle": {
+        "id": 34,
+        "title": "A",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:35.503768Z"
+      }
+    },
+    {
+      "id": "CP-CRE-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; respuesta={\"id\": 35, \"title\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.600768Z\"}; listado=[{\"id\": 35, \"title\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.600768Z\"}]",
+      "observaciones": "Alta con título 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'; se esperaba HTTP 201 y persistencia.",
+      "detalle": {
+        "id": 35,
+        "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:35.600768Z"
+      }
+    },
+    {
+      "id": "CP-CRE-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"value_error\", \"loc\": [\"body\", \"title\"], \"msg\": \"Value error, El título no puede superar los 100 caracteres\", \"input\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"ctx\": {\"error\": {}}}]}; listado=[]",
+      "observaciones": "Alta rechazada con título 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'; se esperaba HTTP 422 y ningún registro.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Value error, El título no puede superar los 100 caracteres",
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-05",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"value_error\", \"loc\": [\"body\", \"title\"], \"msg\": \"Value error, El título no puede estar vacío ni contener solo espacios\", \"input\": \"\", \"ctx\": {\"error\": {}}}]}; listado=[]",
+      "observaciones": "Alta rechazada con título ''; se esperaba HTTP 422 y ningún registro.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Value error, El título no puede estar vacío ni contener solo espacios",
+            "input": "",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-06",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"value_error\", \"loc\": [\"body\", \"title\"], \"msg\": \"Value error, El título no puede estar vacío ni contener solo espacios\", \"input\": \"     \", \"ctx\": {\"error\": {}}}]}; listado=[]",
+      "observaciones": "Alta rechazada con título '     '; se esperaba HTTP 422 y ningún registro.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Value error, El título no puede estar vacío ni contener solo espacios",
+            "input": "     ",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-07",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; respuesta={\"id\": 36, \"title\": \"Revisar pruebas\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.927885Z\"}; listado=[{\"id\": 36, \"title\": \"Revisar pruebas\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:35.927885Z\"}]",
+      "observaciones": "Alta con espacios externos; se esperaba recorte y persistencia.",
+      "detalle": {
+        "id": 36,
+        "title": "Revisar pruebas",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:35.927885Z"
+      }
+    },
+    {
+      "id": "CP-CRE-08",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; respuesta={\"id\": 37, \"title\": \"Revisión de señalización #1 – ñandú\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.019551Z\"}; listado=[{\"id\": 37, \"title\": \"Revisión de señalización #1 – ñandú\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.019551Z\"}]",
+      "observaciones": "Alta con acentos, eñe y símbolos; se esperaba conservación exacta.",
+      "detalle": {
+        "id": 37,
+        "title": "Revisión de señalización #1 – ñandú",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:36.019551Z"
+      }
+    },
+    {
+      "id": "CP-MOV-01",
+      "passed": true,
+      "resultado_obtenido": "En curso: HTTP 200 (En curso); Terminada: HTTP 200 (Terminada); persistido=Terminada",
+      "observaciones": "Transición completa Pendiente → En curso → Terminada.",
+      "detalle": {
+        "en_curso": {
+          "id": 38,
+          "title": "Mover a Terminada",
+          "status": "En curso",
+          "created_at": "2026-10-30T03:05:36.120191Z"
+        },
+        "terminada": {
+          "id": 38,
+          "title": "Mover a Terminada",
+          "status": "Terminada",
+          "created_at": "2026-10-30T03:05:36.120191Z"
+        },
+        "persistido": {
+          "id": 38,
+          "title": "Mover a Terminada",
+          "status": "Terminada",
+          "created_at": "2026-10-30T03:05:36.120191Z"
+        }
+      }
+    },
+    {
+      "id": "CP-MOV-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"literal_error\", \"loc\": [\"body\", \"status\"], \"msg\": \"Input should be 'Pendiente', 'En curso' or 'Terminada'\", \"input\": \"Finalizada\", \"ctx\": {\"expected\": \"'Pendiente', 'En curso' or 'Terminada'\"}}]}; persistido=Pendiente",
+      "observaciones": "Intento de estado no permitido; se esperaba rechazo y sin cambios.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "literal_error",
+            "loc": [
+              "body",
+              "status"
+            ],
+            "msg": "Input should be 'Pendiente', 'En curso' or 'Terminada'",
+            "input": "Finalizada",
+            "ctx": {
+              "expected": "'Pendiente', 'En curso' or 'Terminada'"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-MOV-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404; respuesta={\"detail\": \"Tarea no encontrada\"}",
+      "observaciones": "Actualización sobre id inexistente; se esperaba HTTP 404.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-MOV-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; respuesta={\"detail\": [{\"type\": \"int_parsing\", \"loc\": [\"path\", \"task_id\"], \"msg\": \"Input should be a valid integer, unable to parse string as an integer\", \"input\": \"abc\"}]}",
+      "observaciones": "Identificador no numérico; se esperaba HTTP 422.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "path",
+              "task_id"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "abc"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ELI-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 204; cuerpo=''; listado=[]",
+      "observaciones": "Eliminación de una tarea existente; se esperaba HTTP 204.",
+      "detalle": {
+        "id": 40,
+        "listado": []
+      }
+    },
+    {
+      "id": "CP-ELI-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404; respuesta={\"detail\": \"Tarea no encontrada\"}",
+      "observaciones": "Eliminación sobre id inexistente; se esperaba HTTP 404.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-LIS-01",
+      "passed": true,
+      "resultado_obtenido": "vacío HTTP 200 []; con datos HTTP 200 [{\"id\": 41, \"title\": \"Primera tarea\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.699928Z\"}, {\"id\": 42, \"title\": \"Segunda tarea\", \"status\": \"Pendiente\", \"created_at\": \"2026-10-30T03:05:36.740958Z\"}]",
+      "observaciones": "Listado vacío y con dos tareas en orden de creación.",
+      "detalle": {
+        "vacio": [],
+        "tareas": [
+          {
+            "id": 41,
+            "title": "Primera tarea",
+            "status": "Pendiente",
+            "created_at": "2026-10-30T03:05:36.699928Z"
+          },
+          {
+            "id": 42,
+            "title": "Segunda tarea",
+            "status": "Pendiente",
+            "created_at": "2026-10-30T03:05:36.740958Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-UI-01",
+      "passed": true,
+      "resultado_obtenido": "Tarjeta visible=True; input=''; contador=1; persistió=True",
+      "observaciones": "Alta desde el formulario y verificación tras recargar.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-02",
+      "passed": true,
+      "resultado_obtenido": "error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0",
+      "observaciones": "Intento de alta con espacios; se esperaba validación en cliente.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-03",
+      "passed": true,
+      "resultado_obtenido": "En curso=True; Pendiente=0; PATCH=1; persistió=True",
+      "observaciones": "Arrastre de Pendiente a En curso y persistencia.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-04",
+      "passed": true,
+      "resultado_obtenido": "PATCH=0; tarjeta en Pendiente=1",
+      "observaciones": "Arrastre dentro de la misma columna; no debía generar cambios.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-05",
+      "passed": true,
+      "resultado_obtenido": "tarjetas restantes=0; DELETE=1; tras recarga=0",
+      "observaciones": "Eliminación desde la tarjeta y verificación tras recargar.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-01",
+      "passed": true,
+      "resultado_obtenido": "válido='Tarea válida'; vacío='Value error, El título no puede estar vacío ni contener solo espacios'; espacios='Value error, El título no puede estar vacío ni contener solo espacios'; 101='Value error, El título no puede superar los 100 caracteres'; None='Input should be a valid string'",
+      "observaciones": "Ramas del validador de título. La rama value is None no es alcanzable a través de Pydantic porque el tipo str se valida antes; se documenta como cobertura no alcanzable.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-02",
+      "passed": true,
+      "resultado_obtenido": "creada=Pendiente; actualizada=En curso; inexistente=None",
+      "observaciones": "Ramas de update_task_status: fila actualizada y fila inexistente.",
+      "detalle": {
+        "created": {
+          "id": 1,
+          "title": "Actualizar estado",
+          "status": "Pendiente",
+          "created_at": "2026-10-30T03:05:44.875853+00:00"
+        },
+        "updated": {
+          "id": 1,
+          "title": "Actualizar estado",
+          "status": "En curso",
+          "created_at": "2026-10-30T03:05:44.875853+00:00"
+        }
+      }
+    },
+    {
+      "id": "CP-CB-03",
+      "passed": true,
+      "resultado_obtenido": "primera=True; segunda=False; inexistente=False; restantes=0",
+      "observaciones": "Ramas de delete_task: fila eliminada y fila inexistente.",
+      "detalle": {
+        "created": {
+          "id": 2,
+          "title": "Eliminar tarea",
+          "status": "Pendiente",
+          "created_at": "2026-10-30T03:05:44.887104+00:00"
+        },
+        "remaining": []
+      }
+    },
+    {
+      "id": "CP-CB-04",
+      "passed": true,
+      "resultado_obtenido": "vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len101=101; largo='El título no puede superar los 100 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input=''; POST totales=2",
+      "observaciones": "Ramas de handleSubmit ejecutadas sobre la interfaz real.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-05",
+      "passed": true,
+      "resultado_obtenido": "PATCH misma columna=0; PATCH movimiento=1; PATCH tras ids inválidos=1; En curso=1; Terminada=0",
+      "observaciones": "Ramas de handleDrop: misma columna, movimiento válido e ids inválidos.",
+      "detalle": null
+    }
+  ]
+}

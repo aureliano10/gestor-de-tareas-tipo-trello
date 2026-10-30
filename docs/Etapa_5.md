@@ -13,7 +13,7 @@ Diseñar los casos de prueba a partir de los requisitos y de las funcionalidades
 
 ## Alcance y criterios
 
-Esta etapa es de **diseño**. Los casos se documentan con todos sus campos, pero la ejecución y el registro de resultados corresponden a la Etapa 6. Por ese motivo, los campos `Resultado obtenido` y `Estado` se completan como pendientes.
+Esta etapa es de **diseño**. Los casos se documentan con todos sus campos. La ejecución y el registro de resultados se realizaron en la Etapa 6; por ese motivo, los campos `Resultado obtenido` y `Estado` reflejan los resultados de esa ejecución.
 
 Se aplican las siguientes técnicas:
 
@@ -107,37 +107,37 @@ La rama `value is None` de `validate_title` es una defensa interna: Pydantic rec
 | `handleSubmit` | 100% de las decisiones de validación | No aplica | El límite de 100 también se controla con `maxLength` en el formulario. |
 | `handleDrop` | 100% de la decisión compuesta | 100% de las condiciones simples | Se cubren identificador inválido, misma columna y columna distinta. |
 
-La cobertura real se medirá durante la ejecución de las pruebas y las pruebas unitarias de la Etapa 8.
+La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas unitarias formales se incorporarán en la Etapa 8.
 
 ## Matriz de trazabilidad y resumen de casos
 
 | ID | Funcionalidad | Técnica principal | Requisito o restricción | Capa | Estado |
 |----|---------------|-------------------|-------------------------|------|--------|
-| CP-CRE-01 | Crear tarea | Clase de equivalencia válida | RF1, RF2 | API | Pendiente |
-| CP-CRE-02 | Crear tarea | Valor límite inferior | RF1, RF2 | API | Pendiente |
-| CP-CRE-03 | Crear tarea | Valor límite superior | RF1, RF2 | API | Pendiente |
-| CP-CRE-04 | Crear tarea | Valor límite superior inválido | RF1 | API | Pendiente |
-| CP-CRE-05 | Crear tarea | Clase de equivalencia inválida | RF1 | API | Pendiente |
-| CP-CRE-06 | Crear tarea | Clase inválida y valor límite | RF1 | API | Pendiente |
-| CP-CRE-07 | Crear tarea | Clase válida con normalización | RF1, RF2 | API | Pendiente |
-| CP-CRE-08 | Crear tarea | Clase válida con caracteres especiales | RF1, RF2 | API | Pendiente |
-| CP-MOV-01 | Mover tarea | Clase de equivalencia válida | RF3 | API | Pendiente |
-| CP-MOV-02 | Mover tarea | Clase de equivalencia inválida | RF3 | API | Pendiente |
-| CP-MOV-03 | Mover tarea | Identificador inexistente | RF3 | API | Pendiente |
-| CP-MOV-04 | Mover tarea | Identificador no numérico | RF3 | API | Pendiente |
-| CP-ELI-01 | Eliminar tarea | Clase de equivalencia válida | RF4 | API | Pendiente |
-| CP-ELI-02 | Eliminar tarea | Identificador inexistente | RF4 | API | Pendiente |
-| CP-LIS-01 | Listar tareas | Flujo normal y persistencia | RF1, RF2 | API | Pendiente |
-| CP-UI-01 | Crear tarea | Flujo válido de interfaz | RF1, RF2 | Interfaz | Pendiente |
-| CP-UI-02 | Crear tarea | Clase inválida y valor límite | RF1 | Interfaz | Pendiente |
-| CP-UI-03 | Mover tarea | Flujo de interfaz | RF3 | Interfaz | Pendiente |
-| CP-UI-04 | Mover tarea | Condición de borde de interfaz | RF3 | Interfaz | Pendiente |
-| CP-UI-05 | Eliminar tarea | Flujo de interfaz | RF4 | Interfaz | Pendiente |
-| CP-CB-01 | Validar título | Caja blanca - decisiones | RF1 y restricciones del título | Backend (unidad) | Pendiente |
-| CP-CB-02 | Actualizar estado | Caja blanca - decisiones | RF3 | Backend (unidad) | Pendiente |
-| CP-CB-03 | Eliminar tarea | Caja blanca - decisiones | RF4 | Backend (unidad) | Pendiente |
-| CP-CB-04 | Validar formulario | Caja blanca - decisiones | RF1 | Frontend (unidad) | Pendiente |
-| CP-CB-05 | Mover por arrastre | Caja blanca - condiciones | RF3 | Frontend (unidad) | Pendiente |
+| CP-CRE-01 | Crear tarea | Clase de equivalencia válida | RF1, RF2 | API | Aprobado |
+| CP-CRE-02 | Crear tarea | Valor límite inferior | RF1, RF2 | API | Aprobado |
+| CP-CRE-03 | Crear tarea | Valor límite superior | RF1, RF2 | API | Aprobado |
+| CP-CRE-04 | Crear tarea | Valor límite superior inválido | RF1 | API | Aprobado |
+| CP-CRE-05 | Crear tarea | Clase de equivalencia inválida | RF1 | API | Aprobado |
+| CP-CRE-06 | Crear tarea | Clase inválida y valor límite | RF1 | API | Aprobado |
+| CP-CRE-07 | Crear tarea | Clase válida con normalización | RF1, RF2 | API | Aprobado |
+| CP-CRE-08 | Crear tarea | Clase válida con caracteres especiales | RF1, RF2 | API | Aprobado |
+| CP-MOV-01 | Mover tarea | Clase de equivalencia válida | RF3 | API | Aprobado |
+| CP-MOV-02 | Mover tarea | Clase de equivalencia inválida | RF3 | API | Aprobado |
+| CP-MOV-03 | Mover tarea | Identificador inexistente | RF3 | API | Aprobado |
+| CP-MOV-04 | Mover tarea | Identificador no numérico | RF3 | API | Aprobado |
+| CP-ELI-01 | Eliminar tarea | Clase de equivalencia válida | RF4 | API | Aprobado |
+| CP-ELI-02 | Eliminar tarea | Identificador inexistente | RF4 | API | Aprobado |
+| CP-LIS-01 | Listar tareas | Flujo normal y persistencia | RF1, RF2 | API | Aprobado |
+| CP-UI-01 | Crear tarea | Flujo válido de interfaz | RF1, RF2 | Interfaz | Aprobado |
+| CP-UI-02 | Crear tarea | Clase inválida y valor límite | RF1 | Interfaz | Aprobado |
+| CP-UI-03 | Mover tarea | Flujo de interfaz | RF3 | Interfaz | Aprobado |
+| CP-UI-04 | Mover tarea | Condición de borde de interfaz | RF3 | Interfaz | Aprobado |
+| CP-UI-05 | Eliminar tarea | Flujo de interfaz | RF4 | Interfaz | Aprobado |
+| CP-CB-01 | Validar título | Caja blanca - decisiones | RF1 y restricciones del título | Backend (unidad) | Aprobado |
+| CP-CB-02 | Actualizar estado | Caja blanca - decisiones | RF3 | Backend (unidad) | Aprobado |
+| CP-CB-03 | Eliminar tarea | Caja blanca - decisiones | RF4 | Backend (unidad) | Aprobado |
+| CP-CB-04 | Validar formulario | Caja blanca - decisiones | RF1 | Frontend (unidad) | Aprobado |
+| CP-CB-05 | Mover por arrastre | Caja blanca - condiciones | RF3 | Frontend (unidad) | Aprobado |
 
 ## Trazabilidad por requisito
 
@@ -162,8 +162,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "Preparar informe"}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y luego consultar GET /api/tasks.
 - Resultado esperado: HTTP 201, con id, title "Preparar informe", status "Pendiente" y created_at válido; la tarea aparece en el listado.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 201; respuesta={"id": 33, "title": "Preparar informe", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.397774Z"}; listado=[{"id": 33, "title": "Preparar informe", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.397774Z"}].
+- Estado: Aprobado.
 - Observaciones: Clase de equivalencia válida típica. Se verifica además RF2.
 - Técnica: Caja negra - clase de equivalencia válida.
 - Requisito: RF1, RF2.
@@ -178,8 +178,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "A"}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y registrar la respuesta.
 - Resultado esperado: HTTP 201, title "A" y status "Pendiente".
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 201; respuesta={"id": 34, "title": "A", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.503768Z"}; listado=[{"id": 34, "title": "A", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.503768Z"}].
+- Estado: Aprobado.
 - Observaciones: Valor límite inferior válido.
 - Técnica: Caja negra - análisis de valores límite.
 - Requisito: RF1, RF2.
@@ -194,8 +194,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "a" repetido 100 veces}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y medir la longitud del título devuelto.
 - Resultado esperado: HTTP 201; el título devuelto tiene exactamente 100 caracteres y estado "Pendiente".
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 201; respuesta={"id": 35, "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.600768Z"}; listado=[{"id": 35, "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.600768Z"}].
+- Estado: Aprobado.
 - Observaciones: Valor límite superior válido. El valor 99 queda cubierto por la clase válida.
 - Técnica: Caja negra - análisis de valores límite.
 - Requisito: RF1, RF2.
@@ -210,8 +210,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "a" repetido 101 veces}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
 - Resultado esperado: HTTP 422 con el mensaje "El título no puede superar los 100 caracteres"; la tarea no se crea.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede superar los 100 caracteres", "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ctx": {"error": {}}}]}; listado=[].
+- Estado: Aprobado.
 - Observaciones: Valor límite superior inválido.
 - Técnica: Caja negra - análisis de valores límite.
 - Requisito: RF1.
@@ -226,8 +226,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": ""}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
 - Resultado esperado: HTTP 422 con mensaje de título vacío; la tarea no se crea.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede estar vacío ni contener solo espacios", "input": "", "ctx": {"error": {}}}]}; listado=[].
+- Estado: Aprobado.
 - Observaciones: Clase de equivalencia inválida.
 - Técnica: Caja negra - clase de equivalencia inválida.
 - Requisito: RF1.
@@ -242,8 +242,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "     "}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
 - Resultado esperado: HTTP 422 con el mensaje "El título no puede estar vacío ni contener solo espacios"; la tarea no se crea.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede estar vacío ni contener solo espacios", "input": "     ", "ctx": {"error": {}}}]}; listado=[].
+- Estado: Aprobado.
 - Observaciones: Clase inválida y valor límite inferior después de quitar espacios.
 - Técnica: Caja negra - clase de equivalencia inválida y valor límite.
 - Requisito: RF1.
@@ -258,8 +258,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "  Revisar pruebas  "}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y observar el título almacenado.
 - Resultado esperado: HTTP 201 con title "Revisar pruebas", sin espacios extremos, y status "Pendiente".
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 201; respuesta={"id": 36, "title": "Revisar pruebas", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.927885Z"}; listado=[{"id": 36, "title": "Revisar pruebas", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.927885Z"}].
+- Estado: Aprobado.
 - Observaciones: Clase válida con normalización.
 - Técnica: Caja negra - clase de equivalencia válida.
 - Requisito: RF1, RF2.
@@ -274,8 +274,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: {"title": "Revisión de señalización #1 – ñandú"}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y comparar el título devuelto.
 - Resultado esperado: HTTP 201 con el título idéntico al enviado y status "Pendiente".
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 201; respuesta={"id": 37, "title": "Revisión de señalización #1 – ñandú", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.019551Z"}; listado=[{"id": 37, "title": "Revisión de señalización #1 – ñandú", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.019551Z"}].
+- Estado: Aprobado.
 - Observaciones: Clase válida con caracteres especiales.
 - Técnica: Caja negra - clase de equivalencia válida.
 - Requisito: RF1, RF2.
@@ -290,8 +290,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: PATCH {"status": "En curso"} y luego PATCH {"status": "Terminada"} sobre la misma tarea.
 - Procedimiento: Crear la tarea, actualizar a "En curso", consultar, actualizar a "Terminada" y volver a consultar.
 - Resultado esperado: HTTP 200 en cada actualización; los estados quedan persistidos y el id y el título no cambian.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: En curso: HTTP 200 (En curso); Terminada: HTTP 200 (Terminada); persistido=Terminada.
+- Estado: Aprobado.
 - Observaciones: Cubre los tres valores válidos del estado y las transiciones permitidas.
 - Técnica: Caja negra - clase de equivalencia válida.
 - Requisito: RF3.
@@ -306,8 +306,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: PATCH {"status": "Finalizada"}.
 - Procedimiento: Enviar PATCH /api/tasks/{id}/status y luego consultar la tarea.
 - Resultado esperado: HTTP 422; la tarea conserva su estado anterior.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 422; respuesta={"detail": [{"type": "literal_error", "loc": ["body", "status"], "msg": "Input should be 'Pendiente', 'En curso' or 'Terminada'", "input": "Finalizada", "ctx": {"expected": "'Pendiente', 'En curso' or 'Terminada'"}}]}; persistido=Pendiente.
+- Estado: Aprobado.
 - Observaciones: Clase de equivalencia inválida. También aplica a "pendiente" en minúsculas y a cadena vacía.
 - Técnica: Caja negra - clase de equivalencia inválida.
 - Requisito: RF3.
@@ -322,8 +322,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: PATCH /api/tasks/99999/status con {"status": "En curso"}.
 - Procedimiento: Enviar la petición y registrar el código y el detalle de la respuesta.
 - Resultado esperado: HTTP 404 con detalle "Tarea no encontrada".
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 404; respuesta={"detail": "Tarea no encontrada"}.
+- Estado: Aprobado.
 - Observaciones: Identificador válido como número pero inexistente.
 - Técnica: Caja negra - clase de equivalencia inválida.
 - Requisito: RF3.
@@ -338,8 +338,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: PATCH /api/tasks/abc/status con {"status": "En curso"}.
 - Procedimiento: Enviar la petición y registrar el código de respuesta.
 - Resultado esperado: HTTP 422 por error de validación del parámetro de ruta; no se modifica ninguna tarea.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 422; respuesta={"detail": [{"type": "int_parsing", "loc": ["path", "task_id"], "msg": "Input should be a valid integer, unable to parse string as an integer", "input": "abc"}]}.
+- Estado: Aprobado.
 - Observaciones: Clase inválida de identificador.
 - Técnica: Caja negra - clase de equivalencia inválida.
 - Requisito: RF3.
@@ -354,8 +354,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: DELETE /api/tasks/{id}.
 - Procedimiento: Enviar la petición y luego consultar GET /api/tasks.
 - Resultado esperado: HTTP 204 sin cuerpo; la tarea ya no aparece en el listado.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 204; cuerpo=''; listado=[].
+- Estado: Aprobado.
 - Observaciones: Clase de equivalencia válida.
 - Técnica: Caja negra - clase de equivalencia válida.
 - Requisito: RF4.
@@ -370,8 +370,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: DELETE /api/tasks/99999.
 - Procedimiento: Enviar la petición y registrar el código y el detalle de la respuesta.
 - Resultado esperado: HTTP 404 con detalle "Tarea no encontrada".
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: HTTP 404; respuesta={"detail": "Tarea no encontrada"}.
+- Estado: Aprobado.
 - Observaciones: Clase de equivalencia inválida.
 - Técnica: Caja negra - clase de equivalencia inválida.
 - Requisito: RF4.
@@ -386,8 +386,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: Sin datos inicialmente; luego dos tareas válidas.
 - Procedimiento: Consultar GET /api/tasks, crear dos tareas y volver a consultar.
 - Resultado esperado: El primer listado es un arreglo vacío; el segundo contiene las dos tareas ordenadas por id y con todos sus campos.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: vacío HTTP 200 []; con datos HTTP 200 [{"id": 41, "title": "Primera tarea", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.699928Z"}, {"id": 42, "title": "Segunda tarea", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.740958Z"}].
+- Estado: Aprobado.
 - Observaciones: Verifica el flujo normal de consulta y la persistencia en SQLite.
 - Técnica: Caja negra - flujo normal.
 - Requisito: RF1, RF2 y persistencia.
@@ -402,8 +402,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: Título "Tarea desde interfaz".
 - Procedimiento: Escribir el título, presionar "Agregar" y recargar la página.
 - Resultado esperado: La tarjeta aparece en "Pendiente", el contador aumenta, el campo se limpia y la tarea persiste tras recargar.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: Tarjeta visible=True; input=''; contador=1; persistió=True.
+- Estado: Aprobado.
 - Observaciones: Flujo válido de interfaz.
 - Técnica: Caja negra - flujo normal de interfaz.
 - Requisito: RF1, RF2.
@@ -418,8 +418,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: "     " en el campo de título.
 - Procedimiento: Presionar "Agregar" y observar la interfaz y la pestaña de red.
 - Resultado esperado: Se muestra el mensaje "El título es obligatorio y no puede contener solo espacios."; no se crea la tarjeta y no se envía la petición a la API.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0.
+- Estado: Aprobado.
 - Observaciones: Clase inválida y valor límite inferior en la interfaz.
 - Técnica: Caja negra - clase de equivalencia inválida y valor límite.
 - Requisito: RF1.
@@ -434,8 +434,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: Arrastrar la tarjeta de "Pendiente" a "En curso".
 - Procedimiento: Arrastrar y soltar la tarjeta, observar la interfaz y recargar la página.
 - Resultado esperado: La tarjeta se muestra en "En curso", los contadores se actualizan, la API responde 200 y el cambio persiste tras recargar.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: En curso=True; Pendiente=0; PATCH=1; persistió=True.
+- Estado: Aprobado.
 - Observaciones: Flujo de interfaz con integración a la API.
 - Técnica: Caja negra - flujo normal de interfaz.
 - Requisito: RF3.
@@ -450,8 +450,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: Arrastrar y soltar la tarjeta dentro de la misma columna.
 - Procedimiento: Realizar el arrastre dentro de la columna y observar la pestaña de red.
 - Resultado esperado: La tarjeta permanece en su lugar, no se envía PATCH y no se muestra ningún error.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: PATCH=0; tarjeta en Pendiente=1.
+- Estado: Aprobado.
 - Observaciones: Condición de borde de la interfaz.
 - Técnica: Caja negra - condición de borde.
 - Requisito: RF3.
@@ -466,8 +466,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: Presionar el botón "Eliminar" de la tarjeta.
 - Procedimiento: Presionar "Eliminar", observar la interfaz y recargar la página.
 - Resultado esperado: La tarjeta desaparece, el contador disminuye, la API responde 204 y la tarea no reaparece tras recargar.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: tarjetas restantes=0; DELETE=1; tras recarga=0.
+- Estado: Aprobado.
 - Observaciones: Flujo de interfaz con integración a la API.
 - Técnica: Caja negra - flujo normal de interfaz.
 - Requisito: RF4.
@@ -479,11 +479,11 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Funcionalidad: Validar título en el backend
 - Objetivo: Cubrir las decisiones de `validate_title` para un título válido, uno vacío después de quitar espacios y uno que supera los 100 caracteres.
 - Precondiciones: Función de validación importable desde `backend/app/schemas.py`.
-- Datos de entrada: "Tarea válida"; "     "; "a" repetido 101 veces.
+- Datos de entrada: "  Tarea válida  "; ""; "     "; "a" repetido 101 veces.
 - Procedimiento: Invocar el validador con cada dato y registrar el valor devuelto o la excepción.
-- Resultado esperado: El primer dato devuelve "Tarea válida"; el segundo lanza un error de título vacío; el tercero lanza un error de longitud.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado esperado: El primer dato devuelve "Tarea válida"; la cadena vacía y la de solo espacios lanzan error de título vacío; la de 101 caracteres lanza error de longitud.
+- Resultado obtenido: válido='Tarea válida'; vacío='Value error, El título no puede estar vacío ni contener solo espacios'; espacios='Value error, El título no puede estar vacío ni contener solo espacios'; 101='Value error, El título no puede superar los 100 caracteres'; None='Input should be a valid string'.
+- Estado: Aprobado.
 - Observaciones: Cubre las decisiones D2 y D3. La rama `value is None` es defensiva y no es alcanzable desde la API.
 - Técnica: Caja blanca - cobertura de decisiones.
 - Requisito: RF1 y restricciones del título.
@@ -498,8 +498,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: (id_existente, "En curso") y (99999, "En curso").
 - Procedimiento: Invocar `repository.update_task_status` con cada par de datos.
 - Resultado esperado: El primer caso devuelve un diccionario con el estado actualizado; el segundo devuelve `None`.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: creada=Pendiente; actualizada=En curso; inexistente=None.
+- Estado: Aprobado.
 - Observaciones: Cubre `cursor.rowcount == 0` en sus dos resultados.
 - Técnica: Caja blanca - cobertura de decisiones.
 - Requisito: RF3.
@@ -514,8 +514,8 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - Datos de entrada: id_existente y 99999.
 - Procedimiento: Invocar `repository.delete_task` con cada identificador.
 - Resultado esperado: El primer caso devuelve `True`; el segundo devuelve `False`; la tarea existente ya no está en la base.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
+- Resultado obtenido: primera=True; segunda=False; inexistente=False; restantes=0.
+- Estado: Aprobado.
 - Observaciones: Cubre `cursor.rowcount > 0` en sus dos resultados.
 - Técnica: Caja blanca - cobertura de decisiones.
 - Requisito: RF4.
@@ -526,13 +526,13 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - ID: CP-CB-04
 - Funcionalidad: Validar formulario en el frontend
 - Objetivo: Cubrir `handleSubmit` con un título vacío, uno que supera los 100 caracteres y uno válido.
-- Precondiciones: Componente montado en un entorno de pruebas y función `onCreate` simulada.
-- Datos de entrada: "     "; "a" repetido 101 veces; "Tarea válida"; "Tarea con error" con una función `onCreate` que rechaza.
-- Procedimiento: Disparar el envío del formulario con cada dato, incluida una ejecución con `onCreate` rechazando, y observar el mensaje y la invocación de la función.
-- Resultado esperado: El título vacío muestra un error y no invoca la función; el de 101 caracteres muestra un error y no invoca; el válido invoca `onCreate` con el texto recortado y limpia el campo; si `onCreate` rechaza, se muestra el mensaje de error devuelto.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
-- Observaciones: El atributo `maxLength` limita el ingreso manual a 100; el caso de 101 y el error de API se prueban a nivel de la lógica del componente.
+- Precondiciones: Aplicación completa en ejecución (backend y frontend); la petición POST se intercepta para simular un error de API.
+- Datos de entrada: ""; "     "; "a" repetido 101 veces; "Tarea válida"; "Tarea con error" con la API interceptada para responder HTTP 500.
+- Procedimiento: Ejecutar el formulario real con cada dato, incluida una ejecución con la API interceptada para responder HTTP 500, y observar el mensaje y las peticiones emitidas.
+- Resultado esperado: El título vacío muestra un error y no emite la petición; el de 101 caracteres muestra un error y no emite; el válido emite la petición y limpia el campo; si la API falla, se muestra el mensaje de error devuelto.
+- Resultado obtenido: vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len101=101; largo='El título no puede superar los 100 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input=''; POST totales=2.
+- Estado: Aprobado.
+- Observaciones: El atributo `maxLength` limita el ingreso manual a 100; el valor de 101 se carga programáticamente para ejercitar la rama de validación. Se ejecuta sobre la interfaz real en lugar de aislar el componente, cubriendo las mismas ramas de `handleSubmit`.
 - Técnica: Caja blanca - cobertura de decisiones.
 - Requisito: RF1.
 - Capa: Frontend (unidad).
@@ -542,13 +542,13 @@ La cobertura real se medirá durante la ejecución de las pruebas y las pruebas 
 - ID: CP-CB-05
 - Funcionalidad: Mover tarea por arrastre en el frontend
 - Objetivo: Cubrir la condición compuesta de `handleDrop` en la columna.
-- Precondiciones: Columna con una tarea y función `onMove` simulada.
+- Precondiciones: Aplicación completa en ejecución y una tarea creada en la columna Pendiente.
 - Datos de entrada: Soltar una tarea de la misma columna; soltar una tarea de otra columna; soltar un identificador inválido.
-- Procedimiento: Invocar `handleDrop` con cada combinación y registrar si se llama a `onMove`.
-- Resultado esperado: La misma columna no invoca `onMove`; la columna distinta invoca `onMove` con el id y el estado correctos; el identificador inválido no invoca.
-- Resultado obtenido: Pendiente de ejecución.
-- Estado: Pendiente.
-- Observaciones: Cubre los resultados de `Number.isInteger(taskId) && taskId > 0 && !alreadyInColumn`.
+- Procedimiento: Arrastrar la tarjeta con eventos de arrastre reales hacia la misma columna, hacia otra columna y soltar identificadores inválidos; registrar las peticiones PATCH.
+- Resultado esperado: La misma columna no emite PATCH; la columna distinta emite un PATCH con el id y el estado correctos; el identificador inválido no emite PATCH y la tarjeta no cambia de columna.
+- Resultado obtenido: PATCH misma columna=0; PATCH movimiento=1; PATCH tras ids inválidos=1; En curso=1; Terminada=0.
+- Estado: Aprobado.
+- Observaciones: Cubre los resultados de `Number.isInteger(taskId) && taskId > 0 && !alreadyInColumn`. Se ejecuta sobre la interfaz real en lugar de aislar el componente, cubriendo las mismas condiciones.
 - Técnica: Caja blanca - cobertura de condiciones.
 - Requisito: RF3.
 - Capa: Frontend (unidad).

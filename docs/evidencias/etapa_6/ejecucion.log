@@ -1,0 +1,37 @@
+CP-CRE-01: APROBADO | HTTP 201; respuesta={"id": 33, "title": "Preparar informe", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.397774Z"}; listado=[{"id": 33, "title": "Preparar informe", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.397774Z"}]
+CP-CRE-02: APROBADO | HTTP 201; respuesta={"id": 34, "title": "A", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.503768Z"}; listado=[{"id": 34, "title": "A", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.503768Z"}]
+CP-CRE-03: APROBADO | HTTP 201; respuesta={"id": 35, "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.600768Z"}; listado=[{"id": 35, "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.600768Z"}]
+CP-CRE-04: APROBADO | HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede superar los 100 caracteres", "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ctx": {"error": {}}}]}; listado=[]
+CP-CRE-05: APROBADO | HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede estar vacío ni contener solo espacios", "input": "", "ctx": {"error": {}}}]}; listado=[]
+CP-CRE-06: APROBADO | HTTP 422; respuesta={"detail": [{"type": "value_error", "loc": ["body", "title"], "msg": "Value error, El título no puede estar vacío ni contener solo espacios", "input": "     ", "ctx": {"error": {}}}]}; listado=[]
+CP-CRE-07: APROBADO | HTTP 201; respuesta={"id": 36, "title": "Revisar pruebas", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.927885Z"}; listado=[{"id": 36, "title": "Revisar pruebas", "status": "Pendiente", "created_at": "2026-10-30T03:05:35.927885Z"}]
+CP-CRE-08: APROBADO | HTTP 201; respuesta={"id": 37, "title": "Revisión de señalización #1 – ñandú", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.019551Z"}; listado=[{"id": 37, "title": "Revisión de señalización #1 – ñandú", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.019551Z"}]
+CP-MOV-01: APROBADO | En curso: HTTP 200 (En curso); Terminada: HTTP 200 (Terminada); persistido=Terminada
+CP-MOV-02: APROBADO | HTTP 422; respuesta={"detail": [{"type": "literal_error", "loc": ["body", "status"], "msg": "Input should be 'Pendiente', 'En curso' or 'Terminada'", "input": "Finalizada", "ctx": {"expected": "'Pendiente', 'En curso' or 'Terminada'"}}]}; persistido=Pendiente
+CP-MOV-03: APROBADO | HTTP 404; respuesta={"detail": "Tarea no encontrada"}
+CP-MOV-04: APROBADO | HTTP 422; respuesta={"detail": [{"type": "int_parsing", "loc": ["path", "task_id"], "msg": "Input should be a valid integer, unable to parse string as an integer", "input": "abc"}]}
+CP-ELI-01: APROBADO | HTTP 204; cuerpo=''; listado=[]
+CP-ELI-02: APROBADO | HTTP 404; respuesta={"detail": "Tarea no encontrada"}
+CP-LIS-01: APROBADO | vacío HTTP 200 []; con datos HTTP 200 [{"id": 41, "title": "Primera tarea", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.699928Z"}, {"id": 42, "title": "Segunda tarea", "status": "Pendiente", "created_at": "2026-10-30T03:05:36.740958Z"}]
+
+API: 15/15 aprobados
+CP-UI-01: APROBADO | Tarjeta visible=True; input=''; contador=1; persistió=True
+CP-UI-02: APROBADO | error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0
+CP-UI-03: APROBADO | En curso=True; Pendiente=0; PATCH=1; persistió=True
+CP-UI-04: APROBADO | PATCH=0; tarjeta en Pendiente=1
+CP-UI-05: APROBADO | tarjetas restantes=0; DELETE=1; tras recarga=0
+
+UI: 5/5 aprobados
+CP-CB-01: APROBADO | válido='Tarea válida'; vacío='Value error, El título no puede estar vacío ni contener solo espacios'; espacios='Value error, El título no puede estar vacío ni contener solo espacios'; 101='Value error, El título no puede superar los 100 caracteres'; None='Input should be a valid string'
+CP-CB-02: APROBADO | creada=Pendiente; actualizada=En curso; inexistente=None
+CP-CB-03: APROBADO | primera=True; segunda=False; inexistente=False; restantes=0
+CP-CB-04: APROBADO | vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len101=101; largo='El título no puede superar los 100 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input=''; POST totales=2
+CP-CB-05: APROBADO | PATCH misma columna=0; PATCH movimiento=1; PATCH tras ids inválidos=1; En curso=1; Terminada=0
+
+Caja blanca: 5/5 aprobados
+Actualizado: /home/marucha/Documentos/final_aimar/docs/Etapa_5.md
+Total: 25/25 aprobados, 0 fallidos
+  api: 15/15
+  ui: 5/5
+  caja_blanca: 5/5
+Generado: docs/casos_de_prueba.csv (25 casos)

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "CP-CB-01",
+    "passed": true,
+    "resultado_obtenido": "válido='Tarea válida'; vacío='Value error, El título no puede estar vacío ni contener solo espacios'; espacios='Value error, El título no puede estar vacío ni contener solo espacios'; 101='Value error, El título no puede superar los 100 caracteres'; None='Input should be a valid string'",
+    "observaciones": "Ramas del validador de título. La rama value is None no es alcanzable a través de Pydantic porque el tipo str se valida antes; se documenta como cobertura no alcanzable.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-02",
+    "passed": true,
+    "resultado_obtenido": "creada=Pendiente; actualizada=En curso; inexistente=None",
+    "observaciones": "Ramas de update_task_status: fila actualizada y fila inexistente.",
+    "detalle": {
+      "created": {
+        "id": 1,
+        "title": "Actualizar estado",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:44.875853+00:00"
+      },
+      "updated": {
+        "id": 1,
+        "title": "Actualizar estado",
+        "status": "En curso",
+        "created_at": "2026-10-30T03:05:44.875853+00:00"
+      }
+    }
+  },
+  {
+    "id": "CP-CB-03",
+    "passed": true,
+    "resultado_obtenido": "primera=True; segunda=False; inexistente=False; restantes=0",
+    "observaciones": "Ramas de delete_task: fila eliminada y fila inexistente.",
+    "detalle": {
+      "created": {
+        "id": 2,
+        "title": "Eliminar tarea",
+        "status": "Pendiente",
+        "created_at": "2026-10-30T03:05:44.887104+00:00"
+      },
+      "remaining": []
+    }
+  },
+  {
+    "id": "CP-CB-04",
+    "passed": true,
+    "resultado_obtenido": "vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len101=101; largo='El título no puede superar los 100 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input=''; POST totales=2",
+    "observaciones": "Ramas de handleSubmit ejecutadas sobre la interfaz real.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-05",
+    "passed": true,
+    "resultado_obtenido": "PATCH misma columna=0; PATCH movimiento=1; PATCH tras ids inválidos=1; En curso=1; Terminada=0",
+    "observaciones": "Ramas de handleDrop: misma columna, movimiento válido e ids inválidos.",
+    "detalle": null
+  }
+]
