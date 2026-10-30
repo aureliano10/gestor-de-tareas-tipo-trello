@@ -1,4 +1,4 @@
-CP-CRE-01: APROBADO | HTTP 201; tarea #152 creada en estado Pendiente, position 0 y overdue falso, presente en el listado
+CP-CRE-01: APROBADO | HTTP 201; tarea #197 creada en estado Pendiente, position 0 y overdue falso, presente en el listado
 CP-CRE-02: APROBADO | HTTP 201; título de un carácter aceptado con estado Pendiente
 CP-CRE-03: APROBADO | HTTP 201; título de exactamente 100 caracteres aceptado
 CP-CRE-04: APROBADO | HTTP 422; título de 101 caracteres rechazado y listado vacío

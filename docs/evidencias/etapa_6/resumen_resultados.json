@@ -20,21 +20,33 @@
     {
       "id": "CP-CRE-01",
       "passed": true,
-      "resultado_obtenido": "HTTP 201; tarea #152 creada en estado Pendiente, position 0 y overdue falso, presente en el listado",
+      "resultado_obtenido": "HTTP 201; tarea #197 creada en estado Pendiente, position 0 y overdue falso, presente en el listado",
       "observaciones": "Alta típica; verifica RF2 y la forma completa de la respuesta.",
       "detalle": {
-        "id": 152,
+        "id": 197,
         "title": "Preparar informe",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:40.887702Z",
+        "created_at": "2026-10-30T05:59:38.574752Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 1,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:38.575291Z"
+          }
+        ]
       }
     },
     {
@@ -43,18 +55,30 @@
       "resultado_obtenido": "HTTP 201; título de un carácter aceptado con estado Pendiente",
       "observaciones": "Valor límite inferior válido del título.",
       "detalle": {
-        "id": 153,
+        "id": 198,
         "title": "A",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:40.976872Z",
+        "created_at": "2026-10-30T05:59:38.661302Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 2,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:38.661641Z"
+          }
+        ]
       }
     },
     {
@@ -63,18 +87,30 @@
       "resultado_obtenido": "HTTP 201; título de exactamente 100 caracteres aceptado",
       "observaciones": "Valor límite superior válido del título.",
       "detalle": {
-        "id": 154,
+        "id": 199,
         "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:41.027481Z",
+        "created_at": "2026-10-30T05:59:38.710777Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 3,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:38.711138Z"
+          }
+        ]
       }
     },
     {
@@ -149,18 +185,30 @@
       "resultado_obtenido": "HTTP 201; espacios externos recortados y título persistido como \"Revisar pruebas\"",
       "observaciones": "Clase válida con normalización.",
       "detalle": {
-        "id": 155,
+        "id": 200,
         "title": "Revisar pruebas",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:41.328084Z",
+        "created_at": "2026-10-30T05:59:39.031571Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 4,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.031889Z"
+          }
+        ]
       }
     },
     {
@@ -169,18 +217,30 @@
       "resultado_obtenido": "HTTP 201; descripción y fecha límite (2026-11-06) almacenadas y overdue falso",
       "observaciones": "Alta con descripción y fecha futura.",
       "detalle": {
-        "id": 156,
+        "id": 201,
         "title": "Informe final",
         "description": "Detalle de la tarea",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": "2026-11-06",
         "position": 0,
-        "created_at": "2026-10-30T05:35:41.408074Z",
+        "created_at": "2026-10-30T05:59:39.130628Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 5,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.130890Z"
+          }
+        ]
       }
     },
     {
@@ -211,18 +271,42 @@
       "resultado_obtenido": "Tres estados válidos: PATCH 200 a En curso y a Terminada, con estado final \"Terminada\" persistido",
       "observaciones": "Transición completa entre los tres estados.",
       "detalle": {
-        "id": 157,
+        "id": 202,
         "title": "Mover a Terminada",
         "description": "",
         "status": "Terminada",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:41.536499Z",
+        "created_at": "2026-10-30T05:59:39.260773Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 8,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.351928Z"
+          },
+          {
+            "id": 7,
+            "action": "Movida a En curso",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.303467Z"
+          },
+          {
+            "id": 6,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.261259Z"
+          }
+        ]
       }
     },
     {
@@ -231,18 +315,30 @@
       "resultado_obtenido": "HTTP 422 con estado y con posición inválidos; la tarea conservó su estado Pendiente y su posición 0",
       "observaciones": "Clase inválida de estado y de posición.",
       "detalle": {
-        "id": 158,
+        "id": 203,
         "title": "Estado inválido",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:41.724433Z",
+        "created_at": "2026-10-30T05:59:39.466476Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 9,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.466741Z"
+          }
+        ]
       }
     },
     {
@@ -280,46 +376,88 @@
       "observaciones": "Reordenamiento sin cambio de estado.",
       "detalle": [
         {
-          "id": 161,
+          "id": 206,
           "title": "C",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-10-30T05:35:42.035007Z",
+          "created_at": "2026-10-30T05:59:39.801592Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
           "subtasks": [],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 13,
+              "action": "Reordenada en Pendiente",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:39.850169Z"
+            },
+            {
+              "id": 12,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:39.801849Z"
+            }
+          ]
         },
         {
-          "id": 159,
+          "id": 204,
           "title": "A",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 1,
-          "created_at": "2026-10-30T05:35:41.958717Z",
+          "created_at": "2026-10-30T05:59:39.708107Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
           "subtasks": [],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 10,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:39.708415Z"
+            }
+          ]
         },
         {
-          "id": 160,
+          "id": 205,
           "title": "B",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 2,
-          "created_at": "2026-10-30T05:35:41.996169Z",
+          "created_at": "2026-10-30T05:59:39.751981Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
           "subtasks": [],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 11,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:39.752273Z"
+            }
+          ]
         }
       ]
     },
@@ -329,18 +467,48 @@
       "resultado_obtenido": "PUT 200; título, descripción y fecha límite actualizados sin alterar el estado",
       "observaciones": "Flujo normal de edición.",
       "detalle": {
-        "id": 162,
+        "id": 207,
         "title": "Tarea editada",
         "description": "Nueva descripción",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": "2026-11-02",
         "position": 0,
-        "created_at": "2026-10-30T05:35:42.153384Z",
+        "created_at": "2026-10-30T05:59:39.967246Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 17,
+            "action": "Fecha límite actualizada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.022556Z"
+          },
+          {
+            "id": 16,
+            "action": "Descripción actualizada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.022528Z"
+          },
+          {
+            "id": 15,
+            "action": "Título actualizado",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.022282Z"
+          },
+          {
+            "id": 14,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:39.967635Z"
+          }
+        ]
       }
     },
     {
@@ -358,18 +526,42 @@
       "resultado_obtenido": "HTTP 200; la edición admitió la fecha pasada (2026-10-28) y overdue quedó verdadero",
       "observaciones": "La restricción de fecha futura aplica solo al alta.",
       "detalle": {
-        "id": 163,
+        "id": 208,
         "title": "Revisar informe",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": "2026-10-28",
         "position": 0,
-        "created_at": "2026-10-30T05:35:42.293919Z",
+        "created_at": "2026-10-30T05:59:40.114916Z",
         "overdue": true,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 20,
+            "action": "Fecha límite actualizada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.162791Z"
+          },
+          {
+            "id": 19,
+            "action": "Título actualizado",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.162494Z"
+          },
+          {
+            "id": 18,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.115112Z"
+          }
+        ]
       }
     },
     {
@@ -378,25 +570,43 @@
       "resultado_obtenido": "HTTP 201; subtarea creada, subtask_total 1 y subtask_done 0",
       "observaciones": "Flujo normal de alta de subtarea.",
       "detalle": {
-        "id": 164,
+        "id": 209,
         "title": "Con checklist",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:42.379565Z",
+        "created_at": "2026-10-30T05:59:40.209216Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 25,
+            "id": 34,
             "title": "Diseñar casos",
             "done": false,
-            "created_at": "2026-10-30T05:35:42.417338Z"
+            "created_at": "2026-10-30T05:59:40.256798Z"
           }
         ],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 22,
+            "action": "Subtarea agregada: Diseñar casos",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.257076Z"
+          },
+          {
+            "id": 21,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.209581Z"
+          }
+        ]
       }
     },
     {
@@ -406,46 +616,100 @@
       "observaciones": "Marcado y desmarcado de una subtarea.",
       "detalle": {
         "marked": {
-          "id": 165,
+          "id": 210,
           "title": "Marcar subtarea",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-10-30T05:35:42.467959Z",
+          "created_at": "2026-10-30T05:59:40.305744Z",
           "overdue": false,
           "subtask_total": 1,
           "subtask_done": 1,
           "subtasks": [
             {
-              "id": 26,
+              "id": 35,
               "title": "Paso",
               "done": true,
-              "created_at": "2026-10-30T05:35:42.517818Z"
+              "created_at": "2026-10-30T05:59:40.353659Z"
             }
           ],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 25,
+              "action": "Subtarea completada: Paso",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.395011Z"
+            },
+            {
+              "id": 24,
+              "action": "Subtarea agregada: Paso",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.353942Z"
+            },
+            {
+              "id": 23,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.306026Z"
+            }
+          ]
         },
         "unmarked": {
-          "id": 165,
+          "id": 210,
           "title": "Marcar subtarea",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-10-30T05:35:42.467959Z",
+          "created_at": "2026-10-30T05:59:40.305744Z",
           "overdue": false,
           "subtask_total": 1,
           "subtask_done": 0,
           "subtasks": [
             {
-              "id": 26,
+              "id": 35,
               "title": "Paso",
               "done": false,
-              "created_at": "2026-10-30T05:35:42.517818Z"
+              "created_at": "2026-10-30T05:59:40.353659Z"
             }
           ],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 26,
+              "action": "Subtarea reabierta: Paso",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.436187Z"
+            },
+            {
+              "id": 25,
+              "action": "Subtarea completada: Paso",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.395011Z"
+            },
+            {
+              "id": 24,
+              "action": "Subtarea agregada: Paso",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.353942Z"
+            },
+            {
+              "id": 23,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:40.306026Z"
+            }
+          ]
         }
       }
     },
@@ -455,18 +719,42 @@
       "resultado_obtenido": "DELETE 204 sin cuerpo; la tarea quedó con subtask_total 0",
       "observaciones": "Flujo normal de eliminación de subtarea.",
       "detalle": {
-        "id": 166,
+        "id": 211,
         "title": "Eliminar subtarea",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:42.706636Z",
+        "created_at": "2026-10-30T05:59:40.506254Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 29,
+            "action": "Subtarea eliminada: Paso",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.597491Z"
+          },
+          {
+            "id": 28,
+            "action": "Subtarea agregada: Paso",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.555744Z"
+          },
+          {
+            "id": 27,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.506666Z"
+          }
+        ]
       }
     },
     {
@@ -484,25 +772,43 @@
       "resultado_obtenido": "HTTP 409 con detalle del bloqueo; la tarea conservó su estado Pendiente",
       "observaciones": "Regla de bloqueo al finalizar.",
       "detalle": {
-        "id": 167,
+        "id": 212,
         "title": "Bloquear finalización",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:42.941608Z",
+        "created_at": "2026-10-30T05:59:40.727952Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 28,
+            "id": 37,
             "title": "Pendiente 1",
             "done": false,
-            "created_at": "2026-10-30T05:35:42.977621Z"
+            "created_at": "2026-10-30T05:59:40.777132Z"
           }
         ],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 31,
+            "action": "Subtarea agregada: Pendiente 1",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.777402Z"
+          },
+          {
+            "id": 30,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.728311Z"
+          }
+        ]
       }
     },
     {
@@ -511,25 +817,49 @@
       "resultado_obtenido": "HTTP 200; tarea finalizada al no tener subtareas pendientes",
       "observaciones": "Complemento del bloqueo.",
       "detalle": {
-        "id": 168,
+        "id": 213,
         "title": "Finalizar permitida",
         "description": "",
         "status": "Terminada",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:43.097462Z",
+        "created_at": "2026-10-30T05:59:40.902020Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 1,
         "subtasks": [
           {
-            "id": 29,
+            "id": 38,
             "title": "Hecha",
             "done": true,
-            "created_at": "2026-10-30T05:35:43.139401Z"
+            "created_at": "2026-10-30T05:59:40.941907Z"
           }
         ],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 34,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.985044Z"
+          },
+          {
+            "id": 33,
+            "action": "Subtarea agregada: Hecha",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.942083Z"
+          },
+          {
+            "id": 32,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:40.902307Z"
+          }
+        ]
       }
     },
     {
@@ -538,25 +868,49 @@
       "resultado_obtenido": "HTTP 201 con la subtarea creada y la tarea reabierta a \"En curso\"",
       "observaciones": "Reapertura al agregar una subtarea pendiente.",
       "detalle": {
-        "id": 169,
+        "id": 214,
         "title": "Terminada y reabierta",
         "description": "",
         "status": "En curso",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:43.250079Z",
+        "created_at": "2026-10-30T05:59:41.055003Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 30,
+            "id": 39,
             "title": "Tarea adicional",
             "done": false,
-            "created_at": "2026-10-30T05:35:43.330420Z"
+            "created_at": "2026-10-30T05:59:41.147683Z"
           }
         ],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 37,
+            "action": "Subtarea agregada: Tarea adicional",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.147870Z"
+          },
+          {
+            "id": 36,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.103333Z"
+          },
+          {
+            "id": 35,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.055339Z"
+          }
+        ]
       }
     },
     {
@@ -565,25 +919,55 @@
       "resultado_obtenido": "HTTP 200 con la subtarea desmarcada y la tarea reabierta a \"En curso\"",
       "observaciones": "Reapertura al desmarcar una subtarea.",
       "detalle": {
-        "id": 170,
+        "id": 215,
         "title": "Desmarcar reabre",
         "description": "",
         "status": "En curso",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:43.376832Z",
+        "created_at": "2026-10-30T05:59:41.198124Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 31,
+            "id": 40,
             "title": "Paso",
             "done": false,
-            "created_at": "2026-10-30T05:35:43.419625Z"
+            "created_at": "2026-10-30T05:59:41.242895Z"
           }
         ],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 41,
+            "action": "Subtarea reabierta: Paso",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.334734Z"
+          },
+          {
+            "id": 40,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.293282Z"
+          },
+          {
+            "id": 39,
+            "action": "Subtarea agregada: Paso",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.243097Z"
+          },
+          {
+            "id": 38,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.198328Z"
+          }
+        ]
       }
     },
     {
@@ -592,18 +976,36 @@
       "resultado_obtenido": "overdue pasó de falso a verdadero al editar la fecha, sin cambiar el estado",
       "observaciones": "El vencimiento se deriva y no se almacena.",
       "detalle": {
-        "id": 171,
+        "id": 216,
         "title": "Con vencimiento",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": "2026-10-28",
         "position": 0,
-        "created_at": "2026-10-30T05:35:43.543620Z",
+        "created_at": "2026-10-30T05:59:41.392130Z",
         "overdue": true,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 43,
+            "action": "Fecha límite actualizada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.470188Z"
+          },
+          {
+            "id": 42,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.392446Z"
+          }
+        ]
       }
     },
     {
@@ -614,18 +1016,36 @@
       "detalle": {
         "filtered": [
           {
-            "id": 173,
+            "id": 218,
             "title": "Con fecha pasada",
             "description": "",
             "status": "Pendiente",
+            "priority": "Media",
+            "assignee": "",
             "due_date": "2026-10-29",
             "position": 1,
-            "created_at": "2026-10-30T05:35:43.710577Z",
+            "created_at": "2026-10-30T05:59:41.646668Z",
             "overdue": true,
             "subtask_total": 0,
             "subtask_done": 0,
             "subtasks": [],
-            "attachments": []
+            "attachments": [],
+            "tags": [],
+            "links": [],
+            "activity": [
+              {
+                "id": 46,
+                "action": "Fecha límite actualizada",
+                "detail": "",
+                "created_at": "2026-10-30T05:59:41.715482Z"
+              },
+              {
+                "id": 45,
+                "action": "Tarea creada",
+                "detail": "",
+                "created_at": "2026-10-30T05:59:41.646976Z"
+              }
+            ]
           }
         ]
       }
@@ -636,24 +1056,42 @@
       "resultado_obtenido": "HTTP 201; adjunto \"notas.txt\" de 1024 bytes agregado a la tarea",
       "observaciones": "Subida con extensión permitida.",
       "detalle": {
-        "id": 174,
+        "id": 219,
         "title": "Con adjunto",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:43.912157Z",
+        "created_at": "2026-10-30T05:59:41.842233Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
         "attachments": [
           {
-            "id": 16,
+            "id": 23,
             "filename": "notas.txt",
             "content_type": "text/plain",
             "size_bytes": 1024,
-            "created_at": "2026-10-30T05:35:43.961813Z"
+            "created_at": "2026-10-30T05:59:41.884485Z"
+          }
+        ],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 48,
+            "action": "Adjunto agregado: notas.txt",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.884726Z"
+          },
+          {
+            "id": 47,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:41.842464Z"
           }
         ]
       }
@@ -671,18 +1109,42 @@
       "resultado_obtenido": "DELETE 204; la tarea quedó sin adjuntos y la descarga posterior respondió 404",
       "observaciones": "Verifica también que el archivo físico deja de estar disponible.",
       "detalle": {
-        "id": 176,
+        "id": 221,
         "title": "Eliminar adjunto",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:44.180144Z",
+        "created_at": "2026-10-30T05:59:42.106652Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 53,
+            "action": "Adjunto eliminado: notas.txt",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:42.243036Z"
+          },
+          {
+            "id": 52,
+            "action": "Adjunto agregado: notas.txt",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:42.151799Z"
+          },
+          {
+            "id": 51,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:42.106872Z"
+          }
+        ]
       }
     },
     {
@@ -728,18 +1190,42 @@
       "resultado_obtenido": "HTTP 200; la tarea eliminada volvió a estar presente en el listado",
       "observaciones": "Flujo normal de restauración.",
       "detalle": {
-        "id": 181,
+        "id": 226,
         "title": "Restaurar esta tarea",
         "description": "",
         "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-10-30T05:35:45.325217Z",
+        "created_at": "2026-10-30T05:59:43.162135Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
-        "attachments": []
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 64,
+            "action": "Tarea restaurada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:43.251320Z"
+          },
+          {
+            "id": 63,
+            "action": "Tarea eliminada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:43.212266Z"
+          },
+          {
+            "id": 62,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-10-30T05:59:43.162539Z"
+          }
+        ]
       }
     },
     {
@@ -758,46 +1244,82 @@
       "observaciones": "Verifica el listado y la persistencia en SQLite.",
       "detalle": [
         {
-          "id": 183,
+          "id": 228,
           "title": "Primera tarea",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-10-30T05:35:45.630341Z",
+          "created_at": "2026-10-30T05:59:43.473938Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
           "subtasks": [],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 66,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:43.474179Z"
+            }
+          ]
         },
         {
-          "id": 184,
+          "id": 229,
           "title": "Segunda tarea",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 1,
-          "created_at": "2026-10-30T05:35:45.676320Z",
+          "created_at": "2026-10-30T05:59:43.518271Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
           "subtasks": [],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 67,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:43.518483Z"
+            }
+          ]
         },
         {
-          "id": 185,
+          "id": 230,
           "title": "Tercera tarea",
           "description": "",
           "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
           "due_date": null,
           "position": 2,
-          "created_at": "2026-10-30T05:35:45.723704Z",
+          "created_at": "2026-10-30T05:59:43.564428Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
           "subtasks": [],
-          "attachments": []
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 68,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-10-30T05:59:43.564615Z"
+            }
+          ]
         }
       ]
     },
