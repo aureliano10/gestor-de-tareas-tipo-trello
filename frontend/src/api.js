@@ -13,7 +13,7 @@ async function request(path, options = {}) {
       if (typeof data.detail === "string") {
         message = data.detail;
       } else if (Array.isArray(data.detail) && data.detail[0]?.msg) {
-        message = data.detail[0].msg;
+        message = data.detail[0].msg.replace(/^Value error,\s*/i, "");
       }
     } catch {
       // La respuesta no tenía cuerpo JSON.

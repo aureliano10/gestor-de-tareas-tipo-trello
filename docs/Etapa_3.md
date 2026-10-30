@@ -50,13 +50,14 @@ La separación en capas (rutas, validaciones, repositorio y base de datos) busca
 
 | Dato | Regla aplicada | Capa |
 |------|----------------|------|
-| Título al crear | Obligatorio, no vacío y no compuesto solo por espacios. | Frontend y backend |
-| Título al crear | Longitud máxima de 100 caracteres. | Frontend y backend |
+| Título al crear | Obligatorio, no vacío y no compuesto solo por espacios. | Frontend, backend y base de datos |
+| Título al crear | Longitud máxima de 100 caracteres. | Frontend, backend y base de datos |
 | Título al crear | Se eliminan los espacios al inicio y al final antes de guardar. | Backend |
-| Estado al mover | Debe ser uno de los valores `Pendiente`, `En curso` o `Terminada`. | Frontend y backend |
+| Estado al mover | Debe ser uno de los valores `Pendiente`, `En curso` o `Terminada`. | Frontend, backend y base de datos |
+| Integridad en la base | Restricciones `CHECK` para título no vacío, longitud máxima y estados válidos. | Base de datos |
 | Identificador al mover o eliminar | La tarea debe existir. | Backend |
 
-Las validaciones se aplican en el backend como fuente de verdad, ya que la API puede ser consumida sin pasar por la interfaz. El frontend además valida antes de enviar para dar una respuesta inmediata al usuario.
+Las validaciones se aplican en el backend como fuente de verdad, ya que la API puede ser consumida sin pasar por la interfaz. El frontend además valida antes de enviar para dar una respuesta inmediata al usuario. La base de datos mantiene restricciones `CHECK` como última barrera de integridad.
 
 ## Manejo de errores
 

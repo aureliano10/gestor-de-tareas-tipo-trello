@@ -40,7 +40,7 @@ docs/                # Documentación de cada etapa
 ## Requisitos previos
 
 - Python 3.12 o superior.
-- Node.js 20 o superior.
+- Node.js 20.19 o superior (o 22.12 o superior), requerido por Vite 8.
 
 ## Instalación y ejecución
 
@@ -68,6 +68,24 @@ npm run dev
 ```
 
 La aplicación queda disponible en `http://localhost:5173`.
+
+## Análisis estático
+
+Con el entorno virtual activado, desde la raíz del proyecto:
+
+```bash
+pip install -r backend/requirements-dev.txt
+ruff check backend
+python -m compileall backend/app
+```
+
+Para el frontend:
+
+```bash
+cd frontend
+npm run lint
+npm run build
+```
 
 ## Endpoints de la API
 

@@ -17,13 +17,8 @@ export default function App() {
 
   async function handleCreate(title) {
     setError("");
-    try {
-      const task = await createTask(title);
-      setTasks((current) => [...current, task]);
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    }
+    const task = await createTask(title);
+    setTasks((current) => [...current, task]);
   }
 
   async function handleMove(id, status) {

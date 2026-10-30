@@ -1,0 +1,8 @@
+== Interfaz (/) ==
+HTTP 200
+== Proxy /api/health ==
+{"status":"ok"}
+== Proxy POST /api/tasks ==
+{"id":1,"title":"Verificación frontend","status":"Pendiente","created_at":"2026-10-30T02:37:19.877898Z"}
+== Transformación App.jsx ==
+HTTP 200

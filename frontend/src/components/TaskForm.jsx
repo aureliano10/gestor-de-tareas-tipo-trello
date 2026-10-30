@@ -43,7 +43,10 @@ export default function TaskForm({ onCreate }) {
           placeholder="Ej. Preparar informe de pruebas"
           value={title}
           maxLength={MAX_TITLE_LENGTH}
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={(event) => {
+            setTitle(event.target.value);
+            setError("");
+          }}
         />
       </div>
       <button type="submit" disabled={submitting}>

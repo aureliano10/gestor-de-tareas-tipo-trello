@@ -17,7 +17,8 @@ export default function Column({ status, tasks, onMove, onDelete }) {
     event.preventDefault();
     setDragOver(false);
     const taskId = Number(event.dataTransfer.getData("text/plain"));
-    if (Number.isInteger(taskId) && taskId > 0) {
+    const alreadyInColumn = tasks.some((task) => task.id === taskId);
+    if (Number.isInteger(taskId) && taskId > 0 && !alreadyInColumn) {
       onMove(taskId, status);
     }
   }

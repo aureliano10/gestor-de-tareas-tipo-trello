@@ -1,0 +1,20 @@
+== GET /api/health ==
+{"status":"ok"}
+== POST tarea válida ==
+{"id":1,"title":"Informe de verificación","status":"Pendiente","created_at":"2026-10-30T02:36:21.393980Z"}
+== POST título 100 caracteres ==
+HTTP 201
+== POST título 101 caracteres ==
+HTTP 422
+== POST solo espacios ==
+HTTP 422
+== PATCH a En curso ==
+{"id":1,"title":"Informe de verificación","status":"En curso","created_at":"2026-10-30T02:36:21.393980Z"}
+== PATCH estado inválido ==
+HTTP 422
+== PATCH tarea inexistente ==
+HTTP 404
+== DELETE tarea existente ==
+HTTP 204
+== DELETE tarea inexistente ==
+HTTP 404
