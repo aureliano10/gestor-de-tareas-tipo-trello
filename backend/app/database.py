@@ -4,8 +4,12 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from .schemas import (
+    MAX_ASSIGNEE_LENGTH,
     MAX_ATTACHMENT_SIZE,
     MAX_DESCRIPTION_LENGTH,
+    MAX_LINK_LABEL_LENGTH,
+    MAX_LINK_URL_LENGTH,
+    MAX_TAG_LENGTH,
     MAX_TITLE_LENGTH,
 )
 
@@ -21,6 +25,10 @@ CREATE TABLE IF NOT EXISTS tasks (
         CHECK (length(description) <= {MAX_DESCRIPTION_LENGTH}),
     status TEXT NOT NULL DEFAULT 'Pendiente'
         CHECK (status IN ('Pendiente', 'En curso', 'Terminada')),
+    priority TEXT NOT NULL DEFAULT 'Media'
+        CHECK (priority IN ('Baja', 'Media', 'Alta')),
+    assignee TEXT NOT NULL DEFAULT ''
+        CHECK (length(assignee) <= {MAX_ASSIGNEE_LENGTH}),
     due_date TEXT CHECK (
         due_date IS NULL
         OR due_date GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'
@@ -50,6 +58,42 @@ CREATE TABLE IF NOT EXISTS attachments (
     content_type TEXT NOT NULL DEFAULT 'application/octet-stream',
     size_bytes INTEGER NOT NULL
         CHECK (size_bytes > 0 AND size_bytes <= {MAX_ATTACHMENT_SIZE}),
+    created_at TEXT NOT NULL
+)
+"""
+
+CREATE_TAGS_TABLE = f"""
+CREATE TABLE IF NOT EXISTS tags (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+        CHECK (length(trim(name)) BETWEEN 1 AND {MAX_TAG_LENGTH})
+)
+"""
+
+CREATE_TASK_TAGS_TABLE = """
+CREATE TABLE IF NOT EXISTS task_tags (
+    task_id INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    tag_id INTEGER NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
+    PRIMARY KEY (task_id, tag_id)
+)
+"""
+
+CREATE_LINKS_TABLE = f"""
+CREATE TABLE IF NOT EXISTS links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task_id INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    url TEXT NOT NULL CHECK (length(url) BETWEEN 8 AND {MAX_LINK_URL_LENGTH}),
+    label TEXT NOT NULL DEFAULT '' CHECK (length(label) <= {MAX_LINK_LABEL_LENGTH}),
+    created_at TEXT NOT NULL
+)
+"""
+
+CREATE_ACTIVITY_TABLE = """
+CREATE TABLE IF NOT EXISTS activity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task_id INTEGER NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    action TEXT NOT NULL,
+    detail TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL
 )
 """
@@ -91,39 +135,49 @@ def _table_sql(conn: sqlite3.Connection, name: str) -> str | None:
     return row["sql"] if row is not None else None
 
 
-def _needs_migration(conn: sqlite3.Connection) -> bool:
-    """Detecta un esquema anterior de `tasks` (sin CHECK ni columnas nuevas)."""
-    sql = _table_sql(conn, "tasks")
-    if sql is None:
-        return False
-    columns = {
-        row["name"] for row in conn.execute("PRAGMA table_info(tasks)").fetchall()
+def _table_columns(conn: sqlite3.Connection, name: str) -> set[str]:
+    return {
+        row["name"] for row in conn.execute(f"PRAGMA table_info({name})").fetchall()
     }
-    required = {"description", "due_date", "position", "deleted_at"}
-    return "CHECK" not in sql or not required <= columns
+
+
+REQUIRED_TASK_COLUMNS = {
+    "description",
+    "due_date",
+    "position",
+    "deleted_at",
+    "priority",
+    "assignee",
+}
+
+# Definiciones usadas para completar columnas faltantes de forma aditiva.
+MISSING_TASK_COLUMN_DEFINITIONS = {
+    "description": "description TEXT NOT NULL DEFAULT ''",
+    "due_date": "due_date TEXT",
+    "position": "position INTEGER NOT NULL DEFAULT 0",
+    "deleted_at": "deleted_at TEXT",
+    "priority": "priority TEXT NOT NULL DEFAULT 'Media'",
+    "assignee": "assignee TEXT NOT NULL DEFAULT ''",
+}
+
+
+def _needs_migration(conn: sqlite3.Connection) -> bool:
+    """Detecta si a `tasks` le falta alguna columna esperada del esquema."""
+    if _table_sql(conn, "tasks") is None:
+        return False
+    return bool(REQUIRED_TASK_COLUMNS - _table_columns(conn, "tasks"))
 
 
 def _migrate_tasks(conn: sqlite3.Connection) -> None:
-    conn.execute("ALTER TABLE tasks RENAME TO tasks_legacy")
-    conn.execute(CREATE_TASKS_TABLE)
-    conn.execute(
-        """
-        INSERT INTO tasks (id, title, description, status, due_date, position,
-                           deleted_at, created_at)
-        SELECT id, title, '', status, NULL, 0, NULL, created_at
-        FROM tasks_legacy
-        """
-    )
-    conn.execute("DROP TABLE tasks_legacy")
-    conn.execute(
-        """
-        UPDATE tasks SET position = (
-            SELECT COUNT(*) FROM tasks AS previous
-            WHERE previous.status = tasks.status
-              AND previous.id < tasks.id
-        )
-        """
-    )
+    """Migración aditiva: agrega las columnas faltantes sin recrear la tabla.
+
+    No se renombra ni se recrea `tasks` para no romper las claves foráneas de
+    subtasks/attachments que apuntan a esta tabla.
+    """
+    columns = _table_columns(conn, "tasks")
+    for name, definition in MISSING_TASK_COLUMN_DEFINITIONS.items():
+        if name not in columns:
+            conn.execute(f"ALTER TABLE tasks ADD COLUMN {definition}")
 
 
 def init_db() -> None:
@@ -136,3 +190,7 @@ def init_db() -> None:
         conn.execute(CREATE_TASKS_TABLE)
         conn.execute(CREATE_SUBTASKS_TABLE)
         conn.execute(CREATE_ATTACHMENTS_TABLE)
+        conn.execute(CREATE_TAGS_TABLE)
+        conn.execute(CREATE_TASK_TAGS_TABLE)
+        conn.execute(CREATE_LINKS_TABLE)
+        conn.execute(CREATE_ACTIVITY_TABLE)

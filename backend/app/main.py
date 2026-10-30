@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import init_db
-from .routers import attachments, subtasks, tasks
+from .routers import attachments, subtasks, tags, tasks
 
 
 @asynccontextmanager
@@ -30,6 +30,7 @@ app.add_middleware(
 app.include_router(tasks.router)
 app.include_router(subtasks.router)
 app.include_router(attachments.router)
+app.include_router(tags.router)
 
 
 @app.get("/api/health", tags=["health"])
