@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import Column from "./Column.jsx";
 
 export const STATUSES = ["Pendiente", "En curso", "Terminada"];
@@ -8,7 +9,18 @@ const EMPTY_HINTS = {
   Terminada: "Todavía no hay tareas terminadas.",
 };
 
-export default function Board({ tasks, onMove, onOpen, onDelete }) {
+function Board({ tasks, onMove, onOpen, onDelete }) {
+  const grouped = useMemo(() => {
+    const result = {};
+    for (const status of STATUSES) {
+      result[status] = [];
+    }
+    for (const task of tasks) {
+      (result[task.status] ??= []).push(task);
+    }
+    return result;
+  }, [tasks]);
+
   return (
     <section className="board" aria-label="Tablero Kanban" data-testid="board">
       {STATUSES.map((status) => (
@@ -16,7 +28,7 @@ export default function Board({ tasks, onMove, onOpen, onDelete }) {
           key={status}
           status={status}
           emptyHint={EMPTY_HINTS[status]}
-          tasks={tasks.filter((task) => task.status === status)}
+          tasks={grouped[status]}
           onMove={onMove}
           onOpen={onOpen}
           onDelete={onDelete}
@@ -25,3 +37,5 @@ export default function Board({ tasks, onMove, onOpen, onDelete }) {
     </section>
   );
 }
+
+export default memo(Board);

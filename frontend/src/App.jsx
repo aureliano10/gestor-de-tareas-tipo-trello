@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   createSubtask,
   createTask,
@@ -15,11 +23,15 @@ import {
 } from "./api.js";
 import Board from "./components/Board.jsx";
 import ConfirmDialog from "./components/ConfirmDialog.jsx";
-import TaskDetailModal from "./components/TaskDetailModal.jsx";
 import TaskForm from "./components/TaskForm.jsx";
 import Toast from "./components/Toast.jsx";
 
+// AUD-17: el detalle es el componente más pesado y sólo se usa bajo interacción,
+// por lo que se carga de forma diferida (code splitting).
+const TaskDetailModal = lazy(() => import("./components/TaskDetailModal.jsx"));
+
 const UNDO_WINDOW_MS = 7000;
+const SUCCESS_WINDOW_MS = 3500;
 const SEARCH_DEBOUNCE_MS = 300;
 
 const PRIORITY_FILTERS = ["Baja", "Media", "Alta"];
@@ -33,6 +45,7 @@ const SORT_OPTIONS = [
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
   const [overdueOnly, setOverdueOnly] = useState(false);
 
@@ -45,12 +58,38 @@ export default function App() {
 
   const [detailId, setDetailId] = useState(null);
   const [pendingDelete, setPendingDelete] = useState(null);
-  const [undone, setUndone] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  // AUD-19: se conserva el id de la última petición para descartar respuestas
+  // obsoletas y evitar condiciones de carrera al cambiar de filtro.
+  const requestRef = useRef(0);
+  const tasksRef = useRef(tasks);
+
+  useEffect(() => {
+    tasksRef.current = tasks;
+  }, [tasks]);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query), SEARCH_DEBOUNCE_MS);
     return () => clearTimeout(timer);
   }, [query]);
+
+  /** Muestra un aviso breve; `duration` y `actionLabel` permiten reutilizar el
+   * mismo componente para el "Deshacer" y para las confirmaciones de éxito. */
+  const showToast = useCallback((message, options = {}) => {
+    setToast({ message, duration: SUCCESS_WINDOW_MS, ...options });
+  }, []);
+
+  useEffect(() => {
+    if (!toast) {
+      return undefined;
+    }
+    const timer = setTimeout(
+      () => setToast(null),
+      toast.duration ?? SUCCESS_WINDOW_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const params = useMemo(
     () => ({
@@ -64,19 +103,36 @@ export default function App() {
   );
 
   const load = useCallback(async (filters, { silent = false } = {}) => {
+    const requestId = requestRef.current + 1;
+    requestRef.current = requestId;
     if (!silent) {
       setLoading(true);
     }
     try {
-      const [list, names] = await Promise.all([getTasks(filters), getTags()]);
+      // AUD-22: si el catálogo de etiquetas falla, el tablero se muestra igual.
+      const [list, names] = await Promise.all([
+        getTasks(filters),
+        getTags().catch(() => null),
+      ]);
+      if (requestId !== requestRef.current) {
+        return;
+      }
       setTasks(list);
-      setTagOptions(names);
+      if (names) {
+        setTagOptions(names);
+      }
       setError("");
     } catch (err) {
+      if (requestId !== requestRef.current) {
+        return;
+      }
       setError(err.message);
     } finally {
-      if (!silent) {
-        setLoading(false);
+      if (requestId === requestRef.current) {
+        setLoaded(true);
+        if (!silent) {
+          setLoading(false);
+        }
       }
     }
   }, []);
@@ -85,10 +141,7 @@ export default function App() {
     load(params);
   }, [load, params]);
 
-  const refresh = useCallback(
-    () => load(params, { silent: true }),
-    [load, params],
-  );
+  const refresh = useCallback(() => load(params, { silent: true }), [load, params]);
 
   /**
    * Ejecuta una acción y recarga el tablero.
@@ -104,22 +157,17 @@ export default function App() {
   );
 
   /** Acción disparada desde el tablero: el error va al aviso general. */
-  async function mutateBoard(action) {
-    setError("");
-    try {
-      await mutate(action);
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
-  useEffect(() => {
-    if (!undone) {
-      return undefined;
-    }
-    const timer = setTimeout(() => setUndone(null), UNDO_WINDOW_MS);
-    return () => clearTimeout(timer);
-  }, [undone]);
+  const mutateBoard = useCallback(
+    async (action) => {
+      setError("");
+      try {
+        await mutate(action);
+      } catch (err) {
+        setError(err.message);
+      }
+    },
+    [mutate],
+  );
 
   useEffect(() => {
     if (detailId !== null && !loading && !tasks.some((task) => task.id === detailId)) {
@@ -127,43 +175,82 @@ export default function App() {
     }
   }, [detailId, loading, tasks]);
 
-  const handleCreate = (values) => mutate(() => createTask(values));
-  const handleUpdate = (id, values) => mutate(() => updateTask(id, values));
-  const handleMove = (id, status, position) =>
-    mutateBoard(() => moveTask(id, { status, position }));
-  const handleAddSubtask = (taskId, title) =>
-    mutate(() => createSubtask(taskId, title));
-  const handleToggleSubtask = (id, done) =>
-    mutate(() => updateSubtask(id, { done }));
-  const handleDeleteSubtask = (id) => mutate(() => deleteSubtask(id));
-  const handleUpload = (taskId, file) => mutate(() => uploadAttachment(taskId, file));
-  const handleDeleteAttachment = (taskId, attachmentId) =>
-    mutate(() => deleteAttachment(taskId, attachmentId));
+  // AUD-27: handlers estables para no invalidar la memoización de los hijos.
+  const handleCreate = useCallback(
+    async (values) => {
+      const created = await mutate(() => createTask(values));
+      // AUD-36: confirmación explícita de éxito.
+      showToast("Tarea creada correctamente.");
+      return created;
+    },
+    [mutate, showToast],
+  );
 
-  function requestDelete(id) {
-    const task = tasks.find((item) => item.id === id);
+  const handleUpdate = useCallback(
+    async (id, values) => {
+      const updated = await mutate(() => updateTask(id, values));
+      showToast("Cambios guardados.");
+      return updated;
+    },
+    [mutate, showToast],
+  );
+
+  const handleMove = useCallback(
+    (id, status, position) => mutateBoard(() => moveTask(id, { status, position })),
+    [mutateBoard],
+  );
+  const handleAddSubtask = useCallback(
+    (taskId, title) => mutate(() => createSubtask(taskId, title)),
+    [mutate],
+  );
+  const handleToggleSubtask = useCallback(
+    (id, done) => mutate(() => updateSubtask(id, { done })),
+    [mutate],
+  );
+  const handleDeleteSubtask = useCallback(
+    (id) => mutate(() => deleteSubtask(id)),
+    [mutate],
+  );
+  const handleUpload = useCallback(
+    (taskId, file) => mutate(() => uploadAttachment(taskId, file)),
+    [mutate],
+  );
+  const handleDeleteAttachment = useCallback(
+    (taskId, attachmentId) => mutate(() => deleteAttachment(taskId, attachmentId)),
+    [mutate],
+  );
+
+  const requestDelete = useCallback((id) => {
+    const task = tasksRef.current.find((item) => item.id === id);
     setPendingDelete({ id, title: task ? task.title : `#${id}` });
-  }
+  }, []);
 
-  async function confirmDelete() {
+  const openDetail = useCallback((id) => setDetailId(id), []);
+  const closeDetail = useCallback(() => setDetailId(null), []);
+
+  const confirmDelete = useCallback(async () => {
     const target = pendingDelete;
+    if (!target) {
+      return;
+    }
     setPendingDelete(null);
     setDetailId((current) => (current === target.id ? null : current));
     setError("");
     try {
       await deleteTask(target.id);
       await refresh();
-      setUndone(target);
+      showToast(`Eliminaste "${target.title}".`, {
+        actionLabel: "Deshacer",
+        duration: UNDO_WINDOW_MS,
+        onAction: async () => {
+          setToast(null);
+          await mutateBoard(() => restoreTask(target.id));
+        },
+      });
     } catch (err) {
       setError(err.message);
     }
-  }
-
-  async function handleUndo() {
-    const target = undone;
-    setUndone(null);
-    await mutateBoard(() => restoreTask(target.id));
-  }
+  }, [pendingDelete, refresh, showToast, mutateBoard]);
 
   const detailTask =
     detailId === null ? null : tasks.find((task) => task.id === detailId) ?? null;
@@ -175,7 +262,11 @@ export default function App() {
         <p>Organizá tus actividades, seguí su avance y sumá lo que necesites.</p>
       </header>
 
-      <TaskForm onCreate={handleCreate} onUpload={handleUpload} />
+      <TaskForm
+        onCreate={handleCreate}
+        onUpload={handleUpload}
+        tagOptions={tagOptions}
+      />
 
       <div className="toolbar">
         <div className="toolbar__filters">
@@ -258,30 +349,48 @@ export default function App() {
         </p>
       )}
 
-      {loading ? (
-        <p className="loading">Cargando tareas...</p>
+      {!loaded ? (
+        // AUD-12: la carga inicial se anuncia a los lectores de pantalla.
+        <p className="loading" role="status" aria-live="polite">
+          Cargando tareas...
+        </p>
       ) : (
-        <Board
-          tasks={tasks}
-          onMove={handleMove}
-          onOpen={setDetailId}
-          onDelete={requestDelete}
-        />
+        // AUD-30: el tablero permanece montado; la recarga se superpone sin
+        // reemplazarlo (sin salto de layout).
+        <div className="board-area" aria-busy={loading}>
+          {loading && (
+            <div className="board-overlay">
+              <span className="board-overlay__chip" role="status" aria-live="polite">
+                Actualizando tareas...
+              </span>
+            </div>
+          )}
+          <Board
+            tasks={tasks}
+            onMove={handleMove}
+            onOpen={openDetail}
+            onDelete={requestDelete}
+          />
+        </div>
       )}
 
       {detailTask && (
-        <TaskDetailModal
-          key={detailTask.id}
-          task={detailTask}
-          onClose={() => setDetailId(null)}
-          onUpdate={handleUpdate}
-          onAddSubtask={handleAddSubtask}
-          onToggleSubtask={handleToggleSubtask}
-          onDeleteSubtask={handleDeleteSubtask}
-          onUpload={handleUpload}
-          onDeleteAttachment={handleDeleteAttachment}
-          onDelete={requestDelete}
-        />
+        <Suspense fallback={null}>
+          <TaskDetailModal
+            key={detailTask.id}
+            task={detailTask}
+            onClose={closeDetail}
+            onNotify={showToast}
+            onMove={handleMove}
+            onUpdate={handleUpdate}
+            onAddSubtask={handleAddSubtask}
+            onToggleSubtask={handleToggleSubtask}
+            onDeleteSubtask={handleDeleteSubtask}
+            onUpload={handleUpload}
+            onDeleteAttachment={handleDeleteAttachment}
+            onDelete={requestDelete}
+          />
+        </Suspense>
       )}
 
       {pendingDelete && (
@@ -294,12 +403,12 @@ export default function App() {
         />
       )}
 
-      {undone && (
+      {toast && (
         <Toast
-          message={`Eliminaste "${undone.title}".`}
-          actionLabel="Deshacer"
-          onAction={handleUndo}
-          onClose={() => setUndone(null)}
+          message={toast.message}
+          actionLabel={toast.actionLabel}
+          onAction={toast.onAction}
+          onClose={() => setToast(null)}
         />
       )}
     </main>

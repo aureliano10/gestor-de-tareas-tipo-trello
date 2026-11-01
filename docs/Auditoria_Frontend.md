@@ -308,6 +308,14 @@ Varios textos quedan en 0.68–0.7rem (≈10–11 px): `.filter > span`, `.tag-c
 | UX y consistencia visual | 10 | 0 | 5 | 5 |
 | **Total** | **38** | **5** | **19** | **14** |
 
+**Estado tras la fase de remediación:** los **38 hallazgos** fueron corregidos en el código del cliente (no aplica ninguno). El detalle por hallazgo está en la sección 12.
+
+| Estado | Cantidad | Porcentaje |
+|---|---|---|
+| Corregido | 38 | 100 % |
+| No aplica | 0 | 0 % |
+| Pendiente | 0 | 0 % |
+
 **Indicadores positivos verificados:** `npm run build` sin advertencias (JS 253.73 kB / 77.25 kB gzip); `npm run lint` en 0 problemas; HTML semántico correcto en el tablero; etiquetas de formulario correctamente asociadas; modales con ARIA básica y cierre con Escape; estados vacíos en columnas y paneles; modo oscuro y `prefers-reduced-motion` contemplados; ninguna imagen sin texto alternativo (no hay imágenes).
 
 ## 9. Top 5 de prioridades
@@ -330,10 +338,69 @@ Las debilidades se concentran en tres frentes:
 
 Ninguno de los hallazgos es de gravedad crítica para una demo, pero los cinco altos —encabezados por el foco en modales y el contraste en modo oscuro— deberían abordarse antes de considerar el cliente "accesible". El resto constituye una lista de mejoras priorizada y de bajo riesgo para futuras iteraciones.
 
+**Resultado de la remediación.** Tras esta auditoría se ejecutó una fase de corrección sobre `frontend/src/**` que resolvió **los 38 hallazgos** (sección 12). Los cambios se verificaron de forma real: `npm run lint` termina con **0 problemas**, `npm run build` compila **sin errores** y con *code splitting* efectivo (`TaskDetailModal` en su propio chunk y un chunk de *vendor* para React), el recálculo de contraste WCAG deja **todos los pares por encima de su umbral** en ambos temas, y la suite de sistema completa (80 casos: 62 API + 11 UI + 7 caja blanca) se ejecutó sobre el backend con base temporal y pasó **80/80**. Ningún hallazgo quedó como "no aplica": todos admitían una corrección concreta y de bajo riesgo que se implementó.
+
 ## 11. Evidencias adjuntas
 
 Guardadas en `docs/evidencias/auditoria_frontend/`:
 
-- `npm_run_build.txt` — salida cruda de `npm run build`.
-- `npm_run_lint.txt` — salida cruda de `npm run lint`.
-- `contraste_wcag.txt` — cálculo de ratios de contraste WCAG para todos los pares evaluados (claro y oscuro).
+- `npm_run_build.txt` — salida cruda de `npm run build` (fase de auditoría).
+- `npm_run_build.txt` (regenerado en la remediación) — build final con *code splitting*.
+- `npm_run_lint.txt` — salida cruda de `npm run lint` (final, 0 problemas).
+- `contraste_wcag.txt` — cálculo de ratios de contraste WCAG de la auditoría (claro y oscuro).
+- `contraste_corregido.txt` — recálculo de ratios tras la corrección; todos los pares cumplen.
+- `calcular_contraste_corregido.py` — script que reproduce el recálculo.
+
+## 12. Estado de remediación de hallazgos
+
+Todas las correcciones se aplicaron sobre el código del cliente (`frontend/src/**`), respetando las restricciones del proyecto: no se alteraron los atributos `data-testid` ni los selectores usados por la suite de Etapa 6, no se modificó el texto de error del título ("El título es obligatorio y no puede contener solo espacios.") y no se tocó el backend ni la API.
+
+| ID | Severidad | Estado | Corrección aplicada | Evidencia |
+|---|---|---|---|---|
+| AUD-01 | Alta | Corregido | Hook `useFocusTrap` en `TaskDetailModal` y `ConfirmDialog`: enfoca el primer control, atrapa Tab/Shift+Tab y restaura el foco al disparador al cerrar. | `frontend/src/useFocusTrap.js`; `npm_run_lint.txt`; suite 80/80 |
+| AUD-02 | Alta | Corregido | Control `<select data-testid="detail-status">` en el panel Detalle para cambiar de estado (alternativa de teclado/ratón al *drag & drop*). | `components/TaskDetailModal.jsx`; `app.css` (AUD-02/AUD-29); CP-UI-03 |
+| AUD-03 | Alta | Corregido | `.upload input[type="file"]` pasa de `display:none` a *sr-only* (1px, `clip`) con `.upload:focus-within`; el control es enfocable. | `styles/app.css` (AUD-03) |
+| AUD-04 | Alta | Corregido | Fondos de botón oscurecidos en ambos temas (claro `#5b53e8`/`#443ccd`; oscuro `#4f46e5`/`#3730a3`): blanco ≥ 4.90:1. | `app.css` (AUD-04); `contraste_corregido.txt` |
+| AUD-05 | Alta | Corregido | `--danger-dark` redefinido en modo oscuro (`#ffb4b6`): `.alert` queda en 8.39:1. | `app.css` (AUD-05); `contraste_corregido.txt` |
+| AUD-06 | Media | Corregido | `--muted` claro pasa a `#5c6379`; ratios 5.20–5.97:1 sobre todas las superficies. | `app.css` (AUD-06); `contraste_corregido.txt` |
+| AUD-07 | Media | Corregido | Anillo de foco con color sólido `#443ccd` (claro) / `#8b83ff` (oscuro); 5.56–7.57:1. | `app.css` (AUD-07); `contraste_corregido.txt` |
+| AUD-08 | Media | Corregido | `--border-strong` a `#7c829b` (claro) y `#7c85b4` (oscuro); bordes ≥ 3.31:1. | `app.css` (AUD-08); `contraste_corregido.txt` |
+| AUD-09 | Media | Corregido | `TaskCard` como `<article role="button" tabIndex={0} aria-label onKeyDown>` con activación por Enter/Espacio. | `components/TaskCard.jsx` |
+| AUD-10 | Media | Corregido | Escape gestionado por `useFocusTrap` con `onEscape` que cierra **solo** si no hay edición en curso. | `components/TaskDetailModal.jsx`; `useFocusTrap.js` |
+| AUD-11 | Media | Corregido | Color de texto de los badges de prioridad ajustado: Alta 4.73:1, Media 5.57:1. | `app.css` (AUD-11); `contraste_corregido.txt` |
+| AUD-12 | Media | Corregido | Estado de carga con `role="status"` y `aria-live="polite"`. | `App.jsx` |
+| AUD-13 | Baja | Corregido | Se eliminó `role="presentation"` de los overlays; el cierre por Escape (teclado) queda cubierto por la trampa de foco. | `TaskDetailModal.jsx`, `ConfirmDialog.jsx` |
+| AUD-14 | Baja | Corregido | Toast en modo oscuro sobre superficie oscura (`--toast-*`): acción 7.19:1, cierre 10.46:1. | `app.css` (AUD-14/AUD-37); `contraste_corregido.txt` |
+| AUD-15 | Media | Corregido | `React.memo` en `Board`/`Column`/`TaskCard`, `useMemo` del agrupado por estado y `useCallback` en los handlers de `App`. | `components/Board.jsx`, `Column.jsx`, `TaskCard.jsx`; `App.jsx` |
+| AUD-16 | Media | Corregido | `TaskForm` recibe `tagOptions` por props; ya no vuelve a pedir `/tags`. | `components/TaskForm.jsx`, `App.jsx` |
+| AUD-17 | Media | Corregido | `React.lazy` + `Suspense` para `TaskDetailModal`; chunk propio de 11.52 kB (gzip 3.32 kB). | `App.jsx`; `npm_run_build.txt` |
+| AUD-18 | Baja | Corregido | `build.rollupOptions.output.manualChunks` separa React/ReactDOM en un chunk de *vendor* (218.72 kB). | `vite.config.js`; `npm_run_build.txt` |
+| AUD-19 | Media | Corregido | `load` usa un identificador de petición (`requestRef`) y descarta respuestas obsoletas. | `App.jsx` |
+| AUD-20 | Media | Corregido | Constantes y `validateLink()` extraídos al módulo compartido `links.js`, usado por formulario y detalle. | `frontend/src/links.js`; `DetailLinks.jsx`, `TaskForm.jsx` |
+| AUD-21 | Media | Corregido | `TaskDetailModal` dividido en `DetailChecklist`, `DetailLinks`, `DetailAttachments` y `DetailHistory`; el orquestador bajó a ~246 líneas. | `components/Detail*.jsx`, `TaskDetailModal.jsx` |
+| AUD-22 | Media | Corregido | `getTags().catch(() => null)` desacopla el fallo de `/tags` de la carga del tablero. | `App.jsx` |
+| AUD-23 | Baja | Corregido | Eliminada la rama muerta `typeof options === "boolean"`; `getTasks(options = {})`. | `api.js` |
+| AUD-24 | Baja | Corregido | Borradores de subtareas/enlaces/archivos con `id` estable (`uidRef`) y `key={item.id}`. | `components/TaskForm.jsx` |
+| AUD-25 | Baja | Corregido | `ErrorBoundary` con `getDerivedStateFromError`/`componentDidCatch` y fallback `role="alert"` envolviendo la app. | `components/ErrorBoundary.jsx`; `main.jsx` |
+| AUD-26 | Baja | Corregido | Helper `prioritySlug()` en `format.js`, reutilizado por tarjeta y detalle. | `frontend/src/format.js` |
+| AUD-27 | Baja | Corregido | Handlers de `App` memoizados con `useCallback`. | `App.jsx` |
+| AUD-28 | Baja | Corregido | `api.js` envuelve `fetch` y traduce el fallo de red a un mensaje en español ("No se pudo conectar con el servidor..."). | `api.js` |
+| AUD-29 | Media | Corregido | El control de estado (AUD-02) da alternativa al *drag & drop* no táctil en móviles/tabletas. | `TaskDetailModal.jsx`; `app.css` (AUD-02/AUD-29) |
+| AUD-30 | Media | Corregido | `.board-overlay` con chip superpuesto (`role="status"`) durante la recarga; el tablero ya no se desmonta. | `App.jsx`; `app.css` (AUD-30) |
+| AUD-31 | Media | Corregido | Paneles de checklist/enlaces/adjuntos con estado `busy` que deshabilita los botones durante la operación. | `DetailChecklist.jsx`, `DetailLinks.jsx`, `DetailAttachments.jsx` |
+| AUD-32 | Media | Corregido | Áreas táctiles ≥ 44 px en `.icon-button`, `.task__action`, `.toast__close` y `.chip__remove::after`. | `app.css` (AUD-32) |
+| AUD-33 | Media | Corregido | Colores de badges movidos a tokens del tema (`--badge-*-bg`/`--badge-*-fg`) definidos para claro y oscuro. | `app.css` (AUD-33); `contraste_corregido.txt` |
+| AUD-34 | Baja | Corregido | Los `border-radius: 8px` *hardcodeados* se reemplazaron por el token `--radius-sm`. | `app.css` |
+| AUD-35 | Baja | Corregido | Borrados secundarios (subtarea, enlace, adjunto) ofrecen un toast "Deshacer" que re-crea el elemento. | `DetailChecklist.jsx`, `DetailLinks.jsx`, `DetailAttachments.jsx` |
+| AUD-36 | Baja | Corregido | Toasts de éxito al crear ("Tarea creada correctamente.") y al editar ("Cambios guardados."). | `App.jsx` |
+| AUD-37 | Baja | Corregido | Toast oscuro sobre superficie oscura (sin invertir) y `.toast__message` permite salto de línea. | `app.css` (AUD-37) |
+| AUD-38 | Baja | Corregido | Tamaños mínimos de texto subidos (≥ 0.75 rem ≈ 12 px) en filtros, chips y textos pequeños. | `app.css` (AUD-38) |
+
+**Resumen:** 38/38 corregidos (Alta 5/5, Media 19/19, Baja 14/14); 0 no aplica; 0 pendientes.
+
+**Verificación de la remediación (evidencia real):**
+
+- `npm run lint` → 0 problemas (código de salida 0). Evidencia: `npm_run_lint.txt`.
+- `npm run build` → exitoso con *code splitting*: `TaskDetailModal-*.js` 11.52 kB (gzip 3.32), `index-*.js` 29.70 kB (gzip 9.30) y `react-*.js` 218.72 kB (gzip 68.24); 35 módulos. Evidencia: `npm_run_build.txt`.
+- Contraste WCAG recalculado → **todos** los pares cumplen su umbral (4.5:1 texto, 3:1 texto grande/componentes) en claro y oscuro. Evidencia: `contraste_corregido.txt`.
+- Suite de sistema (80 casos) sobre backend con base temporal (`KANBAN_DB_PATH=/tmp/kanban_etapa6.db`): **80/80 aprobados** (API 62/62, UI 11/11, caja blanca 7/7); backend restaurado después y `GET /api/health` → 200.

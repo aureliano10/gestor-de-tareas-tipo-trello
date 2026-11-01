@@ -6,7 +6,17 @@ async function request(path, { body, ...options } = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(`${API_URL}${path}`, { ...options, body, headers });
+  let response;
+  try {
+    response = await fetch(`${API_URL}${path}`, { ...options, body, headers });
+  } catch (err) {
+    if (err?.name === "AbortError") {
+      throw err;
+    }
+    throw new Error(
+      "No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo.",
+    );
+  }
 
   if (!response.ok) {
     throw new Error(await readError(response));
@@ -35,8 +45,7 @@ async function readError(response) {
 }
 
 export function getTasks(options = {}) {
-  const { overdue = false, q, priority, tag, sort } =
-    typeof options === "boolean" ? { overdue: options } : options;
+  const { overdue = false, q, priority, tag, sort } = options;
 
   const params = new URLSearchParams();
   if (overdue) {

@@ -1,0 +1,45 @@
+=== MODO CLARO ===
+OK    17.57:1 (umbral 4.5)  texto principal #14182b sobre surface
+OK     7.86:1 (umbral 4.5)  texto suave #4a5169 sobre surface
+OK     5.97:1 (umbral 4.5)  CORREGIDO --muted #5c6379 sobre surface #fff
+OK     5.29:1 (umbral 4.5)  CORREGIDO --muted #5c6379 sobre bg #eef1f9
+OK     5.62:1 (umbral 4.5)  CORREGIDO --muted #5c6379 sobre surface-2 #f6f8fd
+OK     5.20:1 (umbral 4.5)  CORREGIDO --muted #5c6379 sobre surface-3 #eceffa
+OK     5.46:1 (umbral 4.5)  blanco sobre botón gradiente arriba #5b53e8
+OK     7.57:1 (umbral 4.5)  blanco sobre botón gradiente abajo #443ccd
+OK     4.93:1 (umbral 4.5)  blanco sobre botón peligro arriba #d1343a
+OK     7.24:1 (umbral 4.5)  blanco sobre botón peligro abajo #a82026
+OK     5.82:1 (umbral 4.5)  CORREGIDO error #c2262b sobre surface #fff
+OK     5.48:1 (umbral 4.5)  CORREGIDO error #c2262b sobre surface-2 #f6f8fd
+OK     5.17:1 (umbral 4.5)  CORREGIDO alerta #c2262b sobre danger-soft #fdeeee
+OK     4.73:1 (umbral 4.5)  CORREGIDO badge prioridad Alta #c2262b sobre mix(danger,16%)
+OK     5.57:1 (umbral 4.5)  CORREGIDO badge prioridad Media #1d4ed8 sobre mix(progress,16%)
+OK     7.57:1 (umbral 4.5)  enlaces/ghost #443ccd sobre surface
+OK     7.57:1 (umbral 3.0)  anillo de foco #443ccd sobre surface (1.4.11)
+OK     3.58:1 (umbral 3.0)  CORREGIDO borde control #7c829b sobre surface-2 #f6f8fd
+OK     3.80:1 (umbral 3.0)  CORREGIDO borde control #7c829b sobre surface #fff
+OK     3.31:1 (umbral 3.0)  CORREGIDO borde control #7c829b sobre surface-3 #eceffa
+OK     4.62:1 (umbral 4.5)  badge vence pronto #b45309 sobre #fff4e5
+OK     5.17:1 (umbral 4.5)  badge completo #067647 sobre #e7f8ef
+OK     6.31:1 (umbral 4.5)  badge archivos #6435c9 sobre #f0edff
+OK     6.40:1 (umbral 4.5)  onboarding chip primary-dark #443ccd sobre primary-soft
+
+=== MODO OSCURO ===
+OK    15.24:1 (umbral 4.5)  texto principal #eef1fb sobre surface
+OK    10.46:1 (umbral 4.5)  texto suave #c3c9e2 sobre surface
+OK     5.95:1 (umbral 4.5)  muted #8f97b6 sobre surface
+OK     6.54:1 (umbral 4.5)  muted #8f97b6 sobre bg #0d1020
+OK     6.29:1 (umbral 4.5)  CORREGIDO blanco sobre botón arriba #4f46e5
+OK     9.93:1 (umbral 4.5)  CORREGIDO blanco sobre botón abajo #3730a3
+OK     4.90:1 (umbral 4.5)  CORREGIDO blanco sobre botón peligro arriba #d1353a
+OK     6.47:1 (umbral 4.5)  CORREGIDO blanco sobre botón peligro abajo #b3272c
+OK     8.39:1 (umbral 4.5)  CORREGIDO alerta #ffb4b6 sobre danger-soft oscuro
+OK     4.44:1 (umbral 3.0)  CORREGIDO borde control #7c85b4 sobre surface-2
+OK     4.81:1 (umbral 3.0)  CORREGIDO borde control #7c85b4 sobre surface
+OK     5.56:1 (umbral 3.0)  anillo de foco #8b83ff sobre surface (1.4.11)
+OK     7.76:1 (umbral 4.5)  badge vence pronto #fbbf24 sobre mix(pending,16%)
+OK     7.81:1 (umbral 4.5)  badge completo #4ade80 sobre mix(done,18%)
+OK     7.09:1 (umbral 4.5)  badge archivos #c4b5fd sobre mix(primary,18%)
+OK     7.19:1 (umbral 4.5)  toast acción #a49cff sobre surface oscuro
+OK    10.46:1 (umbral 4.5)  toast cerrar #c3c9e2 sobre surface oscuro
+OK    15.24:1 (umbral 4.5)  toast mensaje #eef1fb sobre surface oscuro

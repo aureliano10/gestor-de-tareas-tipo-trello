@@ -3,6 +3,25 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        /**
+         * AUD-18: separa React/ReactDOM (y su scheduler) del código de la
+         * aplicación en un chunk de vendor con mejor cacheo entre despliegues.
+         */
+        manualChunks(id) {
+          const isReactRuntime =
+            id.includes("node_modules/react") ||
+            id.includes("node_modules/scheduler");
+          if (isReactRuntime) {
+            return "react";
+          }
+          return undefined;
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {

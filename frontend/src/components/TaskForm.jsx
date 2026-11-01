@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { getTags } from "../api.js";
+import { memo, useRef, useState } from "react";
 import {
   ALLOWED_EXTENSIONS,
   MAX_ATTACHMENTS,
@@ -8,6 +7,12 @@ import {
   formatSize,
   todayISO,
 } from "../format.js";
+import {
+  MAX_LINKS,
+  MAX_LINK_LABEL_LENGTH,
+  MAX_LINK_URL_LENGTH,
+  validateLink,
+} from "../links.js";
 import TaskFields, {
   DEFAULT_PRIORITY,
   MAX_ASSIGNEE_LENGTH,
@@ -18,9 +23,6 @@ const MAX_TAGS = 5;
 const MAX_TAG_LENGTH = 30;
 const MAX_SUBTASKS = 20;
 const MAX_SUBTASK_LENGTH = 100;
-const MAX_LINKS = 5;
-const MAX_LINK_URL_LENGTH = 500;
-const MAX_LINK_LABEL_LENGTH = 60;
 
 const EMPTY_TASK = {
   title: "",
@@ -29,10 +31,6 @@ const EMPTY_TASK = {
   priority: DEFAULT_PRIORITY,
   assignee: "",
 };
-
-function isValidLink(url) {
-  return /^https?:\/\//i.test(url);
-}
 
 function validateExtras({ assignee, tags, subtasks, links, files }) {
   if ((assignee ?? "").trim().length > MAX_ASSIGNEE_LENGTH) {
@@ -53,12 +51,11 @@ function validateExtras({ assignee, tags, subtasks, links, files }) {
   return "";
 }
 
-export default function TaskForm({ onCreate, onUpload }) {
+function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
   const [values, setValues] = useState(EMPTY_TASK);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const [suggestions, setSuggestions] = useState([]);
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [tagError, setTagError] = useState("");
@@ -76,19 +73,12 @@ export default function TaskForm({ onCreate, onUpload }) {
   const [fileError, setFileError] = useState("");
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    let active = true;
-    getTags()
-      .then((names) => {
-        if (active) {
-          setSuggestions(names);
-        }
-      })
-      .catch(() => {});
-    return () => {
-      active = false;
-    };
-  }, []);
+  // AUD-24: identificadores estables para las `key` de los borradores.
+  const uidRef = useRef(0);
+  function nextId() {
+    uidRef.current += 1;
+    return uidRef.current;
+  }
 
   function resetForm() {
     setValues(EMPTY_TASK);
@@ -162,51 +152,28 @@ export default function TaskForm({ onCreate, onUpload }) {
       return;
     }
     setSubtaskError("");
-    setSubtasks([...subtasks, clean]);
+    setSubtasks([...subtasks, { id: nextId(), title: clean }]);
     setSubtaskInput("");
   }
 
-  function removeSubtaskItem(index) {
-    setSubtasks(subtasks.filter((_, position) => position !== index));
+  function removeSubtaskItem(id) {
+    setSubtasks(subtasks.filter((item) => item.id !== id));
   }
 
   function addLink() {
-    const url = linkUrl.trim();
-    const label = linkLabel.trim();
-    if (!url) {
-      setLinkError("Ingresá una URL para el enlace.");
-      return;
-    }
-    if (!isValidLink(url)) {
-      setLinkError("El enlace debe comenzar con http:// o https://.");
-      return;
-    }
-    if (url.length > MAX_LINK_URL_LENGTH) {
-      setLinkError(`El enlace no puede superar los ${MAX_LINK_URL_LENGTH} caracteres.`);
-      return;
-    }
-    if (label.length > MAX_LINK_LABEL_LENGTH) {
-      setLinkError(
-        `El nombre del enlace no puede superar los ${MAX_LINK_LABEL_LENGTH} caracteres.`,
-      );
-      return;
-    }
-    if (links.some((link) => link.url.toLowerCase() === url.toLowerCase())) {
-      setLinkError("El enlace ya está agregado a la tarea.");
-      return;
-    }
-    if (links.length >= MAX_LINKS) {
-      setLinkError(`Una tarea no puede tener más de ${MAX_LINKS} enlaces.`);
+    const message = validateLink({ url: linkUrl, label: linkLabel, existing: links });
+    if (message) {
+      setLinkError(message);
       return;
     }
     setLinkError("");
-    setLinks([...links, { url, label }]);
+    setLinks([...links, { id: nextId(), url: linkUrl.trim(), label: linkLabel.trim() }]);
     setLinkUrl("");
     setLinkLabel("");
   }
 
-  function removeLink(index) {
-    setLinks(links.filter((_, position) => position !== index));
+  function removeLink(id) {
+    setLinks(links.filter((item) => item.id !== id));
     setLinkError("");
   }
 
@@ -236,21 +203,23 @@ export default function TaskForm({ onCreate, onUpload }) {
         message = `El archivo ${file.name} supera el tamaño máximo de 5 MB.`;
         continue;
       }
-      next.push(file);
+      next.push({ id: nextId(), file });
     }
     setFiles(next);
     setFileError(message);
   }
 
-  function removeFile(index) {
-    setFiles(files.filter((_, position) => position !== index));
+  function removeFile(id) {
+    setFiles(files.filter((item) => item.id !== id));
     setFileError("");
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const message = validateTaskInput(values) || validateExtras({ ...values, tags, subtasks, links, files });
+    const message =
+      validateTaskInput(values) ||
+      validateExtras({ ...values, tags, subtasks, links, files });
     if (message) {
       setError(message);
       return;
@@ -267,9 +236,9 @@ export default function TaskForm({ onCreate, onUpload }) {
         dueDate: values.dueDate,
         priority: values.priority,
         assignee: values.assignee,
-        subtasks,
+        subtasks: subtasks.map((item) => item.title),
         tags,
-        links,
+        links: links.map((item) => ({ url: item.url, label: item.label })),
       });
     } catch (err) {
       setError(err.message);
@@ -277,15 +246,16 @@ export default function TaskForm({ onCreate, onUpload }) {
       return;
     }
 
+    const pendingFiles = files;
     resetForm();
 
     if (onUpload) {
       const failed = [];
-      for (const file of files) {
+      for (const item of pendingFiles) {
         try {
-          await onUpload(created.id, file);
+          await onUpload(created.id, item.file);
         } catch (err) {
-          failed.push(`${file.name} (${err.message})`);
+          failed.push(`${item.file.name} (${err.message})`);
         }
       }
       if (failed.length > 0) {
@@ -356,7 +326,7 @@ export default function TaskForm({ onCreate, onUpload }) {
               onKeyDown={handleTagKeyDown}
             />
             <datalist id="new-task-tag-suggestions">
-              {suggestions.map((name) => (
+              {tagOptions.map((name) => (
                 <option key={name} value={name} />
               ))}
             </datalist>
@@ -383,19 +353,19 @@ export default function TaskForm({ onCreate, onUpload }) {
           <div className="extras__body">
             {subtasks.length > 0 && (
               <ul className="draft-list">
-                {subtasks.map((title, index) => (
-                  <li key={`${title}-${index}`} className="draft-item">
+                {subtasks.map((item) => (
+                  <li key={item.id} className="draft-item">
                     <span
                       className="draft-item__text"
                       data-testid="new-task-subtask-item"
                     >
-                      {title}
+                      {item.title}
                     </span>
                     <button
                       type="button"
                       className="icon-button"
-                      aria-label={`Quitar ${title}`}
-                      onClick={() => removeSubtaskItem(index)}
+                      aria-label={`Quitar ${item.title}`}
+                      onClick={() => removeSubtaskItem(item.id)}
                     >
                       ×
                     </button>
@@ -410,6 +380,7 @@ export default function TaskForm({ onCreate, onUpload }) {
                 value={subtaskInput}
                 maxLength={MAX_SUBTASK_LENGTH}
                 placeholder="Nuevo ítem del checklist"
+                disabled={submitting}
                 onChange={(event) => {
                   setSubtaskInput(event.target.value);
                   setSubtaskError("");
@@ -425,6 +396,7 @@ export default function TaskForm({ onCreate, onUpload }) {
                 type="button"
                 className="btn"
                 data-testid="new-task-subtask-add"
+                disabled={submitting}
                 onClick={addSubtaskItem}
               >
                 Agregar
@@ -451,19 +423,19 @@ export default function TaskForm({ onCreate, onUpload }) {
           <div className="extras__body">
             {links.length > 0 && (
               <ul className="draft-list">
-                {links.map((link, index) => (
-                  <li key={`${link.url}-${index}`} className="draft-item">
+                {links.map((item) => (
+                  <li key={item.id} className="draft-item">
                     <span className="draft-item__text" data-testid="new-task-link-item">
-                      {link.label || link.url}
+                      {item.label || item.url}
                     </span>
-                    {link.label && (
-                      <span className="draft-item__meta">{link.url}</span>
+                    {item.label && (
+                      <span className="draft-item__meta">{item.url}</span>
                     )}
                     <button
                       type="button"
                       className="icon-button"
-                      aria-label={`Quitar enlace ${link.url}`}
-                      onClick={() => removeLink(index)}
+                      aria-label={`Quitar enlace ${item.url}`}
+                      onClick={() => removeLink(item.id)}
                     >
                       ×
                     </button>
@@ -479,6 +451,7 @@ export default function TaskForm({ onCreate, onUpload }) {
                 value={linkUrl}
                 maxLength={MAX_LINK_URL_LENGTH}
                 placeholder="https://ejemplo.com"
+                disabled={submitting}
                 onChange={(event) => {
                   setLinkUrl(event.target.value);
                   setLinkError("");
@@ -491,6 +464,7 @@ export default function TaskForm({ onCreate, onUpload }) {
                 value={linkLabel}
                 maxLength={MAX_LINK_LABEL_LENGTH}
                 placeholder="Nombre (opcional)"
+                disabled={submitting}
                 onChange={(event) => {
                   setLinkLabel(event.target.value);
                   setLinkError("");
@@ -500,6 +474,7 @@ export default function TaskForm({ onCreate, onUpload }) {
                 type="button"
                 className="btn btn--ghost"
                 data-testid="new-task-link-add"
+                disabled={submitting}
                 onClick={addLink}
               >
                 Agregar enlace
@@ -528,17 +503,19 @@ export default function TaskForm({ onCreate, onUpload }) {
           <div className="extras__body">
             {files.length > 0 && (
               <ul className="draft-list">
-                {files.map((file, index) => (
-                  <li key={`${file.name}-${index}`} className="draft-item">
+                {files.map((item) => (
+                  <li key={item.id} className="draft-item">
                     <span className="draft-item__text" data-testid="new-task-file-item">
-                      {file.name}
+                      {item.file.name}
                     </span>
-                    <span className="draft-item__meta">{formatSize(file.size)}</span>
+                    <span className="draft-item__meta">
+                      {formatSize(item.file.size)}
+                    </span>
                     <button
                       type="button"
                       className="icon-button"
-                      aria-label={`Quitar ${file.name}`}
-                      onClick={() => removeFile(index)}
+                      aria-label={`Quitar ${item.file.name}`}
+                      onClick={() => removeFile(item.id)}
                     >
                       ×
                     </button>
@@ -553,6 +530,7 @@ export default function TaskForm({ onCreate, onUpload }) {
               multiple
               accept={ALLOWED_EXTENSIONS.join(",")}
               data-testid="new-task-attachment-input"
+              disabled={submitting}
               onChange={handleFileChange}
             />
             <p className="hint">
@@ -587,3 +565,6 @@ export default function TaskForm({ onCreate, onUpload }) {
     </form>
   );
 }
+
+// AUD-15: evita re-renderizar el formulario en cada tecla del buscador.
+export default memo(TaskForm);

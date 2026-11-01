@@ -1,6 +1,8 @@
+import { memo } from "react";
+import { prioritySlug } from "../format.js";
 import DueBadge from "./DueBadge.jsx";
 
-export default function TaskCard({ task, onOpen, onDelete }) {
+function TaskCard({ task, onOpen, onDelete }) {
   function handleDragStart(event) {
     event.dataTransfer.setData("text/plain", String(task.id));
     event.dataTransfer.effectAllowed = "move";
@@ -9,6 +11,16 @@ export default function TaskCard({ task, onOpen, onDelete }) {
 
   function handleDragEnd(event) {
     event.currentTarget.classList.remove("task--dragging");
+  }
+
+  function handleKeyDown(event) {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onOpen(task.id);
+    }
   }
 
   const hasChecklist = task.subtask_total > 0;
@@ -20,9 +32,13 @@ export default function TaskCard({ task, onOpen, onDelete }) {
       data-testid="task-card"
       data-task-id={task.id}
       draggable="true"
+      role="button"
+      tabIndex={0}
+      aria-label={`Abrir tarea ${task.title}`}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onClick={() => onOpen(task.id)}
+      onKeyDown={handleKeyDown}
     >
       <p className="task__title" data-testid="task-title">
         {task.title}
@@ -32,7 +48,7 @@ export default function TaskCard({ task, onOpen, onDelete }) {
 
       <div className="task__badges">
         <span
-          className={`badge badge--priority badge--priority-${task.priority.toLowerCase()}`}
+          className={`badge badge--priority badge--priority-${prioritySlug(task.priority)}`}
           data-testid="priority-badge"
         >
           {task.priority}
@@ -104,3 +120,5 @@ export default function TaskCard({ task, onOpen, onDelete }) {
     </article>
   );
 }
+
+export default memo(TaskCard);

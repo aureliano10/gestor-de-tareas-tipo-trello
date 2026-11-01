@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useFocusTrap } from "../useFocusTrap.js";
 
 export default function ConfirmDialog({
   title,
@@ -7,26 +8,12 @@ export default function ConfirmDialog({
   onConfirm,
   onCancel,
 }) {
-  const confirmRef = useRef(null);
+  const dialogRef = useRef(null);
 
-  useEffect(() => {
-    confirmRef.current?.focus();
-
-    // En fase de captura, para que Escape cierre solo este diálogo y no
-    // llegue a los demás componentes que escuchan el evento (por ejemplo,
-    // el detalle de la tarea que está detrás).
-    function handleKey(event) {
-      if (event.key === "Escape") {
-        event.stopPropagation();
-        onCancel();
-      }
-    }
-    window.addEventListener("keydown", handleKey, true);
-    return () => window.removeEventListener("keydown", handleKey, true);
-  }, [onCancel]);
+  useFocusTrap(dialogRef, { onEscape: onCancel });
 
   return (
-    <div className="overlay" onClick={onCancel} role="presentation">
+    <div className="overlay" onClick={onCancel}>
       <div
         className="dialog"
         role="alertdialog"
@@ -34,6 +21,8 @@ export default function ConfirmDialog({
         aria-labelledby="confirm-title"
         aria-describedby="confirm-message"
         data-testid="confirm-dialog"
+        ref={dialogRef}
+        tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
       >
         <h2 id="confirm-title" className="dialog__title">
@@ -54,7 +43,6 @@ export default function ConfirmDialog({
           <button
             type="button"
             className="btn btn--danger"
-            ref={confirmRef}
             onClick={onConfirm}
             data-testid="confirm-accept"
           >

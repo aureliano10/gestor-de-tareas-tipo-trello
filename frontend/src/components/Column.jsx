@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import TaskCard from "./TaskCard.jsx";
 
 /**
@@ -21,7 +21,9 @@ function dropIndex(container, taskId, clientY) {
   return index;
 }
 
-export default function Column({
+export default memo(Column);
+
+function Column({
   status,
   tasks,
   emptyHint,

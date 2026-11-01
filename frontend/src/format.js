@@ -46,6 +46,21 @@ export function extensionOf(filename) {
   return index === -1 ? "" : filename.slice(index).toLowerCase();
 }
 
+export function formatDateTime(iso) {
+  return new Date(iso).toLocaleString("es-AR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+/** Identificador estable de la clase CSS de prioridad (badge--priority-*). */
+export function prioritySlug(priority) {
+  return String(priority ?? "").toLowerCase();
+}
+
 /**
  * Describe la fecha límite y su urgencia.
  * `tone` alimenta el estilo: "overdue" | "today" | "soon" | "normal".
