@@ -1,0 +1,9 @@
+CP-CB-01: APROBADO | válido='Tarea válida'; vacío='El título no puede estar vacío ni contener solo espacios'; espacios='El título no puede estar vacío ni contener solo espacios'; 101='El título no puede superar los 100 caracteres'; None='El título es obligatorio'
+CP-CB-02: APROBADO | inexistente=None; bloqueada=PendingSubtasksError('La tarea tiene subtareas pendientes'); estado bloqueado='Pendiente'; finalizada='Terminada'
+CP-CB-03: APROBADO | delete=True; listado tras delete=0; segundo delete=False; delete inexistente=False; restore=ok; listado tras restore=1; segundo restore=None; restore inexistente=None
+CP-CB-04: APROBADO | acumulado=[1, 2, 3]; cuarta alta=AttachmentLimitError('Una tarea no puede tener más de 3 archivos adjuntos'); adjuntos finales=3
+CP-CB-05: APROBADO | estado previo='Terminada'; tras desmarcar='En curso'; pendientes=0; tras marcar='Pendiente'
+CP-CB-06: APROBADO | vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len(101)=101; título largo='El título no puede superar los 100 caracteres.'; descripción larga='La descripción no puede superar los 500 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input tras alta=''; POST totales=2
+CP-CB-07: APROBADO | orden inicial=['Alfa', 'Beta']; PATCH reorden=[{'status': 'Pendiente', 'position': 0}]; orden final=['Beta', 'Alfa']; PATCH movimiento=[{'status': 'Pendiente', 'position': 0}, {'status': 'En curso', 'position': 0}]; En curso=True; PATCH totales=2; tarjetas en Terminada=0
+
+Caja blanca: 7/7 aprobados

@@ -1,0 +1,13 @@
+CP-UI-01: APROBADO | tarjeta visible=True; input=''; resumen='1 tarea'; contador Pendiente='1'; persistió=True
+CP-UI-02: APROBADO | error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0
+CP-UI-03: APROBADO | En curso=True; tarjetas en Pendiente=0; contador Pendiente='0'; contador En curso='1'; PATCH=1; persistió=True
+CP-UI-04: APROBADO | orden inicial=['Primera', 'Segunda']; PATCH=[{'status': 'Pendiente', 'position': 0}]; orden final=['Segunda', 'Primera']; contador Pendiente='2'
+CP-UI-05: APROBADO | PUT=1; título del detalle='Tarea corregida'; descripción='Descripción nueva'; tarjetas=['Tarea corregida']
+CP-UI-06: APROBADO | subtareas listadas=2; contador inicial='0/2'; contador al marcar='1/2'; insignia='1/2 subtareas'; contador al eliminar='1/1'; insignia final='1/1 subtareas'
+CP-UI-07: APROBADO | contador='1/3'; enlace='acta.txt'; insignia='1 archivo'; nombre descargado='acta.txt'; bytes descargados=1024
+CP-UI-08: APROBADO | diálogo='¿Querés eliminar "Eliminar desde interfaz"? Podés deshacerlo durante unos segundos.'; DELETE=1; tarjetas restantes=0; aviso='Eliminaste "Eliminar desde interfaz".\nDeshacer\n×'; restaurada=True; persistió=True
+CP-UI-09: APROBADO | insignia='Alta'; responsable='Ana'
+CP-UI-10: APROBADO | tarjetas visibles=['Informe de ventas']; resumen='1 tarea'
+CP-UI-11: APROBADO | entradas=2; acciones=['Movida a En curso', 'Tarea creada']
+
+UI: 11/11 aprobados

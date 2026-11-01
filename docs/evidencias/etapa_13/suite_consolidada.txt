@@ -1,0 +1,5 @@
+Actualizado: /home/marucha/Documentos/final_aimar/docs/Etapa_5.md
+Total: 80/80 aprobados, 0 fallidos
+  api: 62/62
+  ui: 11/11
+  caja_blanca: 7/7

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "CP-CB-01",
+    "passed": true,
+    "resultado_obtenido": "válido='Tarea válida'; vacío='El título no puede estar vacío ni contener solo espacios'; espacios='El título no puede estar vacío ni contener solo espacios'; 101='El título no puede superar los 100 caracteres'; None='El título es obligatorio'",
+    "observaciones": "Decisiones del validador de título. La rama del valor nulo es defensiva: Pydantic rechaza el valor antes de ejecutarla.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-02",
+    "passed": true,
+    "resultado_obtenido": "inexistente=None; bloqueada=PendingSubtasksError('La tarea tiene subtareas pendientes'); estado bloqueado='Pendiente'; finalizada='Terminada'",
+    "observaciones": "Tres decisiones de move_task: fila inexistente, finalización bloqueada por subtareas pendientes y finalización permitida.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-03",
+    "passed": true,
+    "resultado_obtenido": "delete=True; listado tras delete=0; segundo delete=False; delete inexistente=False; restore=ok; listado tras restore=1; segundo restore=None; restore inexistente=None",
+    "observaciones": "Borrado lógico y sus dos resultados de restauración.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-04",
+    "passed": true,
+    "resultado_obtenido": "acumulado=[1, 2, 3]; cuarta alta=AttachmentLimitError('Una tarea no puede tener más de 3 archivos adjuntos'); adjuntos finales=3",
+    "observaciones": "La decisión del límite de adjuntos cubre sus dos resultados.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-05",
+    "passed": true,
+    "resultado_obtenido": "estado previo='Terminada'; tras desmarcar='En curso'; pendientes=0; tras marcar='Pendiente'",
+    "observaciones": "Condición compuesta de reapertura: `not done and status == Terminada`.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-06",
+    "passed": true,
+    "resultado_obtenido": "vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len(101)=101; título largo='El título no puede superar los 100 caracteres.'; descripción larga='La descripción no puede superar los 500 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input tras alta=''; POST totales=2",
+    "observaciones": "Ramas de validateTaskInput y handleSubmit ejercitadas sobre el formulario real.",
+    "detalle": null
+  },
+  {
+    "id": "CP-CB-07",
+    "passed": true,
+    "resultado_obtenido": "orden inicial=['Alfa', 'Beta']; PATCH reorden=[{'status': 'Pendiente', 'position': 0}]; orden final=['Beta', 'Alfa']; PATCH movimiento=[{'status': 'Pendiente', 'position': 0}, {'status': 'En curso', 'position': 0}]; En curso=True; PATCH totales=2; tarjetas en Terminada=0",
+    "observaciones": "Decisiones de handleDrop y valor devuelto por dropIndex: misma columna, columna distinta e identificadores inválidos.",
+    "detalle": null
+  }
+]

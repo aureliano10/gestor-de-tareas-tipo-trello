@@ -1,0 +1,2214 @@
+{
+  "total": 80,
+  "aprobados": 80,
+  "fallidos": 0,
+  "por_grupo": {
+    "api": {
+      "total": 62,
+      "aprobados": 62
+    },
+    "ui": {
+      "total": 11,
+      "aprobados": 11
+    },
+    "caja_blanca": {
+      "total": 7,
+      "aprobados": 7
+    }
+  },
+  "casos": [
+    {
+      "id": "CP-CRE-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; tarea #362 creada en estado Pendiente, position 0 y overdue falso, presente en el listado",
+      "observaciones": "Alta típica; verifica RF2 y la forma completa de la respuesta.",
+      "detalle": {
+        "id": 362,
+        "title": "Preparar informe",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.150912Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 790,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.151512Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; título de un carácter aceptado con estado Pendiente",
+      "observaciones": "Valor límite inferior válido del título.",
+      "detalle": {
+        "id": 363,
+        "title": "A",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.243958Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 791,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.244334Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; título de exactamente 100 caracteres aceptado",
+      "observaciones": "Valor límite superior válido del título.",
+      "detalle": {
+        "id": 364,
+        "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.298268Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 792,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.298592Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; título de 101 caracteres rechazado y listado vacío",
+      "observaciones": "Valor límite superior inválido.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Value error, El título no puede superar los 100 caracteres",
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-05",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; título vacío rechazado y listado vacío",
+      "observaciones": "Clase de equivalencia inválida.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Value error, El título no puede estar vacío ni contener solo espacios",
+            "input": "",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-06",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; título con solo espacios rechazado y listado vacío",
+      "observaciones": "Clase inválida y límite inferior tras recortar.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "title"
+            ],
+            "msg": "Value error, El título no puede estar vacío ni contener solo espacios",
+            "input": "     ",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-07",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; espacios externos recortados y título persistido como \"Revisar pruebas\"",
+      "observaciones": "Clase válida con normalización.",
+      "detalle": {
+        "id": 365,
+        "title": "Revisar pruebas",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.575097Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 793,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.575409Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-08",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; descripción y fecha límite (2026-11-08) almacenadas y overdue falso",
+      "observaciones": "Alta con descripción y fecha futura.",
+      "detalle": {
+        "id": 366,
+        "title": "Informe final",
+        "description": "Detalle de la tarea",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": "2026-11-08",
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.654005Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 794,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.654221Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-CRE-09",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; fecha límite pasada rechazada al crear y listado vacío",
+      "observaciones": "Valor límite inválido de fecha al crear.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "due_date"
+            ],
+            "msg": "Value error, La fecha límite no puede ser anterior a hoy",
+            "input": "2026-10-31",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-MOV-01",
+      "passed": true,
+      "resultado_obtenido": "Tres estados válidos: PATCH 200 a En curso y a Terminada, con estado final \"Terminada\" persistido",
+      "observaciones": "Transición completa entre los tres estados.",
+      "detalle": {
+        "id": 367,
+        "title": "Mover a Terminada",
+        "description": "",
+        "status": "Terminada",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.775681Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 797,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.859105Z"
+          },
+          {
+            "id": 796,
+            "action": "Movida a En curso",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.816146Z"
+          },
+          {
+            "id": 795,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.776070Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-MOV-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422 con estado y con posición inválidos; la tarea conservó su estado Pendiente y su posición 0",
+      "observaciones": "Clase inválida de estado y de posición.",
+      "detalle": {
+        "id": 368,
+        "title": "Estado inválido",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:11.961357Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 798,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:11.961637Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-MOV-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+      "observaciones": "Movimiento sobre un identificador inexistente.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-MOV-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422 por identificador no numérico en la ruta",
+      "observaciones": "Clase inválida de identificador.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "int_parsing",
+            "loc": [
+              "path",
+              "task_id"
+            ],
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "abc"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-MOV-05",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200; la columna quedó ordenada como C, A, B con posiciones [0, 1, 2]",
+      "observaciones": "Reordenamiento sin cambio de estado.",
+      "detalle": [
+        {
+          "id": 371,
+          "title": "C",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 0,
+          "created_at": "2026-11-01T15:10:12.310332Z",
+          "overdue": false,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 802,
+              "action": "Reordenada en Pendiente",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.348502Z"
+            },
+            {
+              "id": 801,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.310554Z"
+            }
+          ]
+        },
+        {
+          "id": 369,
+          "title": "A",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 1,
+          "created_at": "2026-11-01T15:10:12.224370Z",
+          "overdue": false,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 799,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.224723Z"
+            }
+          ]
+        },
+        {
+          "id": 370,
+          "title": "B",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 2,
+          "created_at": "2026-11-01T15:10:12.269592Z",
+          "overdue": false,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 800,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.269880Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CP-EDI-01",
+      "passed": true,
+      "resultado_obtenido": "PUT 200; título, descripción y fecha límite actualizados sin alterar el estado",
+      "observaciones": "Flujo normal de edición.",
+      "detalle": {
+        "id": 372,
+        "title": "Tarea editada",
+        "description": "Nueva descripción",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": "2026-11-04",
+        "position": 0,
+        "created_at": "2026-11-01T15:10:12.444841Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 806,
+            "action": "Fecha límite actualizada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.484656Z"
+          },
+          {
+            "id": 805,
+            "action": "Descripción actualizada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.484641Z"
+          },
+          {
+            "id": 804,
+            "action": "Título actualizado",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.484481Z"
+          },
+          {
+            "id": 803,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.445137Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-EDI-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+      "observaciones": "Edición sobre un identificador inexistente.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-EDI-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200; la edición admitió la fecha pasada (2026-10-30) y overdue quedó verdadero",
+      "observaciones": "La restricción de fecha futura aplica solo al alta.",
+      "detalle": {
+        "id": 373,
+        "title": "Revisar informe",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": "2026-10-30",
+        "position": 0,
+        "created_at": "2026-11-01T15:10:12.567065Z",
+        "overdue": true,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 809,
+            "action": "Fecha límite actualizada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.612885Z"
+          },
+          {
+            "id": 808,
+            "action": "Título actualizado",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.612588Z"
+          },
+          {
+            "id": 807,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.567273Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-SUB-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; subtarea creada, subtask_total 1 y subtask_done 0",
+      "observaciones": "Flujo normal de alta de subtarea.",
+      "detalle": {
+        "id": 374,
+        "title": "Con checklist",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:12.659513Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 0,
+        "subtasks": [
+          {
+            "id": 158,
+            "title": "Diseñar casos",
+            "done": false,
+            "created_at": "2026-11-01T15:10:12.696383Z"
+          }
+        ],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 811,
+            "action": "Subtarea agregada: Diseñar casos",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.696745Z"
+          },
+          {
+            "id": 810,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.659802Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-SUB-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200 en ambos PATCH; el avance pasó a 1/1 y volvió a 0/1 sin cambiar el estado",
+      "observaciones": "Marcado y desmarcado de una subtarea.",
+      "detalle": {
+        "marked": {
+          "id": 375,
+          "title": "Marcar subtarea",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 0,
+          "created_at": "2026-11-01T15:10:12.742963Z",
+          "overdue": false,
+          "subtask_total": 1,
+          "subtask_done": 1,
+          "subtasks": [
+            {
+              "id": 159,
+              "title": "Paso",
+              "done": true,
+              "created_at": "2026-11-01T15:10:12.790662Z"
+            }
+          ],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 814,
+              "action": "Subtarea completada: Paso",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.828915Z"
+            },
+            {
+              "id": 813,
+              "action": "Subtarea agregada: Paso",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.791003Z"
+            },
+            {
+              "id": 812,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.743265Z"
+            }
+          ]
+        },
+        "unmarked": {
+          "id": 375,
+          "title": "Marcar subtarea",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 0,
+          "created_at": "2026-11-01T15:10:12.742963Z",
+          "overdue": false,
+          "subtask_total": 1,
+          "subtask_done": 0,
+          "subtasks": [
+            {
+              "id": 159,
+              "title": "Paso",
+              "done": false,
+              "created_at": "2026-11-01T15:10:12.790662Z"
+            }
+          ],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 815,
+              "action": "Subtarea reabierta: Paso",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.870088Z"
+            },
+            {
+              "id": 814,
+              "action": "Subtarea completada: Paso",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.828915Z"
+            },
+            {
+              "id": 813,
+              "action": "Subtarea agregada: Paso",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.791003Z"
+            },
+            {
+              "id": 812,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:12.743265Z"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "CP-SUB-03",
+      "passed": true,
+      "resultado_obtenido": "DELETE 204 sin cuerpo; la tarea quedó con subtask_total 0",
+      "observaciones": "Flujo normal de eliminación de subtarea.",
+      "detalle": {
+        "id": 376,
+        "title": "Eliminar subtarea",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:12.922141Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 818,
+            "action": "Subtarea eliminada: Paso",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.002353Z"
+          },
+          {
+            "id": 817,
+            "action": "Subtarea agregada: Paso",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.962781Z"
+          },
+          {
+            "id": 816,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:12.922330Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-SUB-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+      "observaciones": "Alta de subtarea sobre una tarea inexistente.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-BLO-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 409 con detalle del bloqueo; la tarea conservó su estado Pendiente",
+      "observaciones": "Regla de bloqueo al finalizar.",
+      "detalle": {
+        "id": 377,
+        "title": "Bloquear finalización",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:13.125348Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 0,
+        "subtasks": [
+          {
+            "id": 161,
+            "title": "Pendiente 1",
+            "done": false,
+            "created_at": "2026-11-01T15:10:13.165596Z"
+          }
+        ],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 820,
+            "action": "Subtarea agregada: Pendiente 1",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.166003Z"
+          },
+          {
+            "id": 819,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.125658Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-BLO-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200; tarea finalizada al no tener subtareas pendientes",
+      "observaciones": "Complemento del bloqueo.",
+      "detalle": {
+        "id": 378,
+        "title": "Finalizar permitida",
+        "description": "",
+        "status": "Terminada",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:13.281203Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 1,
+        "subtasks": [
+          {
+            "id": 162,
+            "title": "Hecha",
+            "done": true,
+            "created_at": "2026-11-01T15:10:13.325473Z"
+          }
+        ],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 823,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.364222Z"
+          },
+          {
+            "id": 822,
+            "action": "Subtarea agregada: Hecha",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.325759Z"
+          },
+          {
+            "id": 821,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.281601Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-BLO-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201 con la subtarea creada y la tarea reabierta a \"En curso\"",
+      "observaciones": "Reapertura al agregar una subtarea pendiente.",
+      "detalle": {
+        "id": 379,
+        "title": "Terminada y reabierta",
+        "description": "",
+        "status": "En curso",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:13.422063Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 0,
+        "subtasks": [
+          {
+            "id": 163,
+            "title": "Tarea adicional",
+            "done": false,
+            "created_at": "2026-11-01T15:10:13.506520Z"
+          }
+        ],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 826,
+            "action": "Subtarea agregada: Tarea adicional",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.506761Z"
+          },
+          {
+            "id": 825,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.459619Z"
+          },
+          {
+            "id": 824,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.422310Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-BLO-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200 con la subtarea desmarcada y la tarea reabierta a \"En curso\"",
+      "observaciones": "Reapertura al desmarcar una subtarea.",
+      "detalle": {
+        "id": 380,
+        "title": "Desmarcar reabre",
+        "description": "",
+        "status": "En curso",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:13.556623Z",
+        "overdue": false,
+        "subtask_total": 1,
+        "subtask_done": 0,
+        "subtasks": [
+          {
+            "id": 164,
+            "title": "Paso",
+            "done": false,
+            "created_at": "2026-11-01T15:10:13.602435Z"
+          }
+        ],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 830,
+            "action": "Subtarea reabierta: Paso",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.686548Z"
+          },
+          {
+            "id": 829,
+            "action": "Movida a Terminada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.645177Z"
+          },
+          {
+            "id": 828,
+            "action": "Subtarea agregada: Paso",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.602824Z"
+          },
+          {
+            "id": 827,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.557009Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-FEC-01",
+      "passed": true,
+      "resultado_obtenido": "overdue pasó de falso a verdadero al editar la fecha, sin cambiar el estado",
+      "observaciones": "El vencimiento se deriva y no se almacena.",
+      "detalle": {
+        "id": 381,
+        "title": "Con vencimiento",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": "2026-10-30",
+        "position": 0,
+        "created_at": "2026-11-01T15:10:13.728893Z",
+        "overdue": true,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 832,
+            "action": "Fecha límite actualizada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.810668Z"
+          },
+          {
+            "id": 831,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:13.729128Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-FEC-02",
+      "passed": true,
+      "resultado_obtenido": "El filtro overdue devolvió solo la tarea vencida y el listado completo las dos",
+      "observaciones": "Verifica el parámetro de consulta de vencidas.",
+      "detalle": {
+        "filtered": [
+          {
+            "id": 383,
+            "title": "Con fecha pasada",
+            "description": "",
+            "status": "Pendiente",
+            "priority": "Media",
+            "assignee": "",
+            "due_date": "2026-10-31",
+            "position": 1,
+            "created_at": "2026-11-01T15:10:13.900234Z",
+            "overdue": true,
+            "subtask_total": 0,
+            "subtask_done": 0,
+            "subtasks": [],
+            "attachments": [],
+            "tags": [],
+            "links": [],
+            "activity": [
+              {
+                "id": 835,
+                "action": "Fecha límite actualizada",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:13.959800Z"
+              },
+              {
+                "id": 834,
+                "action": "Tarea creada",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:13.900434Z"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ADJ-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; adjunto \"notas.txt\" de 1024 bytes agregado a la tarea",
+      "observaciones": "Subida con extensión permitida.",
+      "detalle": {
+        "id": 384,
+        "title": "Con adjunto",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:14.081274Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [
+          {
+            "id": 37,
+            "filename": "notas.txt",
+            "content_type": "text/plain",
+            "size_bytes": 1024,
+            "created_at": "2026-11-01T15:10:14.128664Z"
+          }
+        ],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 837,
+            "action": "Adjunto agregado: notas.txt",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:14.128865Z"
+          },
+          {
+            "id": 836,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:14.081657Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ADJ-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200 con el contenido idéntico al subido y el nombre original en la cabecera",
+      "observaciones": "Verifica la integridad del archivo almacenado.",
+      "detalle": "attachment; filename=\"notas.txt\""
+    },
+    {
+      "id": "CP-ADJ-03",
+      "passed": true,
+      "resultado_obtenido": "DELETE 204; la tarea quedó sin adjuntos y la descarga posterior respondió 404",
+      "observaciones": "Verifica también que el archivo físico deja de estar disponible.",
+      "detalle": {
+        "id": 386,
+        "title": "Eliminar adjunto",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:14.343406Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 842,
+            "action": "Adjunto eliminado: notas.txt",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:14.481638Z"
+          },
+          {
+            "id": 841,
+            "action": "Adjunto agregado: notas.txt",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:14.383735Z"
+          },
+          {
+            "id": 840,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:14.343698Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ADJ-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 415 con el detalle de los formatos aceptados; la tarea quedó sin adjuntos",
+      "observaciones": "Clase inválida de extensión.",
+      "detalle": "Formato no permitido. Se aceptan: .pdf, .png, .jpg, .jpeg, .txt, .docx"
+    },
+    {
+      "id": "CP-ADJ-05",
+      "passed": true,
+      "resultado_obtenido": "HTTP 413 con el detalle \"El archivo supera el tamaño máximo de 5 MB\"; sin adjuntos",
+      "observaciones": "Valor límite superior de tamaño.",
+      "detalle": "El archivo supera el tamaño máximo de 5 MB"
+    },
+    {
+      "id": "CP-ADJ-06",
+      "passed": true,
+      "resultado_obtenido": "HTTP 409 con el detalle del límite; la tarea conservó exactamente 3 adjuntos",
+      "observaciones": "Valor límite superior de cantidad.",
+      "detalle": "Una tarea no puede tener más de 3 archivos adjuntos"
+    },
+    {
+      "id": "CP-ELI-01",
+      "passed": true,
+      "resultado_obtenido": "DELETE 204 sin cuerpo; la tarea dejó de aparecer en el listado",
+      "observaciones": "Eliminación lógica de una tarea existente.",
+      "detalle": []
+    },
+    {
+      "id": "CP-ELI-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+      "observaciones": "Eliminación sobre un identificador inexistente.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-RES-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 200; la tarea eliminada volvió a estar presente en el listado",
+      "observaciones": "Flujo normal de restauración.",
+      "detalle": {
+        "id": 391,
+        "title": "Restaurar esta tarea",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:15.346190Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 853,
+            "action": "Tarea restaurada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:15.435635Z"
+          },
+          {
+            "id": 852,
+            "action": "Tarea eliminada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:15.389715Z"
+          },
+          {
+            "id": 851,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:15.346554Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-RES-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 404 con detalle \"Tarea no encontrada\"",
+      "observaciones": "La restauración solo aplica a tareas eliminadas.",
+      "detalle": {
+        "detail": "Tarea no encontrada"
+      }
+    },
+    {
+      "id": "CP-LIS-01",
+      "passed": true,
+      "resultado_obtenido": "El primer listado fue vacío y el segundo contuvo las tres tareas en orden de creación",
+      "observaciones": "Verifica el listado y la persistencia en SQLite.",
+      "detalle": [
+        {
+          "id": 393,
+          "title": "Primera tarea",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 0,
+          "created_at": "2026-11-01T15:10:15.668766Z",
+          "overdue": false,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 855,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:15.669081Z"
+            }
+          ]
+        },
+        {
+          "id": 394,
+          "title": "Segunda tarea",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 1,
+          "created_at": "2026-11-01T15:10:15.708118Z",
+          "overdue": false,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 856,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:15.708397Z"
+            }
+          ]
+        },
+        {
+          "id": 395,
+          "title": "Tercera tarea",
+          "description": "",
+          "status": "Pendiente",
+          "priority": "Media",
+          "assignee": "",
+          "due_date": null,
+          "position": 2,
+          "created_at": "2026-11-01T15:10:15.754108Z",
+          "overdue": false,
+          "subtask_total": 0,
+          "subtask_done": 0,
+          "subtasks": [],
+          "attachments": [],
+          "tags": [],
+          "links": [],
+          "activity": [
+            {
+              "id": 857,
+              "action": "Tarea creada",
+              "detail": "",
+              "created_at": "2026-11-01T15:10:15.754311Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CP-PRI-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; la tarea se creó con priority \"Alta\"",
+      "observaciones": "Clase válida de prioridad con un valor extremo del conjunto.",
+      "detalle": {
+        "id": 396,
+        "title": "Tarea prioritaria",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Alta",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:15.835454Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 858,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:15.835897Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-PRI-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; al omitir priority la tarea quedó con \"Media\"",
+      "observaciones": "Clase válida por omisión del campo priority.",
+      "detalle": {
+        "id": 397,
+        "title": "Tarea sin prioridad",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:15.886607Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 859,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:15.886967Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-PRI-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; prioridad fuera del conjunto rechazada y listado sin cambios",
+      "observaciones": "Clase inválida de prioridad.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "priority"
+            ],
+            "msg": "Value error, La prioridad debe ser Baja, Media o Alta",
+            "input": "Urgente",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-PRI-04",
+      "passed": true,
+      "resultado_obtenido": "PUT 200; prioridad \"Baja\" aplicada y registrada en la actividad",
+      "observaciones": "Actualización de la prioridad con registro en el historial.",
+      "detalle": {
+        "id": 398,
+        "title": "Cambiar prioridad",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Baja",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:16.043845Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 861,
+            "action": "Prioridad cambiada a Baja",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.112448Z"
+          },
+          {
+            "id": 860,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.044216Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ASG-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; los espacios externos se recortaron a \"Ana Gómez\"",
+      "observaciones": "Clase válida con normalización.",
+      "detalle": {
+        "id": 399,
+        "title": "Responsable con espacios",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "Ana Gómez",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:16.226918Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 862,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.227145Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ASG-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422; responsable de 61 caracteres rechazado y listado sin cambios",
+      "observaciones": "Valor límite superior inválido del responsable.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "assignee"
+            ],
+            "msg": "Value error, El responsable no puede superar los 60 caracteres",
+            "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ASG-03",
+      "passed": true,
+      "resultado_obtenido": "PUT 200; responsable \"Luis\" asignado y registrado en la actividad",
+      "observaciones": "Actualización del responsable con registro en el historial.",
+      "detalle": {
+        "id": 400,
+        "title": "Asignar responsable",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "Luis",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:16.358476Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 864,
+            "action": "Responsable asignado a Luis",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.411805Z"
+          },
+          {
+            "id": 863,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.359060Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-TAG-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags",
+      "observaciones": "Clase válida de etiquetas.",
+      "detalle": {
+        "id": 401,
+        "title": "Tarea etiquetada",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:16.498508Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [
+          "backend",
+          "pruebas"
+        ],
+        "links": [],
+        "activity": [
+          {
+            "id": 867,
+            "action": "Etiqueta agregada: pruebas",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.498902Z"
+          },
+          {
+            "id": 866,
+            "action": "Etiqueta agregada: backend",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.498890Z"
+          },
+          {
+            "id": 865,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.498728Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-TAG-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 409 con el detalle del límite; no se creó ninguna tarea",
+      "observaciones": "Valor límite superior inválido de etiquetas.",
+      "detalle": {
+        "detail": "Una tarea no puede tener más de 5 etiquetas"
+      }
+    },
+    {
+      "id": "CP-TAG-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422 con la etiqueta vacía y con la de solo espacios",
+      "observaciones": "Clase inválida y valor límite inferior de la etiqueta.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "tags"
+            ],
+            "msg": "Value error, La etiqueta no puede estar vacía ni contener solo espacios",
+            "input": [
+              ""
+            ],
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-TAG-04",
+      "passed": true,
+      "resultado_obtenido": "PUT 200; se quitó \"uno\", se agregó \"tres\" y ambas acciones quedaron registradas",
+      "observaciones": "Reemplazo completo de etiquetas con registro en el historial.",
+      "detalle": {
+        "id": 402,
+        "title": "Reemplazar etiquetas",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:16.788581Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [
+          "dos",
+          "tres"
+        ],
+        "links": [],
+        "activity": [
+          {
+            "id": 872,
+            "action": "Etiqueta agregada: tres",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.877125Z"
+          },
+          {
+            "id": 871,
+            "action": "Etiqueta eliminada: uno",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.877053Z"
+          },
+          {
+            "id": 870,
+            "action": "Etiqueta agregada: dos",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.836736Z"
+          },
+          {
+            "id": 869,
+            "action": "Etiqueta agregada: uno",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.836624Z"
+          },
+          {
+            "id": 868,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.788820Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ENL-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; el enlace https quedó persistido con su nombre",
+      "observaciones": "Clase válida de enlace https.",
+      "detalle": {
+        "id": 403,
+        "title": "Tarea con enlace",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:16.922113Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [
+          {
+            "id": 11,
+            "url": "https://ejemplo.com/doc",
+            "label": "Documento",
+            "created_at": "2026-11-01T15:10:16.922453Z"
+          }
+        ],
+        "activity": [
+          {
+            "id": 874,
+            "action": "Enlace agregado: Documento",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.922541Z"
+          },
+          {
+            "id": 873,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:16.922355Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ENL-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422 con ftp:// y con una url sin esquema",
+      "observaciones": "Clase inválida de esquema del enlace.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body",
+              "links",
+              0,
+              "url"
+            ],
+            "msg": "Value error, El enlace debe comenzar con http:// o https://",
+            "input": "ftp://ejemplo.com",
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ENL-03",
+      "passed": true,
+      "resultado_obtenido": "HTTP 409 con el detalle del límite; no se creó ninguna tarea",
+      "observaciones": "Valor límite superior inválido de enlaces.",
+      "detalle": {
+        "detail": "Una tarea no puede tener más de 5 enlaces"
+      }
+    },
+    {
+      "id": "CP-ENL-04",
+      "passed": true,
+      "resultado_obtenido": "HTTP 409 con el detalle del enlace duplicado; no se creó ninguna tarea",
+      "observaciones": "Clase inválida: enlaces repetidos en la misma tarea.",
+      "detalle": {
+        "detail": "El enlace ya está agregado a la tarea"
+      }
+    },
+    {
+      "id": "CP-HIS-01",
+      "passed": true,
+      "resultado_obtenido": "La creación dejó \"Tarea creada\" y el movimiento agregó \"Movida a En curso\"",
+      "observaciones": "Registro del historial de la tarea.",
+      "detalle": {
+        "id": 404,
+        "title": "Historial de la tarea",
+        "description": "",
+        "status": "En curso",
+        "priority": "Media",
+        "assignee": "",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:17.266973Z",
+        "overdue": false,
+        "subtask_total": 0,
+        "subtask_done": 0,
+        "subtasks": [],
+        "attachments": [],
+        "tags": [],
+        "links": [],
+        "activity": [
+          {
+            "id": 876,
+            "action": "Movida a En curso",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:17.350976Z"
+          },
+          {
+            "id": 875,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:17.267233Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-HIS-02",
+      "passed": true,
+      "resultado_obtenido": "El historial devolvió 20 entradas como máximo, con la más reciente primero",
+      "observaciones": "Valor límite de cantidad del historial y orden descendente.",
+      "detalle": {
+        "total": 20,
+        "primera": "Subtarea agregada: Paso 20"
+      }
+    },
+    {
+      "id": "CP-FIL-01",
+      "passed": true,
+      "resultado_obtenido": "El filtro priority devolvió solo la tarea de prioridad Alta",
+      "observaciones": "Filtro por prioridad.",
+      "detalle": {
+        "filtered": [
+          {
+            "id": 406,
+            "title": "Prioridad alta",
+            "description": "",
+            "status": "Pendiente",
+            "priority": "Alta",
+            "assignee": "",
+            "due_date": null,
+            "position": 0,
+            "created_at": "2026-11-01T15:10:17.494641Z",
+            "overdue": false,
+            "subtask_total": 0,
+            "subtask_done": 0,
+            "subtasks": [],
+            "attachments": [],
+            "tags": [],
+            "links": [],
+            "activity": [
+              {
+                "id": 898,
+                "action": "Tarea creada",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:17.494867Z"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-FIL-02",
+      "passed": true,
+      "resultado_obtenido": "El filtro tag devolvió solo la tarea con la etiqueta indicada",
+      "observaciones": "Filtro por etiqueta.",
+      "detalle": {
+        "filtered": [
+          {
+            "id": 409,
+            "title": "Tarea etiquetada",
+            "description": "",
+            "status": "Pendiente",
+            "priority": "Media",
+            "assignee": "",
+            "due_date": null,
+            "position": 0,
+            "created_at": "2026-11-01T15:10:17.745564Z",
+            "overdue": false,
+            "subtask_total": 0,
+            "subtask_done": 0,
+            "subtasks": [],
+            "attachments": [],
+            "tags": [
+              "backend"
+            ],
+            "links": [],
+            "activity": [
+              {
+                "id": 902,
+                "action": "Etiqueta agregada: backend",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:17.745970Z"
+              },
+              {
+                "id": 901,
+                "action": "Tarea creada",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:17.745799Z"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-FIL-03",
+      "passed": true,
+      "resultado_obtenido": "La búsqueda encontró coincidencias en el título y en la descripción, sin distinguir mayúsculas",
+      "observaciones": "Búsqueda por texto en título y descripción.",
+      "detalle": {
+        "filtered": [
+          {
+            "id": 411,
+            "title": "Informe mensual",
+            "description": "Sin coincidencias",
+            "status": "Pendiente",
+            "priority": "Media",
+            "assignee": "",
+            "due_date": null,
+            "position": 0,
+            "created_at": "2026-11-01T15:10:17.906901Z",
+            "overdue": false,
+            "subtask_total": 0,
+            "subtask_done": 0,
+            "subtasks": [],
+            "attachments": [],
+            "tags": [],
+            "links": [],
+            "activity": [
+              {
+                "id": 904,
+                "action": "Tarea creada",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:17.907221Z"
+              }
+            ]
+          },
+          {
+            "id": 412,
+            "title": "Otra tarea",
+            "description": "Revisar el INFORME final",
+            "status": "Pendiente",
+            "priority": "Media",
+            "assignee": "",
+            "due_date": null,
+            "position": 1,
+            "created_at": "2026-11-01T15:10:17.948159Z",
+            "overdue": false,
+            "subtask_total": 0,
+            "subtask_done": 0,
+            "subtasks": [],
+            "attachments": [],
+            "tags": [],
+            "links": [],
+            "activity": [
+              {
+                "id": 905,
+                "action": "Tarea creada",
+                "detail": "",
+                "created_at": "2026-11-01T15:10:17.948493Z"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ORD-01",
+      "passed": true,
+      "resultado_obtenido": "sort=priority ordenó las tareas como Alta, Media y Baja",
+      "observaciones": "Orden por prioridad dentro del mismo estado.",
+      "detalle": {
+        "order": [
+          "Alta",
+          "Media",
+          "Baja"
+        ]
+      }
+    },
+    {
+      "id": "CP-ORD-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 422 por valor de sort fuera de los permitidos",
+      "observaciones": "Clase inválida del parámetro de orden.",
+      "detalle": {
+        "detail": [
+          {
+            "type": "literal_error",
+            "loc": [
+              "query",
+              "sort"
+            ],
+            "msg": "Input should be 'position', 'priority', 'due' or 'created'",
+            "input": "invalido",
+            "ctx": {
+              "expected": "'position', 'priority', 'due' or 'created'"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ALT-01",
+      "passed": true,
+      "resultado_obtenido": "HTTP 201; prioridad, responsable, 2 subtareas, 2 etiquetas y 1 enlace persistidos en un solo POST",
+      "observaciones": "Alta enriquecida en una sola petición.",
+      "detalle": {
+        "id": 417,
+        "title": "Alta enriquecida",
+        "description": "",
+        "status": "Pendiente",
+        "priority": "Alta",
+        "assignee": "Marta",
+        "due_date": null,
+        "position": 0,
+        "created_at": "2026-11-01T15:10:18.304127Z",
+        "overdue": false,
+        "subtask_total": 2,
+        "subtask_done": 0,
+        "subtasks": [
+          {
+            "id": 185,
+            "title": "Analizar",
+            "done": false,
+            "created_at": "2026-11-01T15:10:18.304407Z"
+          },
+          {
+            "id": 186,
+            "title": "Diseñar",
+            "done": false,
+            "created_at": "2026-11-01T15:10:18.304465Z"
+          }
+        ],
+        "attachments": [],
+        "tags": [
+          "backend",
+          "frontend"
+        ],
+        "links": [
+          {
+            "id": 12,
+            "url": "https://ejemplo.com/spec",
+            "label": "Especificación",
+            "created_at": "2026-11-01T15:10:18.304623Z"
+          }
+        ],
+        "activity": [
+          {
+            "id": 915,
+            "action": "Enlace agregado: Especificación",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:18.304676Z"
+          },
+          {
+            "id": 914,
+            "action": "Etiqueta agregada: backend",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:18.304593Z"
+          },
+          {
+            "id": 913,
+            "action": "Etiqueta agregada: frontend",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:18.304580Z"
+          },
+          {
+            "id": 912,
+            "action": "Subtarea agregada: Diseñar",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:18.304474Z"
+          },
+          {
+            "id": 911,
+            "action": "Subtarea agregada: Analizar",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:18.304454Z"
+          },
+          {
+            "id": 910,
+            "action": "Tarea creada",
+            "detail": "",
+            "created_at": "2026-11-01T15:10:18.304359Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CP-ALT-02",
+      "passed": true,
+      "resultado_obtenido": "HTTP 409 con el detalle del límite; no se creó ninguna tarea",
+      "observaciones": "Valor límite superior inválido de subtareas.",
+      "detalle": {
+        "detail": "Una tarea no puede tener más de 20 subtareas"
+      }
+    },
+    {
+      "id": "CP-UI-01",
+      "passed": true,
+      "resultado_obtenido": "tarjeta visible=True; input=''; resumen='1 tarea'; contador Pendiente='1'; persistió=True",
+      "observaciones": "Alta desde el formulario con verificación visual y persistencia.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-02",
+      "passed": true,
+      "resultado_obtenido": "error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0",
+      "observaciones": "Clase inválida y valor límite inferior sobre la interfaz.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-03",
+      "passed": true,
+      "resultado_obtenido": "En curso=True; tarjetas en Pendiente=0; contador Pendiente='0'; contador En curso='1'; PATCH=1; persistió=True",
+      "observaciones": "Arrastre entre columnas con actualización de contadores y persistencia.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-04",
+      "passed": true,
+      "resultado_obtenido": "orden inicial=['Primera', 'Segunda']; PATCH=[{'status': 'Pendiente', 'position': 0}]; orden final=['Segunda', 'Primera']; contador Pendiente='2'",
+      "observaciones": "Condición de borde: soltar en la misma columna reordena emitiendo un PATCH con la posición calculada.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-05",
+      "passed": true,
+      "resultado_obtenido": "PUT=1; título del detalle='Tarea corregida'; descripción='Descripción nueva'; tarjetas=['Tarea corregida']",
+      "observaciones": "Edición desde el detalle con actualización del tablero.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-06",
+      "passed": true,
+      "resultado_obtenido": "subtareas listadas=2; contador inicial='0/2'; contador al marcar='1/2'; insignia='1/2 subtareas'; contador al eliminar='1/1'; insignia final='1/1 subtareas'",
+      "observaciones": "Alta, marcado y eliminación de subtareas con el avance reflejado en el detalle y en la tarjeta.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-07",
+      "passed": true,
+      "resultado_obtenido": "contador='1/3'; enlace='acta.txt'; insignia='1 archivo'; nombre descargado='acta.txt'; bytes descargados=1024",
+      "observaciones": "Subida de un archivo de 1 KB y descarga con el nombre original.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-08",
+      "passed": true,
+      "resultado_obtenido": "diálogo='¿Querés eliminar \"Eliminar desde interfaz\"? Podés deshacerlo durante unos segundos.'; DELETE=1; tarjetas restantes=0; aviso='Eliminaste \"Eliminar desde interfaz\".\\nDeshacer\\n×'; restaurada=True; persistió=True",
+      "observaciones": "Borrado lógico con confirmación previa y restauración desde el aviso.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-09",
+      "passed": true,
+      "resultado_obtenido": "insignia='Alta'; responsable='Ana'",
+      "observaciones": "Alta desde el formulario con prioridad y responsable; verifica la tarjeta.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-10",
+      "passed": true,
+      "resultado_obtenido": "tarjetas visibles=['Informe de ventas']; resumen='1 tarea'",
+      "observaciones": "Búsqueda por texto desde la interfaz.",
+      "detalle": null
+    },
+    {
+      "id": "CP-UI-11",
+      "passed": true,
+      "resultado_obtenido": "entradas=2; acciones=['Movida a En curso', 'Tarea creada']",
+      "observaciones": "Historial visible en el detalle después de mover la tarea.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-01",
+      "passed": true,
+      "resultado_obtenido": "válido='Tarea válida'; vacío='El título no puede estar vacío ni contener solo espacios'; espacios='El título no puede estar vacío ni contener solo espacios'; 101='El título no puede superar los 100 caracteres'; None='El título es obligatorio'",
+      "observaciones": "Decisiones del validador de título. La rama del valor nulo es defensiva: Pydantic rechaza el valor antes de ejecutarla.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-02",
+      "passed": true,
+      "resultado_obtenido": "inexistente=None; bloqueada=PendingSubtasksError('La tarea tiene subtareas pendientes'); estado bloqueado='Pendiente'; finalizada='Terminada'",
+      "observaciones": "Tres decisiones de move_task: fila inexistente, finalización bloqueada por subtareas pendientes y finalización permitida.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-03",
+      "passed": true,
+      "resultado_obtenido": "delete=True; listado tras delete=0; segundo delete=False; delete inexistente=False; restore=ok; listado tras restore=1; segundo restore=None; restore inexistente=None",
+      "observaciones": "Borrado lógico y sus dos resultados de restauración.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-04",
+      "passed": true,
+      "resultado_obtenido": "acumulado=[1, 2, 3]; cuarta alta=AttachmentLimitError('Una tarea no puede tener más de 3 archivos adjuntos'); adjuntos finales=3",
+      "observaciones": "La decisión del límite de adjuntos cubre sus dos resultados.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-05",
+      "passed": true,
+      "resultado_obtenido": "estado previo='Terminada'; tras desmarcar='En curso'; pendientes=0; tras marcar='Pendiente'",
+      "observaciones": "Condición compuesta de reapertura: `not done and status == Terminada`.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-06",
+      "passed": true,
+      "resultado_obtenido": "vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len(101)=101; título largo='El título no puede superar los 100 caracteres.'; descripción larga='La descripción no puede superar los 500 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input tras alta=''; POST totales=2",
+      "observaciones": "Ramas de validateTaskInput y handleSubmit ejercitadas sobre el formulario real.",
+      "detalle": null
+    },
+    {
+      "id": "CP-CB-07",
+      "passed": true,
+      "resultado_obtenido": "orden inicial=['Alfa', 'Beta']; PATCH reorden=[{'status': 'Pendiente', 'position': 0}]; orden final=['Beta', 'Alfa']; PATCH movimiento=[{'status': 'Pendiente', 'position': 0}, {'status': 'En curso', 'position': 0}]; En curso=True; PATCH totales=2; tarjetas en Terminada=0",
+      "observaciones": "Decisiones de handleDrop y valor devuelto por dropIndex: misma columna, columna distinta e identificadores inválidos.",
+      "detalle": null
+    }
+  ]
+}
