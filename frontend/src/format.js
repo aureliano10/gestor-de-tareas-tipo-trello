@@ -1,6 +1,6 @@
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-export const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
+export const MAX_ATTACHMENT_BYTES = 4 * 1024 * 1024;
 export const MAX_ATTACHMENTS = 3;
 export const ALLOWED_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg", ".txt", ".docx"];
 

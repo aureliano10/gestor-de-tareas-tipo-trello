@@ -200,7 +200,7 @@ function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
         continue;
       }
       if (file.size > MAX_ATTACHMENT_BYTES) {
-        message = `El archivo ${file.name} supera el tamaño máximo de 5 MB.`;
+        message = `El archivo ${file.name} supera el tamaño máximo de 4 MB.`;
         continue;
       }
       next.push({ id: nextId(), file });
@@ -534,7 +534,7 @@ function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
               onChange={handleFileChange}
             />
             <p className="hint">
-              Hasta {MAX_ATTACHMENTS} archivos de 5 MB. Formatos:{" "}
+              Hasta {MAX_ATTACHMENTS} archivos de 4 MB. Formatos:{" "}
               {ALLOWED_EXTENSIONS.join(", ")}.
             </p>
             {fileError && (

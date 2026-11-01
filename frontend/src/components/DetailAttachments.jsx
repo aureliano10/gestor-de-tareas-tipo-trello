@@ -41,7 +41,7 @@ export default function DetailAttachments({
       return;
     }
     if (file.size > MAX_ATTACHMENT_BYTES) {
-      setError("El archivo supera el tamaño máximo de 5 MB.");
+      setError("El archivo supera el tamaño máximo de 4 MB.");
       return;
     }
 
@@ -142,7 +142,7 @@ export default function DetailAttachments({
         </p>
       )}
       <p className="hint">
-        Hasta {MAX_ATTACHMENTS} archivos de 5 MB. Formatos:{" "}
+        Hasta {MAX_ATTACHMENTS} archivos de 4 MB. Formatos:{" "}
         {ALLOWED_EXTENSIONS.join(", ")}.
       </p>
     </section>

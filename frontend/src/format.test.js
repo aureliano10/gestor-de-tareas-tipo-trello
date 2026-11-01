@@ -26,7 +26,7 @@ function isoOffset(days) {
 describe("constantes de adjuntos", () => {
   it("expone los límites y las extensiones permitidas", () => {
     expect(MAX_ATTACHMENTS).toBe(3);
-    expect(MAX_ATTACHMENT_BYTES).toBe(5 * 1024 * 1024);
+    expect(MAX_ATTACHMENT_BYTES).toBe(4 * 1024 * 1024);
     expect(ALLOWED_EXTENSIONS).toContain(".pdf");
     expect(ALLOWED_EXTENSIONS).toContain(".docx");
   });

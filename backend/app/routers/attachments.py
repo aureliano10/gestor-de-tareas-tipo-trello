@@ -39,7 +39,7 @@ async def upload_attachment(task_id: int, file: Annotated[UploadFile, File()]):
     if len(content) > MAX_ATTACHMENT_SIZE:
         raise HTTPException(
             status_code=status.HTTP_413_CONTENT_TOO_LARGE,
-            detail="El archivo supera el tamaño máximo de 5 MB",
+            detail="El archivo supera el tamaño máximo de 4 MB",
         )
 
     stored_name = f"{uuid.uuid4().hex}{extension}"
