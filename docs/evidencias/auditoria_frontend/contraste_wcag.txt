@@ -1,0 +1,51 @@
+=== MODO CLARO ===
+OK  17.57:1  text #14182b sobre surface #fff
+OK   7.86:1  text-soft #4a5169 sobre surface #fff
+FALLA  3.87:1  muted #7a8199 sobre surface #fff (tarjeta/hint/label)
+FALLA  3.42:1  muted #7a8199 sobre bg #eef1f9 (subtitulo header)
+FALLA  3.64:1  muted #7a8199 sobre surface-2 #f6f8fd (panel h3)
+FALLA  3.37:1  muted #7a8199 sobre surface-3 #eceffa
+OK   6.85:1  text-soft #4a5169 sobre surface-3 (badge default/col count)
+OK   7.57:1  primary-dark #443ccd sobre surface #fff (.btn--ghost/links/upload)
+OK   6.38:1  primary-dark #443ccd sobre primary-soft compuesto (chip/tag)
+OK   5.46:1  white sobre primary #5b53e8 (gradiente .btn top)
+OK   7.57:1  white sobre primary-dark #443ccd (gradiente .btn bottom)
+FALLA  3.68:1  danger #e5484d sobre surface-2 (modal flag)
+OK   5.17:1  danger-dark #c2262b sobre danger-soft #fdeeee (.alert/badge--overdue)
+OK   4.62:1  #b45309 sobre #fff4e5 (badge--today/soon)
+OK   5.17:1  #067647 sobre #e7f8ef (badge--complete)
+OK   6.31:1  #6435c9 sobre #f0edff (badge--files)
+FALLA  4.25:1  badge--priority-alta fg(191, 63, 71) sobre bg(251, 226, 227)
+FALLA  4.28:1  badge--priority-media fg(50, 107, 201) sobre bg(224, 235, 254)
+FALLA  1.24:1  borde --border #e3e7f2 vs surface #fff (no significativo)
+
+=== MODO OSCURO ===
+OK  15.24:1  text #eef1fb sobre surface #161a2e
+OK  10.46:1  text-soft #c3c9e2 sobre surface #161a2e
+OK   5.95:1  muted #8f97b6 sobre surface #161a2e (tarjeta/hint)
+OK   6.54:1  muted #8f97b6 sobre bg #0d1020 (subtitulo header)
+OK   5.50:1  muted #8f97b6 sobre surface-2 #1c2137 (panel h3)
+OK   8.69:1  text-soft #c3c9e2 sobre surface-3 #232943 (badge default)
+OK   5.65:1  primary-dark #a49cff sobre primary-soft compuesto (chip/tag)
+FALLA  3.09:1  WHITE sobre primary #8b83ff (gradiente .btn top)
+FALLA  2.39:1  WHITE sobre primary-dark #a49cff (gradiente .btn bottom)
+FALLA  2.71:1  ALERTA danger-dark #c2262b sobre danger-soft comp (47, 29, 43)
+OK   7.78:1  #fbbf24 sobre rgba(245,159,11,.16) comp (badge--today dark)
+OK   7.84:1  #4ade80 sobre rgba(18,161,80,.18) comp (badge--complete dark)
+OK   7.08:1  #c4b5fd sobre rgba(139,131,255,.18) comp (badge--files dark)
+OK   7.09:1  #ffa1a4 sobre danger 16% comp (badge--priority-alta dark)
+OK   7.90:1  #9ec5ff sobre progress 16% comp (badge--priority-media dark)
+OK  15.24:1  toast dark: surface #161a2e sobre text #eef1fb
+FALLA  2.74:1  toast__action primary #8b83ff sobre toast bg #eef1fb (dark)
+== Bordes de controles (WCAG 1.4.11, umbral 3:1) ==
+FALLA  1.38:1  border-strong #cfd5e8 vs bg input surface-2 #f6f8fd
+FALLA  1.46:1  border-strong #cfd5e8 vs surface #fff
+FALLA  1.80:1  border-strong O. #3a4270 vs surface #161a2e
+FALLA  1.66:1  border-strong O. #3a4270 vs bg input surface-2 #1c2137
+FALLA  1.19:1  anillo foco primary-soft 12% vs surface #fff (2.4.11/1.4.11)
+FALLA  1.27:1  anillo foco primary-soft 16% vs surface dark
+FALLA  2.56:1  toast__close muted #8f97b6 sobre toast bg #eef1fb (dark)
+
+== Otros ==
+OK  17.57:1  filter select text #14182b sobre surface (OK)
+FALLA  3.87:1  muted #7a8199 texto 0.85rem sobre surface (normal, 4.5)
