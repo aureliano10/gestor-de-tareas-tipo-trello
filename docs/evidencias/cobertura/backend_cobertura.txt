@@ -1,0 +1,37 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/marucha/Documentos/final_aimar/backend
+plugins: cov-7.1.0, anyio-4.15.1
+collected 25 items
+
+tests/test_integration_flow.py ......                                    [ 24%]
+tests/test_unit_database.py ...                                          [ 36%]
+tests/test_unit_overdue.py .                                             [ 40%]
+tests/test_unit_repository.py ......                                     [ 64%]
+tests/test_unit_schemas.py .........                                     [100%]
+
+=============================== warnings summary ===============================
+../.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /home/marucha/Documentos/final_aimar/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.3-final-0 ________________
+
+Name                         Stmts   Miss  Cover   Missing
+----------------------------------------------------------
+app/__init__.py                  0      0   100%
+app/database.py                 63      0   100%
+app/main.py                     18      1    94%   38
+app/repository.py              322     73    77%   145-152, 298, 329, 400, 430, 462, 465, 467, 475-478, 480-486, 488-490, 499-501, 520, 530, 539-548, 552-569, 576, 582, 602, 606-610, 619, 621, 626-635, 647, 666, 675-688
+app/routers/__init__.py          0      0   100%
+app/routers/attachments.py      51     16    69%   27, 35, 40, 57-59, 64-65, 75, 80, 95-102
+app/routers/subtasks.py         22      5    77%   19, 29, 37-41
+app/routers/tags.py              6      0   100%
+app/routers/tasks.py            56     20    64%   15, 21, 25, 58-65, 81-88, 90, 104, 110-113, 118-120
+app/schemas.py                 238     11    95%   200-202, 239, 244, 249, 254, 264-266, 286
+----------------------------------------------------------
+TOTAL                          776    126    84%
+Coverage JSON written to file ../docs/evidencias/cobertura/backend_coverage.json
+======================== 25 passed, 1 warning in 2.57s =========================

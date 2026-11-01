@@ -31,4 +31,14 @@ export default defineConfig({
       },
     },
   },
+  test: {
+    environment: "jsdom",
+    include: ["src/**/*.{test,spec}.{js,jsx}"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json"],
+      reportsDirectory: "coverage",
+      include: ["src/**/*.{js,jsx}"],
+    },
+  },
 });
