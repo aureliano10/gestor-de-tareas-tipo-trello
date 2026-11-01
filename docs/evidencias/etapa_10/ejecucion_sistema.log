@@ -1,0 +1,105 @@
+== Corrida de pruebas de sistema ==
+Fecha: 2026-11-01T12:02:22-03:00
+Backend: KANBAN_DB_PATH=/tmp/kanban_etapa6.db puerto 8000
+Frontend: http://127.0.0.1:5173
+
+--- API ---
+CP-CRE-01: APROBADO | HTTP 201; tarea #291 creada en estado Pendiente, position 0 y overdue falso, presente en el listado
+CP-CRE-02: APROBADO | HTTP 201; título de un carácter aceptado con estado Pendiente
+CP-CRE-03: APROBADO | HTTP 201; título de exactamente 100 caracteres aceptado
+CP-CRE-04: APROBADO | HTTP 422; título de 101 caracteres rechazado y listado vacío
+CP-CRE-05: APROBADO | HTTP 422; título vacío rechazado y listado vacío
+CP-CRE-06: APROBADO | HTTP 422; título con solo espacios rechazado y listado vacío
+CP-CRE-07: APROBADO | HTTP 201; espacios externos recortados y título persistido como "Revisar pruebas"
+CP-CRE-08: APROBADO | HTTP 201; descripción y fecha límite (2026-11-08) almacenadas y overdue falso
+CP-CRE-09: APROBADO | HTTP 422; fecha límite pasada rechazada al crear y listado vacío
+CP-MOV-01: APROBADO | Tres estados válidos: PATCH 200 a En curso y a Terminada, con estado final "Terminada" persistido
+CP-MOV-02: APROBADO | HTTP 422 con estado y con posición inválidos; la tarea conservó su estado Pendiente y su posición 0
+CP-MOV-03: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-MOV-04: APROBADO | HTTP 422 por identificador no numérico en la ruta
+CP-MOV-05: APROBADO | HTTP 200; la columna quedó ordenada como C, A, B con posiciones [0, 1, 2]
+CP-EDI-01: APROBADO | PUT 200; título, descripción y fecha límite actualizados sin alterar el estado
+CP-EDI-02: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-EDI-03: APROBADO | HTTP 200; la edición admitió la fecha pasada (2026-10-30) y overdue quedó verdadero
+CP-SUB-01: APROBADO | HTTP 201; subtarea creada, subtask_total 1 y subtask_done 0
+CP-SUB-02: APROBADO | HTTP 200 en ambos PATCH; el avance pasó a 1/1 y volvió a 0/1 sin cambiar el estado
+CP-SUB-03: APROBADO | DELETE 204 sin cuerpo; la tarea quedó con subtask_total 0
+CP-SUB-04: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-BLO-01: APROBADO | HTTP 409 con detalle del bloqueo; la tarea conservó su estado Pendiente
+CP-BLO-02: APROBADO | HTTP 200; tarea finalizada al no tener subtareas pendientes
+CP-BLO-03: APROBADO | HTTP 201 con la subtarea creada y la tarea reabierta a "En curso"
+CP-BLO-04: APROBADO | HTTP 200 con la subtarea desmarcada y la tarea reabierta a "En curso"
+CP-FEC-01: APROBADO | overdue pasó de falso a verdadero al editar la fecha, sin cambiar el estado
+CP-FEC-02: APROBADO | El filtro overdue devolvió solo la tarea vencida y el listado completo las dos
+CP-ADJ-01: APROBADO | HTTP 201; adjunto "notas.txt" de 1024 bytes agregado a la tarea
+CP-ADJ-02: APROBADO | HTTP 200 con el contenido idéntico al subido y el nombre original en la cabecera
+CP-ADJ-03: APROBADO | DELETE 204; la tarea quedó sin adjuntos y la descarga posterior respondió 404
+CP-ADJ-04: APROBADO | HTTP 415 con el detalle de los formatos aceptados; la tarea quedó sin adjuntos
+CP-ADJ-05: APROBADO | HTTP 413 con el detalle "El archivo supera el tamaño máximo de 5 MB"; sin adjuntos
+CP-ADJ-06: APROBADO | HTTP 409 con el detalle del límite; la tarea conservó exactamente 3 adjuntos
+CP-ELI-01: APROBADO | DELETE 204 sin cuerpo; la tarea dejó de aparecer en el listado
+CP-ELI-02: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-RES-01: APROBADO | HTTP 200; la tarea eliminada volvió a estar presente en el listado
+CP-RES-02: APROBADO | HTTP 404 con detalle "Tarea no encontrada"
+CP-LIS-01: APROBADO | El primer listado fue vacío y el segundo contuvo las tres tareas en orden de creación
+CP-PRI-01: APROBADO | HTTP 201; la tarea se creó con priority "Alta"
+CP-PRI-02: APROBADO | HTTP 201; al omitir priority la tarea quedó con "Media"
+CP-PRI-03: APROBADO | HTTP 422; prioridad fuera del conjunto rechazada y listado sin cambios
+CP-PRI-04: APROBADO | PUT 200; prioridad "Baja" aplicada y registrada en la actividad
+CP-ASG-01: APROBADO | HTTP 201; los espacios externos se recortaron a "Ana Gómez"
+CP-ASG-02: APROBADO | HTTP 422; responsable de 61 caracteres rechazado y listado sin cambios
+CP-ASG-03: APROBADO | PUT 200; responsable "Luis" asignado y registrado en la actividad
+CP-TAG-01: APROBADO | HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags
+CP-TAG-02: APROBADO | HTTP 409 con el detalle del límite; no se creó ninguna tarea
+CP-TAG-03: APROBADO | HTTP 422 con la etiqueta vacía y con la de solo espacios
+CP-TAG-04: APROBADO | PUT 200; se quitó "uno", se agregó "tres" y ambas acciones quedaron registradas
+CP-ENL-01: APROBADO | HTTP 201; el enlace https quedó persistido con su nombre
+CP-ENL-02: APROBADO | HTTP 422 con ftp:// y con una url sin esquema
+CP-ENL-03: APROBADO | HTTP 409 con el detalle del límite; no se creó ninguna tarea
+CP-ENL-04: APROBADO | HTTP 409 con el detalle del enlace duplicado; no se creó ninguna tarea
+CP-HIS-01: APROBADO | La creación dejó "Tarea creada" y el movimiento agregó "Movida a En curso"
+CP-HIS-02: APROBADO | El historial devolvió 20 entradas como máximo, con la más reciente primero
+CP-FIL-01: APROBADO | El filtro priority devolvió solo la tarea de prioridad Alta
+CP-FIL-02: APROBADO | El filtro tag devolvió solo la tarea con la etiqueta indicada
+CP-FIL-03: APROBADO | La búsqueda encontró coincidencias en el título y en la descripción, sin distinguir mayúsculas
+CP-ORD-01: APROBADO | sort=priority ordenó las tareas como Alta, Media y Baja
+CP-ORD-02: APROBADO | HTTP 422 por valor de sort fuera de los permitidos
+CP-ALT-01: APROBADO | HTTP 201; prioridad, responsable, 2 subtareas, 2 etiquetas y 1 enlace persistidos en un solo POST
+CP-ALT-02: APROBADO | HTTP 409 con el detalle del límite; no se creó ninguna tarea
+
+API: 62/62 aprobados
+exit_api=0
+--- UI ---
+CP-UI-01: APROBADO | tarjeta visible=True; input=''; resumen='1 tarea'; contador Pendiente='1'; persistió=True
+CP-UI-02: APROBADO | error='El título es obligatorio y no puede contener solo espacios.'; tarjetas=0; POST=0
+CP-UI-03: APROBADO | En curso=True; tarjetas en Pendiente=0; contador Pendiente='0'; contador En curso='1'; PATCH=1; persistió=True
+CP-UI-04: APROBADO | orden inicial=['Primera', 'Segunda']; PATCH=[{'status': 'Pendiente', 'position': 0}]; orden final=['Segunda', 'Primera']; contador Pendiente='2'
+CP-UI-05: APROBADO | PUT=1; título del detalle='Tarea corregida'; descripción='Descripción nueva'; tarjetas=['Tarea corregida']
+CP-UI-06: APROBADO | subtareas listadas=2; contador inicial='0/2'; contador al marcar='1/2'; insignia='1/2 subtareas'; contador al eliminar='1/1'; insignia final='1/1 subtareas'
+CP-UI-07: APROBADO | contador='1/3'; enlace='acta.txt'; insignia='1 archivo'; nombre descargado='acta.txt'; bytes descargados=1024
+CP-UI-08: APROBADO | diálogo='¿Querés eliminar "Eliminar desde interfaz"? Podés deshacerlo durante unos segundos.'; DELETE=1; tarjetas restantes=0; aviso='Eliminaste "Eliminar desde interfaz".\nDeshacer\n×'; restaurada=True; persistió=True
+CP-UI-09: APROBADO | insignia='Alta'; responsable='Ana'
+CP-UI-10: APROBADO | tarjetas visibles=['Informe de ventas']; resumen='1 tarea'
+CP-UI-11: APROBADO | entradas=2; acciones=['Movida a En curso', 'Tarea creada']
+
+UI: 11/11 aprobados
+exit_ui=0
+--- Caja blanca ---
+CP-CB-01: APROBADO | válido='Tarea válida'; vacío='El título no puede estar vacío ni contener solo espacios'; espacios='El título no puede estar vacío ni contener solo espacios'; 101='El título no puede superar los 100 caracteres'; None='El título es obligatorio'
+CP-CB-02: APROBADO | inexistente=None; bloqueada=PendingSubtasksError('La tarea tiene subtareas pendientes'); estado bloqueado='Pendiente'; finalizada='Terminada'
+CP-CB-03: APROBADO | delete=True; listado tras delete=0; segundo delete=False; delete inexistente=False; restore=ok; listado tras restore=1; segundo restore=None; restore inexistente=None
+CP-CB-04: APROBADO | acumulado=[1, 2, 3]; cuarta alta=AttachmentLimitError('Una tarea no puede tener más de 3 archivos adjuntos'); adjuntos finales=3
+CP-CB-05: APROBADO | estado previo='Terminada'; tras desmarcar='En curso'; pendientes=0; tras marcar='Pendiente'
+CP-CB-06: APROBADO | vacío='El título es obligatorio y no puede contener solo espacios.'; espacios='El título es obligatorio y no puede contener solo espacios.'; len(101)=101; título largo='El título no puede superar los 100 caracteres.'; descripción larga='La descripción no puede superar los 500 caracteres.'; POST inválidos=0; error API='Error simulado de red'; tarjetas tras error=0; alta válida=True; input tras alta=''; POST totales=2
+CP-CB-07: APROBADO | orden inicial=['Alfa', 'Beta']; PATCH reorden=[{'status': 'Pendiente', 'position': 0}]; orden final=['Beta', 'Alfa']; PATCH movimiento=[{'status': 'Pendiente', 'position': 0}, {'status': 'En curso', 'position': 0}]; En curso=True; PATCH totales=2; tarjetas en Terminada=0
+
+Caja blanca: 7/7 aprobados
+exit_cb=0
+--- Consolidado ---
+Actualizado: /home/marucha/Documentos/final_aimar/docs/Etapa_5.md
+Total: 80/80 aprobados, 0 fallidos
+  api: 62/62
+  ui: 11/11
+  caja_blanca: 7/7
+exit_con=0
+== Fin ==
