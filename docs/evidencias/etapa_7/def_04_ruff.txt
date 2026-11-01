@@ -1,0 +1,38 @@
+DEF-04 - Lineas que excedian el limite de Ruff en los scripts de prueba
+=======================================================================
+
+Verificacion del commit que corrige el estilo de los scripts nuevos.
+
+Salida de: git show c60e4ef --stat
+
+    Etapa_1.docx                                     | Bin 39619 -> 39619 bytes
+    Etapa_2.docx                                     | Bin 42467 -> 42467 bytes
+    docs/Etapa_3.docx                                | Bin 44997 -> 44997 bytes
+    docs/Etapa_5.docx                                | Bin 54385 -> 60441 bytes
+    docs/Etapa_5.md                                  |   2 +-
+    docs/Etapa_6.docx                                | Bin 45028 -> 47053 bytes
+    docs/evidencias/etapa_6/ejecucion.log            |   2 +-
+    docs/evidencias/etapa_6/resultados_api.json      | 574 +++++++++++------------
+    docs/evidencias/etapa_6/resumen_resultados.json  | 574 +++++++++++------------
+    docs/evidencias/etapa_6/screenshots/CP-CB-06.png | Bin 201605 -> 200760 bytes
+    docs/evidencias/etapa_6/screenshots/CP-CB-07.png | Bin 200599 -> 200816 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-01.png | Bin 201621 -> 201613 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-03.png | Bin 202706 -> 202599 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-04.png | Bin 212601 -> 212573 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-05.png | Bin 216122 -> 216185 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-06.png | Bin 207467 -> 207417 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-07.png | Bin 212532 -> 213077 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-08.png | Bin 201520 -> 201625 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-09.png | Bin 203482 -> 204667 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-10.png | Bin 199580 -> 199702 bytes
+    docs/evidencias/etapa_6/screenshots/CP-UI-11.png | Bin 204104 -> 211388 bytes
+    scripts/etapa_6/ejecutar_api.py                  |  43 +-
+    scripts/etapa_6/ejecutar_ui.py                   |   4 +-
+    23 files changed, 613 insertions(+), 586 deletions(-)
+
+Interpretacion
+--------------
+El commit ajusta las lineas que excedian el limite de Ruff en los scripts de
+prueba nuevos: 43 lineas en scripts/etapa_6/ejecutar_api.py y 4 lineas en
+scripts/etapa_6/ejecutar_ui.py. Se trata de un defecto de estilo del propio
+codigo de prueba (no de la aplicacion) y quedo resuelto en ese commit.

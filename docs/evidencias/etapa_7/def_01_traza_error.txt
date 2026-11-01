@@ -1,0 +1,50 @@
+DEF-01 - Traza del error y reproduccion
+=======================================
+
+Sistema: tablero Kanban (backend FastAPI + SQLite).
+Componentes: backend/app/database.py (_migrate_tasks) y
+             backend/app/repository.py (create_subtask).
+
+Sintoma
+-------
+Agregar una subtarea a una tarea existente devolvia HTTP 500. El mismo problema
+afectaba la carga de adjuntos, porque ambas tablas dependen de `tasks`.
+
+Traza registrada
+----------------
+ERROR al insertar subtarea -> OperationalError : no such table: main.tasks_legacy
+
+La excepcion se produce al ejecutar el INSERT de backend/app/repository.py:
+
+    INSERT INTO subtasks (task_id, title, done, created_at) VALUES (?, ?, ?, ?)
+
+SQLite no encuentra la tabla referenciada por la clave foranea, que quedo
+apuntando a `tasks_legacy` despues de que la migracion renombrara y eliminara
+esa tabla.
+
+Reproduccion
+------------
+1. Partir de una base creada con el esquema anterior (una base de la Etapa 6,
+   sin las columnas priority y assignee).
+2. Iniciar el backend. Al arrancar, init_db() detecta el esquema anterior y
+   ejecuta _migrate_tasks(): renombra `tasks` a `tasks_legacy`, crea la tabla
+   nueva, copia las filas y hace DROP de `tasks_legacy`.
+3. Al renombrar, SQLite reescribe las claves foraneas de `subtasks` y
+   `attachments` para que apunten a `tasks_legacy`. Tras el DROP, esas
+   referencias quedan rotas.
+4. POST /api/tasks -> 201 (la tarea nueva se crea porque la tabla `tasks`
+   vigente existe).
+5. POST /api/tasks/{id}/subtasks -> 500 con
+   OperationalError: no such table: main.tasks_legacy.
+6. POST /api/tasks/{id}/attachments -> 500 por la misma causa.
+
+Resultado esperado vs obtenido
+------------------------------
+Esperado: HTTP 201 con la subtarea (o el adjunto) creada.
+Obtenido: HTTP 500, OperationalError: no such table: main.tasks_legacy.
+
+Correccion
+----------
+Migracion aditiva (ALTER TABLE ... ADD COLUMN) sin renombrar ni recrear `tasks`.
+Commit 56010e9. Detalle de la comparacion antes/despues en
+docs/evidencias/etapa_7/def_01_migracion_antes_despues.md.
