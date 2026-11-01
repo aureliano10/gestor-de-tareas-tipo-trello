@@ -54,9 +54,23 @@ def convert(markdown_path: Path, docx_path: Path) -> None:
     normal_style.font.size = Pt(11)
 
     index = 0
+    in_code = False
     while index < len(lines):
         line = lines[index]
         stripped = line.strip()
+
+        if stripped.startswith("```"):
+            in_code = not in_code
+            index += 1
+            continue
+
+        if in_code:
+            paragraph = document.add_paragraph()
+            run = paragraph.add_run(line.rstrip())
+            run.font.name = "Consolas"
+            run.font.size = Pt(9.5)
+            index += 1
+            continue
 
         if not stripped:
             index += 1
