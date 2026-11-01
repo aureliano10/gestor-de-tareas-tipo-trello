@@ -18,5 +18,5 @@ backend/tests/test_integration_flow.py::test_cp_in_06_historial_de_actividad PAS
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-------------- generated xml file: /tmp/tmpycf2e1z0/integracion.xml -------------
-========================= 6 passed, 1 warning in 0.97s =========================
+------------- generated xml file: /tmp/tmp6znfxvqs/integracion.xml -------------
+========================= 6 passed, 1 warning in 1.30s =========================

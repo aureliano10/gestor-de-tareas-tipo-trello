@@ -1,0 +1,34 @@
+== Evidencias de automatización - Etapa 11 ==
+Fecha: 2026-11-01T12:03:22-03:00
+
+### Unitarias (Etapa 8) ###
+CP-UN-01: APROBADO | clean_title
+CP-UN-02: APROBADO | clean_title
+CP-UN-03: APROBADO | clean_description
+CP-UN-04: APROBADO | clean_priority
+CP-UN-05: APROBADO | clean_assignee
+CP-UN-06: APROBADO | clean_tag
+CP-UN-07: APROBADO | clean_tags
+CP-UN-08: APROBADO | clean_link_url
+CP-UN-09: APROBADO | clean_link_label
+CP-UN-10: APROBADO | _resolve_tag_id
+CP-UN-11: APROBADO | _set_tags
+CP-UN-12: APROBADO | _normalize_links
+CP-UN-13: APROBADO | create_task
+CP-UN-14: APROBADO | move_task
+CP-UN-15: APROBADO | create_attachment
+CP-UN-16: APROBADO | init_db
+CP-UN-17: APROBADO | init_db
+CP-UN-18: APROBADO | connection
+
+Unitarias: 18/18 aprobados
+
+### Integración (Etapa 9) ###
+CP-IN-01: APROBADO | Alta de tarea enriquecida y persistencia en SQLite.
+CP-IN-02: APROBADO | Adjunto: subida, almacenamiento en disco y descarga.
+CP-IN-03: APROBADO | Flujo de estados con la regla de finalización.
+CP-IN-04: APROBADO | Reapertura automática al agregar una subtarea pendiente.
+CP-IN-05: APROBADO | Lectura con filtros y orden del tablero.
+CP-IN-06: APROBADO | Historial de actividad persistido y reordenado.
+
+Integración: 6/6 aprobados

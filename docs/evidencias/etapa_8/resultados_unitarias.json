@@ -9,7 +9,7 @@
       "descripcion": "Recorte de espacios externos y texto válido.",
       "test": "test_cp_un_01_clean_title_normalizacion",
       "archivo": "backend.tests.test_unit_schemas",
-      "duracion_s": 0.001,
+      "duracion_s": 0.0,
       "estado": "Aprobado"
     },
     {
@@ -90,7 +90,7 @@
       "descripcion": "Reutiliza etiquetas sin distinguir mayúsculas.",
       "test": "test_cp_un_10_resolve_tag_id_reutiliza_sin_distinguir_mayusculas",
       "archivo": "backend.tests.test_unit_repository",
-      "duracion_s": 0.028,
+      "duracion_s": 0.066,
       "estado": "Aprobado"
     },
     {
@@ -99,7 +99,7 @@
       "descripcion": "Deduplica y aplica el límite de 5 etiquetas.",
       "test": "test_cp_un_11_set_tags_deduplica_y_limita",
       "archivo": "backend.tests.test_unit_repository",
-      "duracion_s": 0.027,
+      "duracion_s": 0.048,
       "estado": "Aprobado"
     },
     {
@@ -117,7 +117,7 @@
       "descripcion": "Límite de subtareas en el alta (20, 21).",
       "test": "test_cp_un_13_create_task_limite_de_subtareas",
       "archivo": "backend.tests.test_unit_repository",
-      "duracion_s": 0.035,
+      "duracion_s": 0.039,
       "estado": "Aprobado"
     },
     {
@@ -126,7 +126,7 @@
       "descripcion": "Bloqueo de finalización con subtareas pendientes.",
       "test": "test_cp_un_14_move_task_bloquea_con_subtareas_pendientes",
       "archivo": "backend.tests.test_unit_repository",
-      "duracion_s": 0.042,
+      "duracion_s": 0.071,
       "estado": "Aprobado"
     },
     {
@@ -135,7 +135,7 @@
       "descripcion": "Límite de adjuntos por tarea (3, 4).",
       "test": "test_cp_un_15_create_attachment_limite",
       "archivo": "backend.tests.test_unit_repository",
-      "duracion_s": 0.039,
+      "duracion_s": 0.063,
       "estado": "Aprobado"
     },
     {
@@ -144,7 +144,7 @@
       "descripcion": "Crea las siete tablas del esquema.",
       "test": "test_cp_un_16_init_db_crea_todas_las_tablas",
       "archivo": "backend.tests.test_unit_database",
-      "duracion_s": 0.025,
+      "duracion_s": 0.037,
       "estado": "Aprobado"
     },
     {
@@ -153,7 +153,7 @@
       "descripcion": "Migración aditiva de una tabla tasks incompleta.",
       "test": "test_cp_un_17_init_db_migra_tabla_legacy",
       "archivo": "backend.tests.test_unit_database",
-      "duracion_s": 0.043,
+      "duracion_s": 0.063,
       "estado": "Aprobado"
     },
     {
@@ -162,7 +162,7 @@
       "descripcion": "Revierte la transacción ante una excepción.",
       "test": "test_cp_un_18_connection_revierte_ante_error",
       "archivo": "backend.tests.test_unit_database",
-      "duracion_s": 0.022,
+      "duracion_s": 0.024,
       "estado": "Aprobado"
     }
   ]

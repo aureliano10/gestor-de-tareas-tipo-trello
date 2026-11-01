@@ -24,5 +24,5 @@ backend/tests/test_unit_database.py::test_cp_un_16_init_db_crea_todas_las_tablas
 backend/tests/test_unit_database.py::test_cp_un_17_init_db_migra_tabla_legacy PASSED [ 94%]
 backend/tests/test_unit_database.py::test_cp_un_18_connection_revierte_ante_error PASSED [100%]
 
--------------- generated xml file: /tmp/tmp7j64jnmu/unitarias.xml --------------
-============================== 18 passed in 0.44s ==============================
+-------------- generated xml file: /tmp/tmpz0zfs5ql/unitarias.xml --------------
+============================== 18 passed in 0.61s ==============================

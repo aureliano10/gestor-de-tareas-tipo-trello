@@ -1,0 +1,169 @@
+{
+  "total": 18,
+  "aprobados": 18,
+  "fallidos": 0,
+  "casos": [
+    {
+      "id": "CP-UN-01",
+      "funcion": "clean_title",
+      "descripcion": "Recorte de espacios externos y texto válido.",
+      "test": "test_cp_un_01_clean_title_normalizacion",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.0,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-02",
+      "funcion": "clean_title",
+      "descripcion": "Límites de longitud (1, 100, 101) y vacíos.",
+      "test": "test_cp_un_02_clean_title_limites",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-03",
+      "funcion": "clean_description",
+      "descripcion": "Campo opcional y límite (500, 501).",
+      "test": "test_cp_un_03_clean_description_limites",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-04",
+      "funcion": "clean_priority",
+      "descripcion": "Conjunto permitido y valores inválidos.",
+      "test": "test_cp_un_04_clean_priority_conjunto_permitido",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-05",
+      "funcion": "clean_assignee",
+      "descripcion": "Opcional, recorte y límite (60, 61).",
+      "test": "test_cp_un_05_clean_assignee_opcional_y_limites",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-06",
+      "funcion": "clean_tag",
+      "descripcion": "Vacía, solo espacios y límite (30, 31).",
+      "test": "test_cp_un_06_clean_tag_vacia_y_limites",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-07",
+      "funcion": "clean_tags",
+      "descripcion": "Deduplicación sin distinguir mayúsculas.",
+      "test": "test_cp_un_07_clean_tags_deduplica_sin_distinguir_mayusculas",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.0,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-08",
+      "funcion": "clean_link_url",
+      "descripcion": "Esquema http/https y límite (500, 501).",
+      "test": "test_cp_un_08_clean_link_url_esquema_y_limites",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-09",
+      "funcion": "clean_link_label",
+      "descripcion": "Opcional, recorte y límite (60, 61).",
+      "test": "test_cp_un_09_clean_link_label_opcional_y_limites",
+      "archivo": "backend.tests.test_unit_schemas",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-10",
+      "funcion": "_resolve_tag_id",
+      "descripcion": "Reutiliza etiquetas sin distinguir mayúsculas.",
+      "test": "test_cp_un_10_resolve_tag_id_reutiliza_sin_distinguir_mayusculas",
+      "archivo": "backend.tests.test_unit_repository",
+      "duracion_s": 0.066,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-11",
+      "funcion": "_set_tags",
+      "descripcion": "Deduplica y aplica el límite de 5 etiquetas.",
+      "test": "test_cp_un_11_set_tags_deduplica_y_limita",
+      "archivo": "backend.tests.test_unit_repository",
+      "duracion_s": 0.048,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-12",
+      "funcion": "_normalize_links",
+      "descripcion": "Acepta dict/objeto, duplicados y límite 5.",
+      "test": "test_cp_un_12_normalize_links_acepta_y_rechaza",
+      "archivo": "backend.tests.test_unit_repository",
+      "duracion_s": 0.001,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-13",
+      "funcion": "create_task",
+      "descripcion": "Límite de subtareas en el alta (20, 21).",
+      "test": "test_cp_un_13_create_task_limite_de_subtareas",
+      "archivo": "backend.tests.test_unit_repository",
+      "duracion_s": 0.039,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-14",
+      "funcion": "move_task",
+      "descripcion": "Bloqueo de finalización con subtareas pendientes.",
+      "test": "test_cp_un_14_move_task_bloquea_con_subtareas_pendientes",
+      "archivo": "backend.tests.test_unit_repository",
+      "duracion_s": 0.071,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-15",
+      "funcion": "create_attachment",
+      "descripcion": "Límite de adjuntos por tarea (3, 4).",
+      "test": "test_cp_un_15_create_attachment_limite",
+      "archivo": "backend.tests.test_unit_repository",
+      "duracion_s": 0.063,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-16",
+      "funcion": "init_db",
+      "descripcion": "Crea las siete tablas del esquema.",
+      "test": "test_cp_un_16_init_db_crea_todas_las_tablas",
+      "archivo": "backend.tests.test_unit_database",
+      "duracion_s": 0.037,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-17",
+      "funcion": "init_db",
+      "descripcion": "Migración aditiva de una tabla tasks incompleta.",
+      "test": "test_cp_un_17_init_db_migra_tabla_legacy",
+      "archivo": "backend.tests.test_unit_database",
+      "duracion_s": 0.063,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-UN-18",
+      "funcion": "connection",
+      "descripcion": "Revierte la transacción ante una excepción.",
+      "test": "test_cp_un_18_connection_revierte_ante_error",
+      "archivo": "backend.tests.test_unit_database",
+      "duracion_s": 0.024,
+      "estado": "Aprobado"
+    }
+  ]
+}

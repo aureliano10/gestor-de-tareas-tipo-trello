@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- /home/marucha/Documentos/final_aimar/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/marucha/Documentos/final_aimar
+plugins: anyio-4.15.1
+collecting ... collected 18 items
+
+backend/tests/test_unit_schemas.py::test_cp_un_01_clean_title_normalizacion PASSED [  5%]
+backend/tests/test_unit_schemas.py::test_cp_un_02_clean_title_limites PASSED [ 11%]
+backend/tests/test_unit_schemas.py::test_cp_un_03_clean_description_limites PASSED [ 16%]
+backend/tests/test_unit_schemas.py::test_cp_un_04_clean_priority_conjunto_permitido PASSED [ 22%]
+backend/tests/test_unit_schemas.py::test_cp_un_05_clean_assignee_opcional_y_limites PASSED [ 27%]
+backend/tests/test_unit_schemas.py::test_cp_un_06_clean_tag_vacia_y_limites PASSED [ 33%]
+backend/tests/test_unit_schemas.py::test_cp_un_07_clean_tags_deduplica_sin_distinguir_mayusculas PASSED [ 38%]
+backend/tests/test_unit_schemas.py::test_cp_un_08_clean_link_url_esquema_y_limites PASSED [ 44%]
+backend/tests/test_unit_schemas.py::test_cp_un_09_clean_link_label_opcional_y_limites PASSED [ 50%]
+backend/tests/test_unit_repository.py::test_cp_un_10_resolve_tag_id_reutiliza_sin_distinguir_mayusculas PASSED [ 55%]
+backend/tests/test_unit_repository.py::test_cp_un_11_set_tags_deduplica_y_limita PASSED [ 61%]
+backend/tests/test_unit_repository.py::test_cp_un_12_normalize_links_acepta_y_rechaza PASSED [ 66%]
+backend/tests/test_unit_repository.py::test_cp_un_13_create_task_limite_de_subtareas PASSED [ 72%]
+backend/tests/test_unit_repository.py::test_cp_un_14_move_task_bloquea_con_subtareas_pendientes PASSED [ 77%]
+backend/tests/test_unit_repository.py::test_cp_un_15_create_attachment_limite PASSED [ 83%]
+backend/tests/test_unit_database.py::test_cp_un_16_init_db_crea_todas_las_tablas PASSED [ 88%]
+backend/tests/test_unit_database.py::test_cp_un_17_init_db_migra_tabla_legacy PASSED [ 94%]
+backend/tests/test_unit_database.py::test_cp_un_18_connection_revierte_ante_error PASSED [100%]
+
+-------------- generated xml file: /tmp/tmpz0zfs5ql/unitarias.xml --------------
+============================== 18 passed in 0.61s ==============================
