@@ -136,6 +136,33 @@ Casos de sistema (API con httpx, interfaz con Playwright y caja blanca). Requier
 
 Cada runner guarda sus resultados en `docs/evidencias/etapa_6/`.
 
+Pruebas unitarias del frontend con [Vitest](https://vitest.dev/) y [Testing Library](https://testing-library.com/), sin necesidad de levantar ningún servidor:
+
+```bash
+cd frontend
+npm run test       # ejecuta la suite una vez
+npm run coverage   # ejecuta la suite y genera el reporte de cobertura
+```
+
+El reporte de cobertura se guarda en `frontend/coverage/`. La cobertura del backend se mide con `pytest-cov`:
+
+```bash
+cd backend
+../.venv/bin/python -m pytest tests --cov=app --cov-report=term-missing
+```
+
+## Integración continua
+
+El repositorio incluye un flujo de trabajo de **GitHub Actions** en [`.github/workflows/ci.yml`](.github/workflows/ci.yml) que se ejecuta en cada `push` y en cada `pull request`. Está compuesto por tres trabajos independientes:
+
+| Trabajo | Entorno | Qué ejecuta |
+|---------|---------|-------------|
+| `backend` | Python 3.12 | `ruff check backend scripts` y las pruebas de pytest (unitarias e integración) con cobertura (`--cov=app`). Publica el reporte JSON de cobertura como artefacto. |
+| `frontend` | Node.js 22 | `npm ci`, `npm run lint`, `npm run build` y `npm run coverage` (Vitest). Publica el reporte de cobertura como artefacto. |
+| `e2e` | Python 3.12 + Node.js 22 | Instala Chromium de Playwright, levanta el backend (con base SQLite y almacenamiento en rutas temporales) y el frontend, y corre la suite de sistema de la Etapa 6: pruebas de API, de interfaz y de caja blanca. Publica las evidencias como artefacto. |
+
+Para reproducir el trabajo `e2e` en un entorno local, los scripts de la suite respetan la variable de entorno `PLAYWRIGHT_CHANNEL` (`chrome` por defecto; en CI se usa `chromium`, el navegador incluido de Playwright). El backend de la suite puede apuntar a una base temporal con `KANBAN_DB_PATH` y `KANBAN_STORAGE_PATH`, de modo que no toca los datos de desarrollo.
+
 ## Endpoints de la API
 
 | Método | Ruta | Descripción |

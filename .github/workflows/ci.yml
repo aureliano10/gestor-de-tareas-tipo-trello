@@ -1,0 +1,177 @@
+name: CI
+
+# Corre en cada push y en cada pull request.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+# Cancela ejecuciones previas del mismo ref para ahorrar minutos.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Backend: análisis estático, pruebas (unitarias + integración) y cobertura.
+  # ---------------------------------------------------------------------------
+  backend:
+    name: Backend (ruff + pytest + cobertura)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Instalar dependencias de desarrollo
+        run: pip install -r backend/requirements-dev.txt
+
+      - name: Análisis estático con ruff
+        run: ruff check backend scripts
+
+      - name: Pruebas con cobertura (pytest)
+        run: |
+          mkdir -p docs/evidencias/cobertura
+          cd backend
+          python -m pytest tests \
+            --cov=app \
+            --cov-report=term-missing \
+            --cov-report=json:../docs/evidencias/cobertura/backend_coverage.json
+
+      - name: Publicar reporte de cobertura del backend
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-backend
+          path: docs/evidencias/cobertura/backend_coverage.json
+
+  # ---------------------------------------------------------------------------
+  # Frontend: lint, compilación y pruebas unitarias con cobertura (vitest).
+  # ---------------------------------------------------------------------------
+  frontend:
+    name: Frontend (lint + build + vitest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Análisis estático con eslint
+        run: npm run lint
+
+      - name: Compilar la aplicación
+        run: npm run build
+
+      - name: Pruebas unitarias con cobertura (vitest)
+        run: npm run coverage
+
+      - name: Publicar reporte de cobertura del frontend
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-frontend
+          path: frontend/coverage/coverage-final.json
+
+  # ---------------------------------------------------------------------------
+  # Pruebas de sistema: levanta backend (BD temporal) y frontend, instala
+  # Chromium y corre las 62 suites de API, las 11 de interfaz y las 7 de caja
+  # blanca de la Etapa 6.
+  # ---------------------------------------------------------------------------
+  e2e:
+    name: Sistema (Playwright + suites Etapa 6)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: |
+          pip install -r backend/requirements-dev.txt
+          cd frontend
+          npm ci
+
+      - name: Instalar Chromium de Playwright
+        run: python -m playwright install --with-deps chromium
+
+      # El backend usa una base SQLite y un almacenamiento temporales para no
+      # tocar los datos de desarrollo. Los scripts de la suite también los leen
+      # desde KANBAN_SERVER_DB / KANBAN_SERVER_STORAGE (valores por defecto).
+      - name: Levantar backend y esperar
+        run: |
+          cd backend
+          nohup env KANBAN_DB_PATH=/tmp/kanban_etapa6.db \
+            KANBAN_STORAGE_PATH=/tmp/kanban_etapa6_storage \
+            python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 \
+            > /tmp/backend.log 2>&1 &
+          for _ in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8000/api/health >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:8000/api/health >/dev/null
+          echo "Backend disponible en http://127.0.0.1:8000"
+
+      - name: Levantar frontend y esperar
+        run: |
+          cd frontend
+          nohup npm run dev -- --host 127.0.0.1 --port 5173 \
+            > /tmp/frontend.log 2>&1 &
+          for _ in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:5173/ >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:5173/ >/dev/null
+          echo "Frontend disponible en http://127.0.0.1:5173"
+
+      # PLAYWRIGHT_CHANNEL=chromium hace que ui_helpers.launch_browser use el
+      # Chromium incluido de Playwright (instalado en el paso anterior) en lugar
+      # del Chrome del sistema, que no existe en el runner.
+      - name: Suite de sistema (API, interfaz y caja blanca)
+        env:
+          PLAYWRIGHT_CHANNEL: chromium
+        run: |
+          python scripts/etapa_6/ejecutar_api.py
+          python scripts/etapa_6/ejecutar_ui.py
+          python scripts/etapa_6/ejecutar_caja_blanca.py
+
+      - name: Publicar evidencias de la suite
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-etapa-6
+          path: docs/evidencias/etapa_6/

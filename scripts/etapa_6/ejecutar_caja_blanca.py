@@ -27,6 +27,7 @@ from ui_helpers import (  # noqa: E402
     FORM_TITLE,
     drag_task,
     drop_raw,
+    launch_browser,
     open_page,
     request_bodies,
     screenshot,
@@ -430,7 +431,7 @@ def main() -> int:
 
     frontend_results = []
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(channel="chrome", headless=True)
+        browser = launch_browser(playwright)
         try:
             frontend_results.append(run_frontend_case(browser, "CP-CB-06", cb_06))
             frontend_results.append(

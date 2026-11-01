@@ -24,6 +24,7 @@ from ui_helpers import (  # noqa: E402
     column_titles,
     drag_task,
     fetch_download,
+    launch_browser,
     open_detail,
     open_page,
     reload_board,
@@ -526,7 +527,7 @@ def main() -> int:
     ensure_server()
     results = []
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(channel="chrome", headless=True)
+        browser = launch_browser(playwright)
         try:
             for case_id, fn, prepare in CASES:
                 result = run_case(browser, case_id, fn, prepare)

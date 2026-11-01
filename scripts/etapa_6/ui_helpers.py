@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import re
 import time
 from pathlib import Path
@@ -23,6 +24,19 @@ def open_page(browser, width: int = 1366, height: int = 900):
     page = context.new_page()
     goto_board(page)
     return context, page
+
+
+def launch_browser(playwright, *, headless: bool = True):
+    """Lanza Chromium respetando la variable de entorno ``PLAYWRIGHT_CHANNEL``.
+
+    Por defecto usa el canal ``chrome`` (el Chrome instalado en el sistema), que
+    es lo que hay disponible en el entorno local. En integración continua se
+    instala el Chromium incluido de Playwright y se ejecuta con
+    ``PLAYWRIGHT_CHANNEL=chromium``. Un valor vacío lanza el navegador incluido
+    sin canal explícito.
+    """
+    channel = os.environ.get("PLAYWRIGHT_CHANNEL", "chrome").strip() or None
+    return playwright.chromium.launch(channel=channel, headless=headless)
 
 
 def goto_board(page) -> None:
