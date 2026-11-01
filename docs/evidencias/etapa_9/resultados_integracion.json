@@ -1,0 +1,55 @@
+{
+  "total": 6,
+  "aprobados": 6,
+  "fallidos": 0,
+  "casos": [
+    {
+      "id": "CP-IN-01",
+      "descripcion": "Alta de tarea enriquecida y persistencia en SQLite.",
+      "test": "test_cp_in_01_alta_enriquecida_y_persistencia",
+      "archivo": "backend.tests.test_integration_flow",
+      "duracion_s": 0.156,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-IN-02",
+      "descripcion": "Adjunto: subida, almacenamiento en disco y descarga.",
+      "test": "test_cp_in_02_adjunto_persistencia_y_descarga",
+      "archivo": "backend.tests.test_integration_flow",
+      "duracion_s": 0.063,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-IN-03",
+      "descripcion": "Flujo de estados con la regla de finalización.",
+      "test": "test_cp_in_03_flujo_de_estados_con_regla_de_negocio",
+      "archivo": "backend.tests.test_integration_flow",
+      "duracion_s": 0.079,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-IN-04",
+      "descripcion": "Reapertura automática al agregar una subtarea pendiente.",
+      "test": "test_cp_in_04_reapertura_automatica_al_agregar_pendiente",
+      "archivo": "backend.tests.test_integration_flow",
+      "duracion_s": 0.061,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-IN-05",
+      "descripcion": "Lectura con filtros y orden del tablero.",
+      "test": "test_cp_in_05_lectura_con_filtros_y_orden",
+      "archivo": "backend.tests.test_integration_flow",
+      "duracion_s": 0.096,
+      "estado": "Aprobado"
+    },
+    {
+      "id": "CP-IN-06",
+      "descripcion": "Historial de actividad persistido y reordenado.",
+      "test": "test_cp_in_06_historial_de_actividad",
+      "archivo": "backend.tests.test_integration_flow",
+      "duracion_s": 0.058,
+      "estado": "Aprobado"
+    }
+  ]
+}
