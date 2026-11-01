@@ -1,0 +1,117 @@
+diff --git a/backend/app/repository.py b/backend/app/repository.py
+index a6c6b14..6ce9186 100644
+--- a/backend/app/repository.py
++++ b/backend/app/repository.py
+@@ -64,6 +64,21 @@ def _today_iso() -> str:
+     return date.today().isoformat()
+ 
+ 
++def is_overdue(
++    due_date: Optional[str], status: str, today: Optional[str] = None
++) -> bool:
++    """Indica si una tarea está vencida.
++
++    Una tarea está vencida cuando tiene fecha límite anterior a hoy y su
++    estado no es "Terminada". El parámetro ``today`` permite inyectar la
++    fecha de referencia (formato ISO) para comprobar la regla de forma
++    aislada, sin depender del reloj del sistema.
++    """
++    if not due_date or status == DONE_STATUS:
++        return False
++    return due_date < (today or _today_iso())
++
++
+ def _as_iso(value: Optional[date]) -> Optional[str]:
+     return value.isoformat() if value is not None else None
+ 
+@@ -113,6 +128,30 @@ def _log_activity(conn, task_id: int, action: str, detail: str = "") -> None:
+     )
+ 
+ 
++def _log_set_changes(
++    conn,
++    task_id: int,
++    old_items: list[tuple[str, str]],
++    new_items: list[tuple[str, str]],
++    removed_message: str,
++    added_message: str,
++) -> None:
++    """Registra las bajas y altas de un conjunto comparando por clave.
++
++    ``old_items`` y ``new_items`` son listas de pares ``(clave, texto)``.
++    ``removed_message`` y ``added_message`` son plantillas que reciben el
++    texto visible de cada elemento (por ejemplo ``"Etiqueta agregada: {}"``).
++    """
++    new_keys = {key for key, _ in new_items}
++    old_keys = {key for key, _ in old_items}
++    for key, display in old_items:
++        if key not in new_keys:
++            _log_activity(conn, task_id, removed_message.format(display))
++    for key, display in new_items:
++        if key not in old_keys:
++            _log_activity(conn, task_id, added_message.format(display))
++
++
+ def _tags_of(conn, task_id: int) -> list[str]:
+     rows = conn.execute(
+         "SELECT tags.name AS name FROM tags "
+@@ -221,9 +260,7 @@ def _task_dict(conn, row) -> dict:
+         "due_date": due_date,
+         "position": row["position"],
+         "created_at": row["created_at"],
+-        "overdue": bool(due_date)
+-        and due_date < _today_iso()
+-        and row["status"] != DONE_STATUS,
++        "overdue": is_overdue(due_date, row["status"]),
+         "subtask_total": len(subtasks),
+         "subtask_done": sum(1 for item in subtasks if item["done"]),
+         "subtasks": subtasks,
+@@ -450,29 +487,28 @@ def update_task(
+         if tags is not None:
+             current_tags = _tags_of(conn, task_id)
+             _set_tags(conn, task_id, tags)
+-            new_keys = {name.lower() for name in tags}
+-            old_keys = {name.lower() for name in current_tags}
+-            for name in current_tags:
+-                if name.lower() not in new_keys:
+-                    _log_activity(conn, task_id, f"Etiqueta eliminada: {name}")
+-            for name in tags:
+-                if name.lower() not in old_keys:
+-                    _log_activity(conn, task_id, f"Etiqueta agregada: {name}")
++            _log_set_changes(
++                conn,
++                task_id,
++                [(name.lower(), name) for name in current_tags],
++                [(name.lower(), name) for name in tags],
++                "Etiqueta eliminada: {}",
++                "Etiqueta agregada: {}",
++            )
+         if normalized_links is not None:
+             current_links = _links_of(conn, task_id)
+             _set_links(conn, task_id, normalized_links)
+-            new_urls = {url.lower() for url, _ in normalized_links}
+-            old_urls = {link["url"].lower() for link in current_links}
+-            for link in current_links:
+-                if link["url"].lower() not in new_urls:
+-                    _log_activity(
+-                        conn,
+-                        task_id,
+-                        f"Enlace eliminado: {link['label'] or link['url']}",
+-                    )
+-            for url, label in normalized_links:
+-                if url.lower() not in old_urls:
+-                    _log_activity(conn, task_id, f"Enlace agregado: {label or url}")
++            _log_set_changes(
++                conn,
++                task_id,
++                [
++                    (link["url"].lower(), link["label"] or link["url"])
++                    for link in current_links
++                ],
++                [(url.lower(), label or url) for url, label in normalized_links],
++                "Enlace eliminado: {}",
++                "Enlace agregado: {}",
++            )
+     return get_task(task_id)
+ 
+ 
