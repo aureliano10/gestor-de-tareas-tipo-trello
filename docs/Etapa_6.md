@@ -9,22 +9,22 @@
 
 ## Objetivo de la etapa
 
-Ejecutar los 53 casos de prueba diseñados en la Etapa 5 sobre el sistema desarrollado, registrar los resultados obtenidos, verificar el cumplimiento de los requisitos RF1 a RF15 y analizar si las fallas, en caso de existir, corresponden a defectos del sistema.
+Ejecutar los 80 casos de prueba diseñados en la Etapa 5 sobre el sistema desarrollado, registrar los resultados obtenidos, verificar el cumplimiento de los requisitos RF1 a RF23 y analizar si las fallas, en caso de existir, corresponden a defectos del sistema.
 
 ## Alcance
 
-Se ejecutaron los 53 casos del diseño:
+Se ejecutaron los 80 casos del diseño:
 
-- 38 casos de caja negra sobre la API.
-- 8 casos de caja negra sobre la interfaz.
+- 62 casos de caja negra sobre la API.
+- 11 casos de caja negra sobre la interfaz.
 - 7 casos de caja blanca: 5 sobre unidades del backend y 2 sobre unidades del frontend.
 
 La ejecución incluyó pruebas normales, con datos inválidos, con valores límite y con situaciones excepcionales, tal como requiere la consigna:
 
-- **Normales:** alta, listado, edición, movimiento y reordenamiento, checklist, fecha límite, adjuntos, eliminación y restauración con datos válidos.
-- **Datos inválidos:** títulos vacíos o con solo espacios, títulos de más de 100 caracteres, descripciones de más de 500 caracteres, estados no permitidos, identificadores no numéricos, posiciones negativas, fechas pasadas al crear, extensiones no permitidas y archivos que superan el tamaño o la cantidad admitidos.
-- **Valores límite:** título de 1 carácter, de 100 caracteres y de 101 caracteres; descripción de 500 y de 501 caracteres; archivo de 5 MB; cuarto adjunto sobre un límite de 3.
-- **Situaciones excepcionales:** operaciones sobre tareas inexistentes, error de red simulado en la API, arrastre dentro de la misma columna, arrastre con identificadores inválidos, intento de finalizar una tarea con subtareas pendientes y restauración de una tarea que no estaba eliminada.
+- **Normales:** alta, listado, edición, movimiento y reordenamiento, checklist, fecha límite, adjuntos, eliminación y restauración con datos válidos, además de prioridad, responsable, etiquetas, enlaces, historial, búsqueda, filtros, orden y alta enriquecida.
+- **Datos inválidos:** títulos vacíos o con solo espacios, títulos de más de 100 caracteres, descripciones de más de 500 caracteres, estados no permitidos, identificadores no numéricos, posiciones negativas, fechas pasadas al crear, extensiones no permitidas, archivos que superan el tamaño o la cantidad admitidos, prioridades y criterios de orden fuera de los permitidos, responsables de más de 60 caracteres, etiquetas vacías o de solo espacios y enlaces con esquema no permitido o repetidos.
+- **Valores límite:** título de 1 carácter, de 100 caracteres y de 101 caracteres; descripción de 500 y de 501 caracteres; archivo de 5 MB; cuarto adjunto sobre un límite de 3; responsable de 60 y de 61 caracteres; quinta y sexta etiqueta; quinto y sexto enlace; vigésima subtarea en el alta y vigésima entrada del historial.
+- **Situaciones excepcionales:** operaciones sobre tareas inexistentes, error de red simulado en la API, arrastre dentro de la misma columna, arrastre con identificadores inválidos, intento de finalizar una tarea con subtareas pendientes, restauración de una tarea que no estaba eliminada y superación de los límites de etiquetas, enlaces y subtareas del alta (HTTP 409).
 
 ## Entorno de ejecución
 
@@ -52,8 +52,8 @@ La ejecución se automatizó con scripts reproducibles ubicados en `scripts/etap
 
 | Script | Función |
 |--------|---------|
-| `ejecutar_api.py` | Ejecuta los 38 casos de API con httpx y registra estados HTTP, cuerpos y persistencia. |
-| `ejecutar_ui.py` | Ejecuta los 8 casos de interfaz con Playwright sobre Chrome del sistema y guarda capturas. |
+| `ejecutar_api.py` | Ejecuta los 62 casos de API con httpx y registra estados HTTP, cuerpos y persistencia. |
+| `ejecutar_ui.py` | Ejecuta los 11 casos de interfaz con Playwright sobre Chrome del sistema y guarda capturas. |
 | `ejecutar_caja_blanca.py` | Ejecuta los 5 casos de backend por invocación directa y los 2 de frontend sobre la interfaz real. |
 | `consolidar.py` | Actualiza los resultados y estados en `Etapa_5.md`, y genera el resumen JSON. |
 | `common.py` y `ui_helpers.py` | Funciones compartidas de API, base de datos, Playwright, arrastre, descargas y capturas. |
@@ -70,10 +70,10 @@ Los resultados se registraron en archivos JSON, en un log de ejecución y en cap
 
 | Grupo | Casos | Aprobados | Fallidos | Resultado |
 |-------|-------|-----------|----------|-----------|
-| API | 38 | 38 | 0 | 100% aprobado |
-| Interfaz | 8 | 8 | 0 | 100% aprobado |
+| API | 62 | 62 | 0 | 100% aprobado |
+| Interfaz | 11 | 11 | 0 | 100% aprobado |
 | Caja blanca | 7 | 7 | 0 | 100% aprobado |
-| **Total** | **53** | **53** | **0** | **100% aprobado** |
+| **Total** | **80** | **80** | **0** | **100% aprobado** |
 
 ### Resultados por funcionalidad
 
@@ -88,7 +88,15 @@ Los resultados se registraron en archivos JSON, en un log de ejecución y en cap
 | Archivos adjuntos | 8 | 8 | 0 |
 | Eliminar y restaurar tarea | 6 | 6 | 0 |
 | Listar tareas y persistencia | 1 | 1 | 0 |
-| **Total** | **53** | **53** | **0** |
+| Prioridad | 4 | 4 | 0 |
+| Responsable | 3 | 3 | 0 |
+| Etiquetas | 4 | 4 | 0 |
+| Enlaces | 4 | 4 | 0 |
+| Historial de actividad | 3 | 3 | 0 |
+| Búsqueda y filtros | 4 | 4 | 0 |
+| Orden del tablero | 2 | 2 | 0 |
+| Alta enriquecida | 3 | 3 | 0 |
+| **Total** | **80** | **80** | **0** |
 
 Cada caso se contabiliza en una sola fila, según su funcionalidad principal en la matriz de trazabilidad. Algunos casos cubren además otras funcionalidades o requisitos, por ejemplo `CP-UI-06` en el control de finalización, sin alterar el total.
 
@@ -111,13 +119,27 @@ Cada caso se contabiliza en una sola fila, según su funcionalidad principal en 
 | RF13: eliminar adjuntos | CP-ADJ-03 | Aprobado |
 | RF14: eliminar tareas | CP-ELI-01, CP-ELI-02, CP-UI-08, CP-CB-03 | Aprobado |
 | RF15: recuperar tareas eliminadas | CP-RES-01, CP-RES-02, CP-UI-08, CP-CB-03 | Aprobado |
+| RF16: prioridad de la tarea | CP-PRI-01 a CP-PRI-04, CP-UI-09, CP-ALT-01 | Aprobado |
+| RF17: responsable de la tarea | CP-ASG-01 a CP-ASG-03, CP-UI-09, CP-ALT-01 | Aprobado |
+| RF18: etiquetas de la tarea | CP-TAG-01 a CP-TAG-04, CP-ALT-01 | Aprobado |
+| RF19: enlaces de la tarea | CP-ENL-01 a CP-ENL-04, CP-ALT-01 | Aprobado |
+| RF20: historial de actividad | CP-HIS-01, CP-HIS-02, CP-UI-11, CP-PRI-04, CP-ASG-03, CP-TAG-04 | Aprobado |
+| RF21: búsqueda y filtros | CP-FIL-01 a CP-FIL-03, CP-UI-10 | Aprobado |
+| RF22: orden del tablero | CP-ORD-01, CP-ORD-02 | Aprobado |
+| RF23: alta enriquecida | CP-ALT-01, CP-ALT-02, CP-UI-09 | Aprobado |
 | Título obligatorio, no vacío y de hasta 100 caracteres | CP-CRE-02 a CP-CRE-07, CP-UI-02, CP-CB-01, CP-CB-06 | Aprobado |
 | Descripción de hasta 500 caracteres | CP-CRE-08, CP-CB-06 | Aprobado |
 | Un solo estado válido por tarea | CP-CRE-01, CP-MOV-01 a CP-MOV-04, CP-UI-03, CP-CB-02 | Aprobado |
 | Hasta 3 adjuntos de 5 MB con extensiones permitidas | CP-ADJ-01, CP-ADJ-04, CP-ADJ-05, CP-ADJ-06, CP-CB-04 | Aprobado |
 | Persistencia de los cambios | CP-LIS-01, CP-UI-01, CP-UI-03, CP-UI-05, CP-UI-06, CP-UI-07, CP-UI-08, CP-CB-02, CP-CB-03 | Aprobado |
+| Prioridad dentro del conjunto {Baja, Media, Alta} | CP-PRI-01 a CP-PRI-03, CP-ALT-01 | Aprobado |
+| Responsable de hasta 60 caracteres | CP-ASG-01, CP-ASG-02, CP-ALT-01 | Aprobado |
+| Hasta 5 etiquetas de 30 caracteres reutilizables | CP-TAG-01 a CP-TAG-04, CP-ALT-01 | Aprobado |
+| Enlaces http/https, hasta 5 y sin duplicados | CP-ENL-01 a CP-ENL-04, CP-ALT-01 | Aprobado |
+| Historial acotado a 20 entradas | CP-HIS-01, CP-HIS-02 | Aprobado |
+| Alta de hasta 20 subtareas | CP-ALT-02 | Aprobado |
 
-Los 15 requisitos funcionales y las restricciones del sistema quedaron cubiertos por al menos un caso ejecutado y aprobado.
+Los 23 requisitos funcionales y las restricciones del sistema quedaron cubiertos por al menos un caso ejecutado y aprobado.
 
 ## Resultados por caso
 
@@ -161,6 +183,30 @@ Los 15 requisitos funcionales y las restricciones del sistema quedaron cubiertos
 | CP-RES-01 | API | HTTP 200; la tarea eliminada volvió a estar presente en el listado, al final de su columna. | Aprobado |
 | CP-RES-02 | API | HTTP 404 con detalle "Tarea no encontrada". | Aprobado |
 | CP-LIS-01 | API | El primer listado fue vacío y el segundo contuvo las tres tareas en orden de creación, tras reiniciar la aplicación. | Aprobado |
+| CP-PRI-01 | API | HTTP 201; la tarea se creó con priority "Alta". | Aprobado |
+| CP-PRI-02 | API | HTTP 201; al omitir priority la tarea quedó con "Media". | Aprobado |
+| CP-PRI-03 | API | HTTP 422; prioridad fuera del conjunto rechazada y listado sin cambios. | Aprobado |
+| CP-PRI-04 | API | PUT 200; prioridad "Baja" aplicada y registrada en la actividad. | Aprobado |
+| CP-ASG-01 | API | HTTP 201; los espacios externos se recortaron a "Ana Gómez". | Aprobado |
+| CP-ASG-02 | API | HTTP 422; responsable de 61 caracteres rechazado y listado sin cambios. | Aprobado |
+| CP-ASG-03 | API | PUT 200; responsable "Luis" asignado y registrado en la actividad. | Aprobado |
+| CP-TAG-01 | API | HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags. | Aprobado |
+| CP-TAG-02 | API | HTTP 409 con el detalle del límite; no se creó ninguna tarea. | Aprobado |
+| CP-TAG-03 | API | HTTP 422 con la etiqueta vacía y con la de solo espacios. | Aprobado |
+| CP-TAG-04 | API | PUT 200; se quitó "uno", se agregó "tres" y ambas acciones quedaron registradas. | Aprobado |
+| CP-ENL-01 | API | HTTP 201; el enlace https quedó persistido con su nombre. | Aprobado |
+| CP-ENL-02 | API | HTTP 422 con ftp:// y con una url sin esquema. | Aprobado |
+| CP-ENL-03 | API | HTTP 409 con el detalle del límite; no se creó ninguna tarea. | Aprobado |
+| CP-ENL-04 | API | HTTP 409 con el detalle del enlace duplicado; no se creó ninguna tarea. | Aprobado |
+| CP-HIS-01 | API | La creación dejó "Tarea creada" y el movimiento agregó "Movida a En curso". | Aprobado |
+| CP-HIS-02 | API | El historial devolvió 20 entradas como máximo, con la más reciente primero. | Aprobado |
+| CP-FIL-01 | API | El filtro priority devolvió solo la tarea de prioridad Alta. | Aprobado |
+| CP-FIL-02 | API | El filtro tag devolvió solo la tarea con la etiqueta indicada. | Aprobado |
+| CP-FIL-03 | API | La búsqueda encontró coincidencias en el título y en la descripción, sin distinguir mayúsculas. | Aprobado |
+| CP-ORD-01 | API | sort=priority ordenó las tareas como Alta, Media y Baja. | Aprobado |
+| CP-ORD-02 | API | HTTP 422 por valor de sort fuera de los permitidos. | Aprobado |
+| CP-ALT-01 | API | HTTP 201; prioridad, responsable, 2 subtareas, 2 etiquetas y 1 enlace persistidos en un solo POST. | Aprobado |
+| CP-ALT-02 | API | HTTP 409 con el detalle del límite; no se creó ninguna tarea. | Aprobado |
 | CP-UI-01 | Interfaz | Tarjeta visible, campo limpio, resumen "1 tarea" y contador "Pendiente" en 1; persistió tras recargar. | Aprobado |
 | CP-UI-02 | Interfaz | Error de validación visible; sin petición POST y sin tarjeta creada. | Aprobado |
 | CP-UI-03 | Interfaz | Arrastre a "En curso" con un PATCH; contadores actualizados y persistencia tras recargar. | Aprobado |
@@ -169,6 +215,9 @@ Los 15 requisitos funcionales y las restricciones del sistema quedaron cubiertos
 | CP-UI-06 | Interfaz | Checklist con dos subtareas: contador 0/2 → 1/2 → 1/1 e insignia "1/2 subtareas" → "1/1 subtareas". | Aprobado |
 | CP-UI-07 | Interfaz | Adjunto de 1 KB: contador 1/3, insignia "1 archivo" y descarga con el nombre y el contenido originales. | Aprobado |
 | CP-UI-08 | Interfaz | Diálogo de confirmación, DELETE 1, aviso con "Deshacer" y restauración de la tarjeta con persistencia. | Aprobado |
+| CP-UI-09 | Interfaz | La tarjeta mostró la insignia "Alta" y el responsable "Ana" al alta con prioridad y responsable. | Aprobado |
+| CP-UI-10 | Interfaz | La búsqueda por texto mostró solo la tarjeta coincidente y el resumen "1 tarea". | Aprobado |
+| CP-UI-11 | Interfaz | El detalle mostró 2 entradas de historial: "Movida a En curso" y "Tarea creada". | Aprobado |
 | CP-CB-01 | Backend (unidad) | Título válido normalizado; vacío, solo espacios y 101 caracteres rechazados; el valor nulo lanza el error de título obligatorio. | Aprobado |
 | CP-CB-02 | Backend (unidad) | `move_task` con identificador inexistente devuelve None; con subtarea pendiente lanza `PendingSubtasksError` y conserva "Pendiente"; con la subtarea completada devuelve "Terminada". | Aprobado |
 | CP-CB-03 | Backend (unidad) | `delete_task` devuelve True y saca la tarea del listado; el segundo intento y el inexistente devuelven False; `restore_task` devuelve la tarea y la reincorpora; la restauración de una tarea activa y la de una inexistente devuelven None. | Aprobado |
@@ -179,7 +228,7 @@ Los 15 requisitos funcionales y las restricciones del sistema quedaron cubiertos
 
 ## Análisis de los resultados
 
-No se produjeron fallas: los 53 casos obtuvieron el resultado esperado. En consecuencia, no se identificaron defectos funcionales y no se generaron identificadores `DEF-XX` para la Etapa 7.
+No se produjeron fallas: los 80 casos obtuvieron el resultado esperado. En consecuencia, no se identificaron defectos funcionales y no se generaron identificadores `DEF-XX` para la Etapa 7. En esta corrida se amplió la cobertura respecto del diseño original para incluir prioridad, responsable, etiquetas, enlaces, historial de actividad, búsqueda y filtros, orden del tablero y alta enriquecida.
 
 Observaciones relevantes:
 
@@ -191,6 +240,11 @@ Observaciones relevantes:
 - **Adjuntos:** se validaron la extensión, el tamaño y la cantidad; la descarga conservó el nombre y el contenido originales, y la eliminación dejó el archivo fuera de la tarea y de la descarga.
 - **Eliminación y restauración:** la eliminación fue lógica, la confirmación previa evitó borrados accidentales y la restauración devolvió la tarjeta al final de su columna.
 - **Persistencia:** las tareas y sus cambios se mantuvieron después de recargar la página y de volver a consultar la API.
+- **Prioridad y responsable:** la prioridad admitió solo "Baja", "Media" y "Alta" (con "Media" por omisión) y el responsable se recortó y se limitó a 60 caracteres; los cambios quedaron registrados en el historial y se reflejaron en la tarjeta.
+- **Etiquetas y enlaces:** las etiquetas se validaron como no vacías, se limitaron a 5 por tarea y quedaron disponibles en `/api/tags`; los enlaces exigieron esquema `http://` o `https://`, se limitaron a 5 por tarea y rechazaron los duplicados.
+- **Historial de actividad:** cada operación dejó una entrada, la más reciente primero, y la API devolvió como máximo 20 entradas.
+- **Búsqueda, filtros y orden:** la búsqueda por texto coincidió en el título y en la descripción sin distinguir mayúsculas; los filtros por prioridad, etiqueta y vencimiento devolvieron solo las tareas esperadas; el orden por criterio se aceptó únicamente para los valores permitidos y con un valor inválido respondió HTTP 422.
+- **Alta enriquecida:** un solo POST permitió persistir prioridad, responsable, subtareas, etiquetas y enlaces, y su límite de 20 subtareas respondió HTTP 409.
 - **Caja blanca:** se cubrieron las decisiones de `clean_title`, `move_task`, `delete_task`, `restore_task`, `create_attachment` y `update_subtask`, y las ramas de `validateTaskInput`/`handleSubmit` y `handleDrop`/`dropIndex`.
 
 Sobre la rama no alcanzable:
@@ -211,11 +265,11 @@ No se detectaron defectos durante la ejecución. El registro de defectos de la E
 | Evidencia | Ubicación |
 |-----------|-----------|
 | Log completo de ejecución | `docs/evidencias/etapa_6/ejecucion.log` |
-| Resultados de los 38 casos de API | `docs/evidencias/etapa_6/resultados_api.json` |
-| Resultados de los 8 casos de interfaz | `docs/evidencias/etapa_6/resultados_ui.json` |
+| Resultados de los 62 casos de API | `docs/evidencias/etapa_6/resultados_api.json` |
+| Resultados de los 11 casos de interfaz | `docs/evidencias/etapa_6/resultados_ui.json` |
 | Resultados de los 7 casos de caja blanca | `docs/evidencias/etapa_6/resultados_caja_blanca.json` |
 | Resumen consolidado | `docs/evidencias/etapa_6/resumen_resultados.json` |
-| Capturas de interfaz | `docs/evidencias/etapa_6/screenshots/CP-UI-01.png` a `CP-UI-08.png` |
+| Capturas de interfaz | `docs/evidencias/etapa_6/screenshots/CP-UI-01.png` a `CP-UI-11.png` |
 | Capturas de caja blanca de frontend | `docs/evidencias/etapa_6/screenshots/CP-CB-06.png` y `CP-CB-07.png` |
 | Casos actualizados con resultados | `docs/Etapa_5.md` y `docs/casos_de_prueba.csv` |
 | Scripts de ejecución | `scripts/etapa_6/` |
@@ -231,7 +285,7 @@ Los pasos generales para repetir la ejecución son:
 
 ## Conclusión de la etapa
 
-Los 53 casos de prueba se ejecutaron correctamente y arrojaron un 100% de aprobación. El sistema cumple los requisitos RF1 a RF15 y las restricciones de título, descripción, estado, fecha límite, adjuntos y persistencia. No se detectaron defectos, por lo que la Etapa 7 se documentará sin defectos abiertos provenientes de la ejecución.
+Los 80 casos de prueba se ejecutaron correctamente y arrojaron un 100% de aprobación. El sistema cumple los requisitos RF1 a RF23 y las restricciones de título, descripción, estado, fecha límite, adjuntos, persistencia, prioridad, responsable, etiquetas, enlaces, historial, búsqueda, orden y alta enriquecida. No se detectaron defectos, por lo que la Etapa 7 se documentará sin defectos abiertos provenientes de la ejecución.
 
 ## Próxima etapa
 

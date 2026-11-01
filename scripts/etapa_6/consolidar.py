@@ -122,7 +122,15 @@ def main() -> int:
         | {"CP-FEC-01", "CP-FEC-02"}
         | {f"CP-ADJ-{index:02d}" for index in range(1, 7)}
         | {"CP-ELI-01", "CP-ELI-02", "CP-RES-01", "CP-RES-02", "CP-LIS-01"}
-        | {f"CP-UI-{index:02d}" for index in range(1, 9)}
+        | {f"CP-PRI-{index:02d}" for index in range(1, 5)}
+        | {f"CP-ASG-{index:02d}" for index in range(1, 4)}
+        | {f"CP-TAG-{index:02d}" for index in range(1, 5)}
+        | {f"CP-ENL-{index:02d}" for index in range(1, 5)}
+        | {"CP-HIS-01", "CP-HIS-02"}
+        | {f"CP-FIL-{index:02d}" for index in range(1, 4)}
+        | {f"CP-ORD-{index:02d}" for index in range(1, 3)}
+        | {f"CP-ALT-{index:02d}" for index in range(1, 3)}
+        | {f"CP-UI-{index:02d}" for index in range(1, 12)}
         | {f"CP-CB-{index:02d}" for index in range(1, 8)}
     )
     missing = expected - set(results)

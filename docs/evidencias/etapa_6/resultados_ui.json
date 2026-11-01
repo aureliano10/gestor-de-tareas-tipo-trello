@@ -54,5 +54,26 @@
     "resultado_obtenido": "diálogo='¿Querés eliminar \"Eliminar desde interfaz\"? Podés deshacerlo durante unos segundos.'; DELETE=1; tarjetas restantes=0; aviso='Eliminaste \"Eliminar desde interfaz\".\\nDeshacer\\n×'; restaurada=True; persistió=True",
     "observaciones": "Borrado lógico con confirmación previa y restauración desde el aviso.",
     "detalle": null
+  },
+  {
+    "id": "CP-UI-09",
+    "passed": true,
+    "resultado_obtenido": "insignia='Alta'; responsable='Ana'",
+    "observaciones": "Alta desde el formulario con prioridad y responsable; verifica la tarjeta.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-10",
+    "passed": true,
+    "resultado_obtenido": "tarjetas visibles=['Informe de ventas']; resumen='1 tarea'",
+    "observaciones": "Búsqueda por texto desde la interfaz.",
+    "detalle": null
+  },
+  {
+    "id": "CP-UI-11",
+    "passed": true,
+    "resultado_obtenido": "entradas=2; acciones=['Movida a En curso', 'Tarea creada']",
+    "observaciones": "Historial visible en el detalle después de mover la tarea.",
+    "detalle": null
   }
 ]

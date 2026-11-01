@@ -304,7 +304,7 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 - Datos de entrada: {"title": "Preparar informe"}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y luego consultar GET /api/tasks.
 - Resultado esperado: HTTP 201, con id entero, title "Preparar informe", description "", status "Pendiente", due_date nulo, position 0, overdue falso, subtask_total 0, subtasks y attachments vacíos; la tarea aparece en el listado.
-- Resultado obtenido: HTTP 201; tarea #81 creada en estado Pendiente, position 0 y overdue falso, presente en el listado.
+- Resultado obtenido: HTTP 201; tarea #149 creada en estado Pendiente, position 0 y overdue falso, presente en el listado.
 - Estado: Aprobado.
 - Observaciones: Clase de equivalencia válida típica. Verifica además RF2 y la forma completa de la respuesta.
 - Técnica: Caja negra - clase de equivalencia válida.
