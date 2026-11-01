@@ -13,8 +13,16 @@ from .schemas import (
     MAX_TITLE_LENGTH,
 )
 
-DEFAULT_DB_PATH = Path(__file__).resolve().parent.parent / "tasks.db"
-DEFAULT_STORAGE_PATH = Path(__file__).resolve().parent.parent / "storage"
+_APP_DIR = Path(__file__).resolve().parent.parent
+
+# En Vercel el sistema de archivos es de solo lectura salvo /tmp (efímero):
+# la base y los adjuntos viven ahí y no persisten entre despliegues.
+_ON_VERCEL = bool(os.environ.get("VERCEL"))
+
+DEFAULT_DB_PATH = Path("/tmp/kanban/tasks.db") if _ON_VERCEL else _APP_DIR / "tasks.db"
+DEFAULT_STORAGE_PATH = (
+    Path("/tmp/kanban/storage") if _ON_VERCEL else _APP_DIR / "storage"
+)
 
 CREATE_TASKS_TABLE = f"""
 CREATE TABLE IF NOT EXISTS tasks (

@@ -1,0 +1,9 @@
+# Artefactos locales que no deben subirse al despliegue.
+.venv/
+docs/
+scripts/
+backend/tasks.db
+backend/storage/
+backend/tests/
+frontend/node_modules/
+frontend/coverage/
