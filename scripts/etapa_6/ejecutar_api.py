@@ -1028,12 +1028,15 @@ def cp_tag_01() -> dict:
     tags = list_tags()
     checks = {
         "HTTP 201": response.status_code == 201,
-        "etiquetas en la respuesta": sorted(body.get("tags") or []) == ["backend", "pruebas"],
+        "etiquetas en la respuesta": sorted(body.get("tags") or [])
+        == ["backend", "pruebas"],
         "backend en el catálogo": "backend" in tags,
         "pruebas en el catálogo": "pruebas" in tags,
     }
     obtained = "HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags"
-    return make_result("CP-TAG-01", checks, obtained, "Clase válida de etiquetas.", body)
+    return make_result(
+        "CP-TAG-01", checks, obtained, "Clase válida de etiquetas.", body
+    )
 
 
 def cp_tag_02() -> dict:
@@ -1049,7 +1052,11 @@ def cp_tag_02() -> dict:
     }
     obtained = "HTTP 409 con el detalle del límite; no se creó ninguna tarea"
     return make_result(
-        "CP-TAG-02", checks, obtained, "Valor límite superior inválido de etiquetas.", body
+        "CP-TAG-02",
+        checks,
+        obtained,
+        "Valor límite superior inválido de etiquetas.",
+        body,
     )
 
 
@@ -1086,7 +1093,10 @@ def cp_tag_04() -> dict:
         "actividad de eliminación": "Etiqueta eliminada: uno" in actions,
         "actividad de alta": "Etiqueta agregada: tres" in actions,
     }
-    obtained = 'PUT 200; se quitó "uno", se agregó "tres" y ambas acciones quedaron registradas'
+    obtained = (
+        'PUT 200; se quitó "uno", se agregó "tres" y ambas acciones '
+        "quedaron registradas"
+    )
     return make_result(
         "CP-TAG-04",
         checks,
@@ -1116,7 +1126,9 @@ def cp_enl_01() -> dict:
         "label correcto": first.get("label") == "Documento",
     }
     obtained = "HTTP 201; el enlace https quedó persistido con su nombre"
-    return make_result("CP-ENL-01", checks, obtained, "Clase válida de enlace https.", body)
+    return make_result(
+        "CP-ENL-01", checks, obtained, "Clase válida de enlace https.", body
+    )
 
 
 def cp_enl_02() -> dict:
@@ -1150,7 +1162,11 @@ def cp_enl_03() -> dict:
     }
     obtained = "HTTP 409 con el detalle del límite; no se creó ninguna tarea"
     return make_result(
-        "CP-ENL-03", checks, obtained, "Valor límite superior inválido de enlaces.", body
+        "CP-ENL-03",
+        checks,
+        obtained,
+        "Valor límite superior inválido de enlaces.",
+        body,
     )
 
 
@@ -1193,7 +1209,10 @@ def cp_his_01() -> dict:
         "acción posterior registrada": "Movida a En curso" in updated_actions,
         "historial crece": len(updated_actions) > len(created_actions),
     }
-    obtained = 'La creación dejó "Tarea creada" y el movimiento agregó "Movida a En curso"'
+    obtained = (
+        'La creación dejó "Tarea creada" y el movimiento agregó '
+        '"Movida a En curso"'
+    )
     return make_result(
         "CP-HIS-01", checks, obtained, "Registro del historial de la tarea.", updated
     )
@@ -1213,7 +1232,10 @@ def cp_his_02() -> dict:
         "la más nueva es el último paso": actions[0] == "Subtarea agregada: Paso 20",
         "la creación queda fuera": "Tarea creada" not in actions,
     }
-    obtained = "El historial devolvió 20 entradas como máximo, con la más reciente primero"
+    obtained = (
+        "El historial devolvió 20 entradas como máximo, con la más reciente "
+        "primero"
+    )
     return make_result(
         "CP-HIS-02",
         checks,
@@ -1278,7 +1300,10 @@ def cp_fil_03() -> dict:
         "sin distinguir mayúsculas": by_description["id"] in found,
         "excluye la ajena": len(filtered) == 2,
     }
-    obtained = "La búsqueda encontró coincidencias en el título y en la descripción, sin distinguir mayúsculas"
+    obtained = (
+        "La búsqueda encontró coincidencias en el título y en la descripción, "
+        "sin distinguir mayúsculas"
+    )
     return make_result(
         "CP-FIL-03",
         checks,

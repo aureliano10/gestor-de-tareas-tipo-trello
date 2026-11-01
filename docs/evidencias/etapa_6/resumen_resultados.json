@@ -20,10 +20,10 @@
     {
       "id": "CP-CRE-01",
       "passed": true,
-      "resultado_obtenido": "HTTP 201; tarea #149 creada en estado Pendiente, position 0 y overdue falso, presente en el listado",
+      "resultado_obtenido": "HTTP 201; tarea #220 creada en estado Pendiente, position 0 y overdue falso, presente en el listado",
       "observaciones": "Alta típica; verifica RF2 y la forma completa de la respuesta.",
       "detalle": {
-        "id": 149,
+        "id": 220,
         "title": "Preparar informe",
         "description": "",
         "status": "Pendiente",
@@ -31,7 +31,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:40.787021Z",
+        "created_at": "2026-11-01T14:48:53.360819Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -41,10 +41,10 @@
         "links": [],
         "activity": [
           {
-            "id": 325,
+            "id": 480,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:40.787248Z"
+            "created_at": "2026-11-01T14:48:53.361173Z"
           }
         ]
       }
@@ -55,7 +55,7 @@
       "resultado_obtenido": "HTTP 201; título de un carácter aceptado con estado Pendiente",
       "observaciones": "Valor límite inferior válido del título.",
       "detalle": {
-        "id": 150,
+        "id": 221,
         "title": "A",
         "description": "",
         "status": "Pendiente",
@@ -63,7 +63,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:40.881978Z",
+        "created_at": "2026-11-01T14:48:53.518425Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -73,10 +73,10 @@
         "links": [],
         "activity": [
           {
-            "id": 326,
+            "id": 481,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:40.882272Z"
+            "created_at": "2026-11-01T14:48:53.518694Z"
           }
         ]
       }
@@ -87,7 +87,7 @@
       "resultado_obtenido": "HTTP 201; título de exactamente 100 caracteres aceptado",
       "observaciones": "Valor límite superior válido del título.",
       "detalle": {
-        "id": 151,
+        "id": 222,
         "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "description": "",
         "status": "Pendiente",
@@ -95,7 +95,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:40.937082Z",
+        "created_at": "2026-11-01T14:48:53.570699Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -105,10 +105,10 @@
         "links": [],
         "activity": [
           {
-            "id": 327,
+            "id": 482,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:40.937361Z"
+            "created_at": "2026-11-01T14:48:53.571153Z"
           }
         ]
       }
@@ -185,7 +185,7 @@
       "resultado_obtenido": "HTTP 201; espacios externos recortados y título persistido como \"Revisar pruebas\"",
       "observaciones": "Clase válida con normalización.",
       "detalle": {
-        "id": 152,
+        "id": 223,
         "title": "Revisar pruebas",
         "description": "",
         "status": "Pendiente",
@@ -193,7 +193,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:41.306707Z",
+        "created_at": "2026-11-01T14:48:53.853122Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -203,10 +203,10 @@
         "links": [],
         "activity": [
           {
-            "id": 328,
+            "id": 483,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:41.307439Z"
+            "created_at": "2026-11-01T14:48:53.853553Z"
           }
         ]
       }
@@ -217,7 +217,7 @@
       "resultado_obtenido": "HTTP 201; descripción y fecha límite (2026-11-08) almacenadas y overdue falso",
       "observaciones": "Alta con descripción y fecha futura.",
       "detalle": {
-        "id": 153,
+        "id": 224,
         "title": "Informe final",
         "description": "Detalle de la tarea",
         "status": "Pendiente",
@@ -225,7 +225,7 @@
         "assignee": "",
         "due_date": "2026-11-08",
         "position": 0,
-        "created_at": "2026-11-01T14:44:41.409581Z",
+        "created_at": "2026-11-01T14:48:53.949141Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -235,10 +235,10 @@
         "links": [],
         "activity": [
           {
-            "id": 329,
+            "id": 484,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:41.409961Z"
+            "created_at": "2026-11-01T14:48:53.949341Z"
           }
         ]
       }
@@ -271,7 +271,7 @@
       "resultado_obtenido": "Tres estados válidos: PATCH 200 a En curso y a Terminada, con estado final \"Terminada\" persistido",
       "observaciones": "Transición completa entre los tres estados.",
       "detalle": {
-        "id": 154,
+        "id": 225,
         "title": "Mover a Terminada",
         "description": "",
         "status": "Terminada",
@@ -279,7 +279,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:41.570632Z",
+        "created_at": "2026-11-01T14:48:54.079161Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -289,22 +289,22 @@
         "links": [],
         "activity": [
           {
-            "id": 332,
+            "id": 487,
             "action": "Movida a Terminada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:41.687996Z"
+            "created_at": "2026-11-01T14:48:54.171735Z"
           },
           {
-            "id": 331,
+            "id": 486,
             "action": "Movida a En curso",
             "detail": "",
-            "created_at": "2026-11-01T14:44:41.623678Z"
+            "created_at": "2026-11-01T14:48:54.126911Z"
           },
           {
-            "id": 330,
+            "id": 485,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:41.570915Z"
+            "created_at": "2026-11-01T14:48:54.079485Z"
           }
         ]
       }
@@ -315,7 +315,7 @@
       "resultado_obtenido": "HTTP 422 con estado y con posición inválidos; la tarea conservó su estado Pendiente y su posición 0",
       "observaciones": "Clase inválida de estado y de posición.",
       "detalle": {
-        "id": 155,
+        "id": 226,
         "title": "Estado inválido",
         "description": "",
         "status": "Pendiente",
@@ -323,7 +323,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:41.795750Z",
+        "created_at": "2026-11-01T14:48:54.301280Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -333,10 +333,10 @@
         "links": [],
         "activity": [
           {
-            "id": 333,
+            "id": 488,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:41.796163Z"
+            "created_at": "2026-11-01T14:48:54.301683Z"
           }
         ]
       }
@@ -376,7 +376,7 @@
       "observaciones": "Reordenamiento sin cambio de estado.",
       "detalle": [
         {
-          "id": 158,
+          "id": 229,
           "title": "C",
           "description": "",
           "status": "Pendiente",
@@ -384,7 +384,7 @@
           "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-11-01T14:44:42.204121Z",
+          "created_at": "2026-11-01T14:48:54.650032Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
@@ -394,21 +394,21 @@
           "links": [],
           "activity": [
             {
-              "id": 337,
+              "id": 492,
               "action": "Reordenada en Pendiente",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.259993Z"
+              "created_at": "2026-11-01T14:48:54.689562Z"
             },
             {
-              "id": 336,
+              "id": 491,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.204387Z"
+              "created_at": "2026-11-01T14:48:54.650426Z"
             }
           ]
         },
         {
-          "id": 156,
+          "id": 227,
           "title": "A",
           "description": "",
           "status": "Pendiente",
@@ -416,7 +416,7 @@
           "assignee": "",
           "due_date": null,
           "position": 1,
-          "created_at": "2026-11-01T14:44:42.101994Z",
+          "created_at": "2026-11-01T14:48:54.575323Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
@@ -426,15 +426,15 @@
           "links": [],
           "activity": [
             {
-              "id": 334,
+              "id": 489,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.102256Z"
+              "created_at": "2026-11-01T14:48:54.575662Z"
             }
           ]
         },
         {
-          "id": 157,
+          "id": 228,
           "title": "B",
           "description": "",
           "status": "Pendiente",
@@ -442,7 +442,7 @@
           "assignee": "",
           "due_date": null,
           "position": 2,
-          "created_at": "2026-11-01T14:44:42.155447Z",
+          "created_at": "2026-11-01T14:48:54.613423Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
@@ -452,10 +452,10 @@
           "links": [],
           "activity": [
             {
-              "id": 335,
+              "id": 490,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.155724Z"
+              "created_at": "2026-11-01T14:48:54.613814Z"
             }
           ]
         }
@@ -467,7 +467,7 @@
       "resultado_obtenido": "PUT 200; título, descripción y fecha límite actualizados sin alterar el estado",
       "observaciones": "Flujo normal de edición.",
       "detalle": {
-        "id": 159,
+        "id": 230,
         "title": "Tarea editada",
         "description": "Nueva descripción",
         "status": "Pendiente",
@@ -475,7 +475,7 @@
         "assignee": "",
         "due_date": "2026-11-04",
         "position": 0,
-        "created_at": "2026-11-01T14:44:42.388669Z",
+        "created_at": "2026-11-01T14:48:54.780532Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -485,28 +485,28 @@
         "links": [],
         "activity": [
           {
-            "id": 341,
+            "id": 496,
             "action": "Fecha límite actualizada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.454833Z"
+            "created_at": "2026-11-01T14:48:54.818969Z"
           },
           {
-            "id": 340,
+            "id": 495,
             "action": "Descripción actualizada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.454802Z"
+            "created_at": "2026-11-01T14:48:54.818940Z"
           },
           {
-            "id": 339,
+            "id": 494,
             "action": "Título actualizado",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.454565Z"
+            "created_at": "2026-11-01T14:48:54.818688Z"
           },
           {
-            "id": 338,
+            "id": 493,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.389023Z"
+            "created_at": "2026-11-01T14:48:54.780765Z"
           }
         ]
       }
@@ -526,7 +526,7 @@
       "resultado_obtenido": "HTTP 200; la edición admitió la fecha pasada (2026-10-30) y overdue quedó verdadero",
       "observaciones": "La restricción de fecha futura aplica solo al alta.",
       "detalle": {
-        "id": 160,
+        "id": 231,
         "title": "Revisar informe",
         "description": "",
         "status": "Pendiente",
@@ -534,7 +534,7 @@
         "assignee": "",
         "due_date": "2026-10-30",
         "position": 0,
-        "created_at": "2026-11-01T14:44:42.586480Z",
+        "created_at": "2026-11-01T14:48:54.898400Z",
         "overdue": true,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -544,22 +544,22 @@
         "links": [],
         "activity": [
           {
-            "id": 344,
+            "id": 499,
             "action": "Fecha límite actualizada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.652038Z"
+            "created_at": "2026-11-01T14:48:54.950984Z"
           },
           {
-            "id": 343,
+            "id": 498,
             "action": "Título actualizado",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.651796Z"
+            "created_at": "2026-11-01T14:48:54.950700Z"
           },
           {
-            "id": 342,
+            "id": 497,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.586794Z"
+            "created_at": "2026-11-01T14:48:54.898614Z"
           }
         ]
       }
@@ -570,7 +570,7 @@
       "resultado_obtenido": "HTTP 201; subtarea creada, subtask_total 1 y subtask_done 0",
       "observaciones": "Flujo normal de alta de subtarea.",
       "detalle": {
-        "id": 161,
+        "id": 232,
         "title": "Con checklist",
         "description": "",
         "status": "Pendiente",
@@ -578,16 +578,16 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:42.706571Z",
+        "created_at": "2026-11-01T14:48:55.003914Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 65,
+            "id": 96,
             "title": "Diseñar casos",
             "done": false,
-            "created_at": "2026-11-01T14:44:42.750598Z"
+            "created_at": "2026-11-01T14:48:55.048710Z"
           }
         ],
         "attachments": [],
@@ -595,16 +595,16 @@
         "links": [],
         "activity": [
           {
-            "id": 346,
+            "id": 501,
             "action": "Subtarea agregada: Diseñar casos",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.750897Z"
+            "created_at": "2026-11-01T14:48:55.049064Z"
           },
           {
-            "id": 345,
+            "id": 500,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:42.706823Z"
+            "created_at": "2026-11-01T14:48:55.004221Z"
           }
         ]
       }
@@ -616,7 +616,7 @@
       "observaciones": "Marcado y desmarcado de una subtarea.",
       "detalle": {
         "marked": {
-          "id": 162,
+          "id": 233,
           "title": "Marcar subtarea",
           "description": "",
           "status": "Pendiente",
@@ -624,16 +624,16 @@
           "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-11-01T14:44:42.802825Z",
+          "created_at": "2026-11-01T14:48:55.095057Z",
           "overdue": false,
           "subtask_total": 1,
           "subtask_done": 1,
           "subtasks": [
             {
-              "id": 66,
+              "id": 97,
               "title": "Paso",
               "done": true,
-              "created_at": "2026-11-01T14:44:42.851197Z"
+              "created_at": "2026-11-01T14:48:55.137062Z"
             }
           ],
           "attachments": [],
@@ -641,27 +641,27 @@
           "links": [],
           "activity": [
             {
-              "id": 349,
+              "id": 504,
               "action": "Subtarea completada: Paso",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.899627Z"
+              "created_at": "2026-11-01T14:48:55.181072Z"
             },
             {
-              "id": 348,
+              "id": 503,
               "action": "Subtarea agregada: Paso",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.851478Z"
+              "created_at": "2026-11-01T14:48:55.137241Z"
             },
             {
-              "id": 347,
+              "id": 502,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.803049Z"
+              "created_at": "2026-11-01T14:48:55.095350Z"
             }
           ]
         },
         "unmarked": {
-          "id": 162,
+          "id": 233,
           "title": "Marcar subtarea",
           "description": "",
           "status": "Pendiente",
@@ -669,16 +669,16 @@
           "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-11-01T14:44:42.802825Z",
+          "created_at": "2026-11-01T14:48:55.095057Z",
           "overdue": false,
           "subtask_total": 1,
           "subtask_done": 0,
           "subtasks": [
             {
-              "id": 66,
+              "id": 97,
               "title": "Paso",
               "done": false,
-              "created_at": "2026-11-01T14:44:42.851197Z"
+              "created_at": "2026-11-01T14:48:55.137062Z"
             }
           ],
           "attachments": [],
@@ -686,28 +686,28 @@
           "links": [],
           "activity": [
             {
-              "id": 350,
+              "id": 505,
               "action": "Subtarea reabierta: Paso",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.974094Z"
+              "created_at": "2026-11-01T14:48:55.227815Z"
             },
             {
-              "id": 349,
+              "id": 504,
               "action": "Subtarea completada: Paso",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.899627Z"
+              "created_at": "2026-11-01T14:48:55.181072Z"
             },
             {
-              "id": 348,
+              "id": 503,
               "action": "Subtarea agregada: Paso",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.851478Z"
+              "created_at": "2026-11-01T14:48:55.137241Z"
             },
             {
-              "id": 347,
+              "id": 502,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:42.803049Z"
+              "created_at": "2026-11-01T14:48:55.095350Z"
             }
           ]
         }
@@ -719,7 +719,7 @@
       "resultado_obtenido": "DELETE 204 sin cuerpo; la tarea quedó con subtask_total 0",
       "observaciones": "Flujo normal de eliminación de subtarea.",
       "detalle": {
-        "id": 163,
+        "id": 234,
         "title": "Eliminar subtarea",
         "description": "",
         "status": "Pendiente",
@@ -727,7 +727,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:43.060974Z",
+        "created_at": "2026-11-01T14:48:55.287538Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -737,22 +737,22 @@
         "links": [],
         "activity": [
           {
-            "id": 353,
+            "id": 508,
             "action": "Subtarea eliminada: Paso",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.173452Z"
+            "created_at": "2026-11-01T14:48:55.381368Z"
           },
           {
-            "id": 352,
+            "id": 507,
             "action": "Subtarea agregada: Paso",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.118330Z"
+            "created_at": "2026-11-01T14:48:55.338484Z"
           },
           {
-            "id": 351,
+            "id": 506,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.061264Z"
+            "created_at": "2026-11-01T14:48:55.287910Z"
           }
         ]
       }
@@ -772,7 +772,7 @@
       "resultado_obtenido": "HTTP 409 con detalle del bloqueo; la tarea conservó su estado Pendiente",
       "observaciones": "Regla de bloqueo al finalizar.",
       "detalle": {
-        "id": 164,
+        "id": 235,
         "title": "Bloquear finalización",
         "description": "",
         "status": "Pendiente",
@@ -780,16 +780,16 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:43.313471Z",
+        "created_at": "2026-11-01T14:48:55.500803Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 68,
+            "id": 99,
             "title": "Pendiente 1",
             "done": false,
-            "created_at": "2026-11-01T14:44:43.361412Z"
+            "created_at": "2026-11-01T14:48:55.541974Z"
           }
         ],
         "attachments": [],
@@ -797,16 +797,16 @@
         "links": [],
         "activity": [
           {
-            "id": 355,
+            "id": 510,
             "action": "Subtarea agregada: Pendiente 1",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.361756Z"
+            "created_at": "2026-11-01T14:48:55.542220Z"
           },
           {
-            "id": 354,
+            "id": 509,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.313904Z"
+            "created_at": "2026-11-01T14:48:55.501066Z"
           }
         ]
       }
@@ -817,7 +817,7 @@
       "resultado_obtenido": "HTTP 200; tarea finalizada al no tener subtareas pendientes",
       "observaciones": "Complemento del bloqueo.",
       "detalle": {
-        "id": 165,
+        "id": 236,
         "title": "Finalizar permitida",
         "description": "",
         "status": "Terminada",
@@ -825,16 +825,16 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:43.523318Z",
+        "created_at": "2026-11-01T14:48:55.680868Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 1,
         "subtasks": [
           {
-            "id": 69,
+            "id": 100,
             "title": "Hecha",
             "done": true,
-            "created_at": "2026-11-01T14:44:43.564154Z"
+            "created_at": "2026-11-01T14:48:55.734633Z"
           }
         ],
         "attachments": [],
@@ -842,22 +842,22 @@
         "links": [],
         "activity": [
           {
-            "id": 358,
+            "id": 513,
             "action": "Movida a Terminada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.607672Z"
+            "created_at": "2026-11-01T14:48:55.778155Z"
           },
           {
-            "id": 357,
+            "id": 512,
             "action": "Subtarea agregada: Hecha",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.564362Z"
+            "created_at": "2026-11-01T14:48:55.734972Z"
           },
           {
-            "id": 356,
+            "id": 511,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.523567Z"
+            "created_at": "2026-11-01T14:48:55.681163Z"
           }
         ]
       }
@@ -868,7 +868,7 @@
       "resultado_obtenido": "HTTP 201 con la subtarea creada y la tarea reabierta a \"En curso\"",
       "observaciones": "Reapertura al agregar una subtarea pendiente.",
       "detalle": {
-        "id": 166,
+        "id": 237,
         "title": "Terminada y reabierta",
         "description": "",
         "status": "En curso",
@@ -876,16 +876,16 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:43.675983Z",
+        "created_at": "2026-11-01T14:48:55.839035Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 70,
+            "id": 101,
             "title": "Tarea adicional",
             "done": false,
-            "created_at": "2026-11-01T14:44:43.770248Z"
+            "created_at": "2026-11-01T14:48:55.936827Z"
           }
         ],
         "attachments": [],
@@ -893,22 +893,22 @@
         "links": [],
         "activity": [
           {
-            "id": 361,
+            "id": 516,
             "action": "Subtarea agregada: Tarea adicional",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.770490Z"
+            "created_at": "2026-11-01T14:48:55.937177Z"
           },
           {
-            "id": 360,
+            "id": 515,
             "action": "Movida a Terminada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.726207Z"
+            "created_at": "2026-11-01T14:48:55.890417Z"
           },
           {
-            "id": 359,
+            "id": 514,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.676292Z"
+            "created_at": "2026-11-01T14:48:55.839335Z"
           }
         ]
       }
@@ -919,7 +919,7 @@
       "resultado_obtenido": "HTTP 200 con la subtarea desmarcada y la tarea reabierta a \"En curso\"",
       "observaciones": "Reapertura al desmarcar una subtarea.",
       "detalle": {
-        "id": 167,
+        "id": 238,
         "title": "Desmarcar reabre",
         "description": "",
         "status": "En curso",
@@ -927,16 +927,16 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:43.818075Z",
+        "created_at": "2026-11-01T14:48:55.981346Z",
         "overdue": false,
         "subtask_total": 1,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 71,
+            "id": 102,
             "title": "Paso",
             "done": false,
-            "created_at": "2026-11-01T14:44:43.857130Z"
+            "created_at": "2026-11-01T14:48:56.029109Z"
           }
         ],
         "attachments": [],
@@ -944,28 +944,28 @@
         "links": [],
         "activity": [
           {
-            "id": 365,
+            "id": 520,
             "action": "Subtarea reabierta: Paso",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.939613Z"
+            "created_at": "2026-11-01T14:48:56.121824Z"
           },
           {
-            "id": 364,
+            "id": 519,
             "action": "Movida a Terminada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.897881Z"
+            "created_at": "2026-11-01T14:48:56.075920Z"
           },
           {
-            "id": 363,
+            "id": 518,
             "action": "Subtarea agregada: Paso",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.857412Z"
+            "created_at": "2026-11-01T14:48:56.029481Z"
           },
           {
-            "id": 362,
+            "id": 517,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.818426Z"
+            "created_at": "2026-11-01T14:48:55.981684Z"
           }
         ]
       }
@@ -976,7 +976,7 @@
       "resultado_obtenido": "overdue pasó de falso a verdadero al editar la fecha, sin cambiar el estado",
       "observaciones": "El vencimiento se deriva y no se almacena.",
       "detalle": {
-        "id": 168,
+        "id": 239,
         "title": "Con vencimiento",
         "description": "",
         "status": "Pendiente",
@@ -984,7 +984,7 @@
         "assignee": "",
         "due_date": "2026-10-30",
         "position": 0,
-        "created_at": "2026-11-01T14:44:43.980521Z",
+        "created_at": "2026-11-01T14:48:56.171118Z",
         "overdue": true,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -994,16 +994,16 @@
         "links": [],
         "activity": [
           {
-            "id": 367,
+            "id": 522,
             "action": "Fecha límite actualizada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:44.074326Z"
+            "created_at": "2026-11-01T14:48:56.247859Z"
           },
           {
-            "id": 366,
+            "id": 521,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:43.980815Z"
+            "created_at": "2026-11-01T14:48:56.171325Z"
           }
         ]
       }
@@ -1016,7 +1016,7 @@
       "detalle": {
         "filtered": [
           {
-            "id": 170,
+            "id": 241,
             "title": "Con fecha pasada",
             "description": "",
             "status": "Pendiente",
@@ -1024,7 +1024,7 @@
             "assignee": "",
             "due_date": "2026-10-31",
             "position": 1,
-            "created_at": "2026-11-01T14:44:44.180377Z",
+            "created_at": "2026-11-01T14:48:56.341713Z",
             "overdue": true,
             "subtask_total": 0,
             "subtask_done": 0,
@@ -1034,16 +1034,16 @@
             "links": [],
             "activity": [
               {
-                "id": 370,
+                "id": 525,
                 "action": "Fecha límite actualizada",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:44.242786Z"
+                "created_at": "2026-11-01T14:48:56.395493Z"
               },
               {
-                "id": 369,
+                "id": 524,
                 "action": "Tarea creada",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:44.180679Z"
+                "created_at": "2026-11-01T14:48:56.341976Z"
               }
             ]
           }
@@ -1056,7 +1056,7 @@
       "resultado_obtenido": "HTTP 201; adjunto \"notas.txt\" de 1024 bytes agregado a la tarea",
       "observaciones": "Subida con extensión permitida.",
       "detalle": {
-        "id": 171,
+        "id": 242,
         "title": "Con adjunto",
         "description": "",
         "status": "Pendiente",
@@ -1064,34 +1064,34 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:44.369635Z",
+        "created_at": "2026-11-01T14:48:56.509698Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
         "subtasks": [],
         "attachments": [
           {
-            "id": 16,
+            "id": 23,
             "filename": "notas.txt",
             "content_type": "text/plain",
             "size_bytes": 1024,
-            "created_at": "2026-11-01T14:44:44.421040Z"
+            "created_at": "2026-11-01T14:48:56.554522Z"
           }
         ],
         "tags": [],
         "links": [],
         "activity": [
           {
-            "id": 372,
+            "id": 527,
             "action": "Adjunto agregado: notas.txt",
             "detail": "",
-            "created_at": "2026-11-01T14:44:44.421323Z"
+            "created_at": "2026-11-01T14:48:56.554740Z"
           },
           {
-            "id": 371,
+            "id": 526,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:44.369917Z"
+            "created_at": "2026-11-01T14:48:56.509973Z"
           }
         ]
       }
@@ -1109,7 +1109,7 @@
       "resultado_obtenido": "DELETE 204; la tarea quedó sin adjuntos y la descarga posterior respondió 404",
       "observaciones": "Verifica también que el archivo físico deja de estar disponible.",
       "detalle": {
-        "id": 173,
+        "id": 244,
         "title": "Eliminar adjunto",
         "description": "",
         "status": "Pendiente",
@@ -1117,7 +1117,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:44.696547Z",
+        "created_at": "2026-11-01T14:48:56.750972Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1127,22 +1127,22 @@
         "links": [],
         "activity": [
           {
-            "id": 377,
+            "id": 532,
             "action": "Adjunto eliminado: notas.txt",
             "detail": "",
-            "created_at": "2026-11-01T14:44:44.845861Z"
+            "created_at": "2026-11-01T14:48:56.890213Z"
           },
           {
-            "id": 376,
+            "id": 531,
             "action": "Adjunto agregado: notas.txt",
             "detail": "",
-            "created_at": "2026-11-01T14:44:44.740470Z"
+            "created_at": "2026-11-01T14:48:56.793579Z"
           },
           {
-            "id": 375,
+            "id": 530,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:44.696923Z"
+            "created_at": "2026-11-01T14:48:56.751274Z"
           }
         ]
       }
@@ -1190,7 +1190,7 @@
       "resultado_obtenido": "HTTP 200; la tarea eliminada volvió a estar presente en el listado",
       "observaciones": "Flujo normal de restauración.",
       "detalle": {
-        "id": 178,
+        "id": 249,
         "title": "Restaurar esta tarea",
         "description": "",
         "status": "Pendiente",
@@ -1198,7 +1198,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:45.764165Z",
+        "created_at": "2026-11-01T14:48:57.811440Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1208,22 +1208,22 @@
         "links": [],
         "activity": [
           {
-            "id": 388,
+            "id": 543,
             "action": "Tarea restaurada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:45.846213Z"
+            "created_at": "2026-11-01T14:48:57.898857Z"
           },
           {
-            "id": 387,
+            "id": 542,
             "action": "Tarea eliminada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:45.806602Z"
+            "created_at": "2026-11-01T14:48:57.851279Z"
           },
           {
-            "id": 386,
+            "id": 541,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:45.764496Z"
+            "created_at": "2026-11-01T14:48:57.811637Z"
           }
         ]
       }
@@ -1244,7 +1244,7 @@
       "observaciones": "Verifica el listado y la persistencia en SQLite.",
       "detalle": [
         {
-          "id": 180,
+          "id": 251,
           "title": "Primera tarea",
           "description": "",
           "status": "Pendiente",
@@ -1252,7 +1252,7 @@
           "assignee": "",
           "due_date": null,
           "position": 0,
-          "created_at": "2026-11-01T14:44:46.057724Z",
+          "created_at": "2026-11-01T14:48:58.100934Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
@@ -1262,15 +1262,15 @@
           "links": [],
           "activity": [
             {
-              "id": 390,
+              "id": 545,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:46.057948Z"
+              "created_at": "2026-11-01T14:48:58.101281Z"
             }
           ]
         },
         {
-          "id": 181,
+          "id": 252,
           "title": "Segunda tarea",
           "description": "",
           "status": "Pendiente",
@@ -1278,7 +1278,7 @@
           "assignee": "",
           "due_date": null,
           "position": 1,
-          "created_at": "2026-11-01T14:44:46.095716Z",
+          "created_at": "2026-11-01T14:48:58.139550Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
@@ -1288,15 +1288,15 @@
           "links": [],
           "activity": [
             {
-              "id": 391,
+              "id": 546,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:46.095971Z"
+              "created_at": "2026-11-01T14:48:58.140012Z"
             }
           ]
         },
         {
-          "id": 182,
+          "id": 253,
           "title": "Tercera tarea",
           "description": "",
           "status": "Pendiente",
@@ -1304,7 +1304,7 @@
           "assignee": "",
           "due_date": null,
           "position": 2,
-          "created_at": "2026-11-01T14:44:46.134126Z",
+          "created_at": "2026-11-01T14:48:58.178993Z",
           "overdue": false,
           "subtask_total": 0,
           "subtask_done": 0,
@@ -1314,10 +1314,10 @@
           "links": [],
           "activity": [
             {
-              "id": 392,
+              "id": 547,
               "action": "Tarea creada",
               "detail": "",
-              "created_at": "2026-11-01T14:44:46.134441Z"
+              "created_at": "2026-11-01T14:48:58.179230Z"
             }
           ]
         }
@@ -1329,7 +1329,7 @@
       "resultado_obtenido": "HTTP 201; la tarea se creó con priority \"Alta\"",
       "observaciones": "Clase válida de prioridad con un valor extremo del conjunto.",
       "detalle": {
-        "id": 183,
+        "id": 254,
         "title": "Tarea prioritaria",
         "description": "",
         "status": "Pendiente",
@@ -1337,7 +1337,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:46.229660Z",
+        "created_at": "2026-11-01T14:48:58.265554Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1347,10 +1347,10 @@
         "links": [],
         "activity": [
           {
-            "id": 393,
+            "id": 548,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.229881Z"
+            "created_at": "2026-11-01T14:48:58.265878Z"
           }
         ]
       }
@@ -1361,7 +1361,7 @@
       "resultado_obtenido": "HTTP 201; al omitir priority la tarea quedó con \"Media\"",
       "observaciones": "Clase válida por omisión del campo priority.",
       "detalle": {
-        "id": 184,
+        "id": 255,
         "title": "Tarea sin prioridad",
         "description": "",
         "status": "Pendiente",
@@ -1369,7 +1369,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:46.272174Z",
+        "created_at": "2026-11-01T14:48:58.318857Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1379,10 +1379,10 @@
         "links": [],
         "activity": [
           {
-            "id": 394,
+            "id": 549,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.272424Z"
+            "created_at": "2026-11-01T14:48:58.319344Z"
           }
         ]
       }
@@ -1415,7 +1415,7 @@
       "resultado_obtenido": "PUT 200; prioridad \"Baja\" aplicada y registrada en la actividad",
       "observaciones": "Actualización de la prioridad con registro en el historial.",
       "detalle": {
-        "id": 185,
+        "id": 256,
         "title": "Cambiar prioridad",
         "description": "",
         "status": "Pendiente",
@@ -1423,7 +1423,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:46.417272Z",
+        "created_at": "2026-11-01T14:48:58.447986Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1433,16 +1433,16 @@
         "links": [],
         "activity": [
           {
-            "id": 396,
+            "id": 551,
             "action": "Prioridad cambiada a Baja",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.455995Z"
+            "created_at": "2026-11-01T14:48:58.490019Z"
           },
           {
-            "id": 395,
+            "id": 550,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.417642Z"
+            "created_at": "2026-11-01T14:48:58.448297Z"
           }
         ]
       }
@@ -1453,7 +1453,7 @@
       "resultado_obtenido": "HTTP 201; los espacios externos se recortaron a \"Ana Gómez\"",
       "observaciones": "Clase válida con normalización.",
       "detalle": {
-        "id": 186,
+        "id": 257,
         "title": "Responsable con espacios",
         "description": "",
         "status": "Pendiente",
@@ -1461,7 +1461,7 @@
         "assignee": "Ana Gómez",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:46.532841Z",
+        "created_at": "2026-11-01T14:48:58.567154Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1471,10 +1471,10 @@
         "links": [],
         "activity": [
           {
-            "id": 397,
+            "id": 552,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.533131Z"
+            "created_at": "2026-11-01T14:48:58.567352Z"
           }
         ]
       }
@@ -1507,7 +1507,7 @@
       "resultado_obtenido": "PUT 200; responsable \"Luis\" asignado y registrado en la actividad",
       "observaciones": "Actualización del responsable con registro en el historial.",
       "detalle": {
-        "id": 187,
+        "id": 258,
         "title": "Asignar responsable",
         "description": "",
         "status": "Pendiente",
@@ -1515,7 +1515,7 @@
         "assignee": "Luis",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:46.650264Z",
+        "created_at": "2026-11-01T14:48:58.693811Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1525,16 +1525,16 @@
         "links": [],
         "activity": [
           {
-            "id": 399,
+            "id": 554,
             "action": "Responsable asignado a Luis",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.689506Z"
+            "created_at": "2026-11-01T14:48:58.736512Z"
           },
           {
-            "id": 398,
+            "id": 553,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.650489Z"
+            "created_at": "2026-11-01T14:48:58.694193Z"
           }
         ]
       }
@@ -1545,7 +1545,7 @@
       "resultado_obtenido": "HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags",
       "observaciones": "Clase válida de etiquetas.",
       "detalle": {
-        "id": 188,
+        "id": 259,
         "title": "Tarea etiquetada",
         "description": "",
         "status": "Pendiente",
@@ -1553,7 +1553,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:46.786580Z",
+        "created_at": "2026-11-01T14:48:58.827183Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1566,22 +1566,22 @@
         "links": [],
         "activity": [
           {
-            "id": 402,
+            "id": 557,
             "action": "Etiqueta agregada: pruebas",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.787105Z"
+            "created_at": "2026-11-01T14:48:58.828007Z"
           },
           {
-            "id": 401,
+            "id": 556,
             "action": "Etiqueta agregada: backend",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.787087Z"
+            "created_at": "2026-11-01T14:48:58.827969Z"
           },
           {
-            "id": 400,
+            "id": 555,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:46.786861Z"
+            "created_at": "2026-11-01T14:48:58.827592Z"
           }
         ]
       }
@@ -1625,7 +1625,7 @@
       "resultado_obtenido": "PUT 200; se quitó \"uno\", se agregó \"tres\" y ambas acciones quedaron registradas",
       "observaciones": "Reemplazo completo de etiquetas con registro en el historial.",
       "detalle": {
-        "id": 189,
+        "id": 260,
         "title": "Reemplazar etiquetas",
         "description": "",
         "status": "Pendiente",
@@ -1633,7 +1633,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:47.086313Z",
+        "created_at": "2026-11-01T14:48:59.111999Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1646,34 +1646,34 @@
         "links": [],
         "activity": [
           {
-            "id": 407,
+            "id": 562,
             "action": "Etiqueta agregada: tres",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.185829Z"
+            "created_at": "2026-11-01T14:48:59.212143Z"
           },
           {
-            "id": 406,
+            "id": 561,
             "action": "Etiqueta eliminada: uno",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.185708Z"
+            "created_at": "2026-11-01T14:48:59.212028Z"
           },
           {
-            "id": 405,
+            "id": 560,
             "action": "Etiqueta agregada: dos",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.139010Z"
+            "created_at": "2026-11-01T14:48:59.166030Z"
           },
           {
-            "id": 404,
+            "id": 559,
             "action": "Etiqueta agregada: uno",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.138917Z"
+            "created_at": "2026-11-01T14:48:59.165919Z"
           },
           {
-            "id": 403,
+            "id": 558,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.086540Z"
+            "created_at": "2026-11-01T14:48:59.112252Z"
           }
         ]
       }
@@ -1684,7 +1684,7 @@
       "resultado_obtenido": "HTTP 201; el enlace https quedó persistido con su nombre",
       "observaciones": "Clase válida de enlace https.",
       "detalle": {
-        "id": 190,
+        "id": 261,
         "title": "Tarea con enlace",
         "description": "",
         "status": "Pendiente",
@@ -1692,7 +1692,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:47.241055Z",
+        "created_at": "2026-11-01T14:48:59.251409Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1701,24 +1701,24 @@
         "tags": [],
         "links": [
           {
-            "id": 5,
+            "id": 7,
             "url": "https://ejemplo.com/doc",
             "label": "Documento",
-            "created_at": "2026-11-01T14:44:47.241522Z"
+            "created_at": "2026-11-01T14:48:59.251905Z"
           }
         ],
         "activity": [
           {
-            "id": 409,
+            "id": 564,
             "action": "Enlace agregado: Documento",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.241599Z"
+            "created_at": "2026-11-01T14:48:59.251985Z"
           },
           {
-            "id": 408,
+            "id": 563,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.241378Z"
+            "created_at": "2026-11-01T14:48:59.251714Z"
           }
         ]
       }
@@ -1771,7 +1771,7 @@
       "resultado_obtenido": "La creación dejó \"Tarea creada\" y el movimiento agregó \"Movida a En curso\"",
       "observaciones": "Registro del historial de la tarea.",
       "detalle": {
-        "id": 191,
+        "id": 262,
         "title": "Historial de la tarea",
         "description": "",
         "status": "En curso",
@@ -1779,7 +1779,7 @@
         "assignee": "",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:47.567584Z",
+        "created_at": "2026-11-01T14:48:59.597718Z",
         "overdue": false,
         "subtask_total": 0,
         "subtask_done": 0,
@@ -1789,16 +1789,16 @@
         "links": [],
         "activity": [
           {
-            "id": 411,
+            "id": 566,
             "action": "Movida a En curso",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.643494Z"
+            "created_at": "2026-11-01T14:48:59.675068Z"
           },
           {
-            "id": 410,
+            "id": 565,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:47.567840Z"
+            "created_at": "2026-11-01T14:48:59.598188Z"
           }
         ]
       }
@@ -1821,7 +1821,7 @@
       "detalle": {
         "filtered": [
           {
-            "id": 193,
+            "id": 264,
             "title": "Prioridad alta",
             "description": "",
             "status": "Pendiente",
@@ -1829,7 +1829,7 @@
             "assignee": "",
             "due_date": null,
             "position": 0,
-            "created_at": "2026-11-01T14:44:47.782020Z",
+            "created_at": "2026-11-01T14:48:59.823115Z",
             "overdue": false,
             "subtask_total": 0,
             "subtask_done": 0,
@@ -1839,10 +1839,10 @@
             "links": [],
             "activity": [
               {
-                "id": 433,
+                "id": 588,
                 "action": "Tarea creada",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:47.782268Z"
+                "created_at": "2026-11-01T14:48:59.823535Z"
               }
             ]
           }
@@ -1857,7 +1857,7 @@
       "detalle": {
         "filtered": [
           {
-            "id": 196,
+            "id": 267,
             "title": "Tarea etiquetada",
             "description": "",
             "status": "Pendiente",
@@ -1865,7 +1865,7 @@
             "assignee": "",
             "due_date": null,
             "position": 0,
-            "created_at": "2026-11-01T14:44:47.984609Z",
+            "created_at": "2026-11-01T14:49:00.050208Z",
             "overdue": false,
             "subtask_total": 0,
             "subtask_done": 0,
@@ -1877,16 +1877,16 @@
             "links": [],
             "activity": [
               {
-                "id": 437,
+                "id": 592,
                 "action": "Etiqueta agregada: backend",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:47.985088Z"
+                "created_at": "2026-11-01T14:49:00.050614Z"
               },
               {
-                "id": 436,
+                "id": 591,
                 "action": "Tarea creada",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:47.984888Z"
+                "created_at": "2026-11-01T14:49:00.050455Z"
               }
             ]
           }
@@ -1901,7 +1901,7 @@
       "detalle": {
         "filtered": [
           {
-            "id": 198,
+            "id": 269,
             "title": "Informe mensual",
             "description": "Sin coincidencias",
             "status": "Pendiente",
@@ -1909,7 +1909,7 @@
             "assignee": "",
             "due_date": null,
             "position": 0,
-            "created_at": "2026-11-01T14:44:48.152986Z",
+            "created_at": "2026-11-01T14:49:00.249078Z",
             "overdue": false,
             "subtask_total": 0,
             "subtask_done": 0,
@@ -1919,15 +1919,15 @@
             "links": [],
             "activity": [
               {
-                "id": 439,
+                "id": 594,
                 "action": "Tarea creada",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:48.153199Z"
+                "created_at": "2026-11-01T14:49:00.249361Z"
               }
             ]
           },
           {
-            "id": 199,
+            "id": 270,
             "title": "Otra tarea",
             "description": "Revisar el INFORME final",
             "status": "Pendiente",
@@ -1935,7 +1935,7 @@
             "assignee": "",
             "due_date": null,
             "position": 1,
-            "created_at": "2026-11-01T14:44:48.191249Z",
+            "created_at": "2026-11-01T14:49:00.298026Z",
             "overdue": false,
             "subtask_total": 0,
             "subtask_done": 0,
@@ -1945,10 +1945,10 @@
             "links": [],
             "activity": [
               {
-                "id": 440,
+                "id": 595,
                 "action": "Tarea creada",
                 "detail": "",
-                "created_at": "2026-11-01T14:44:48.191508Z"
+                "created_at": "2026-11-01T14:49:00.298306Z"
               }
             ]
           }
@@ -1996,7 +1996,7 @@
       "resultado_obtenido": "HTTP 201; prioridad, responsable, 2 subtareas, 2 etiquetas y 1 enlace persistidos en un solo POST",
       "observaciones": "Alta enriquecida en una sola petición.",
       "detalle": {
-        "id": 204,
+        "id": 275,
         "title": "Alta enriquecida",
         "description": "",
         "status": "Pendiente",
@@ -2004,22 +2004,22 @@
         "assignee": "Marta",
         "due_date": null,
         "position": 0,
-        "created_at": "2026-11-01T14:44:48.528468Z",
+        "created_at": "2026-11-01T14:49:00.674622Z",
         "overdue": false,
         "subtask_total": 2,
         "subtask_done": 0,
         "subtasks": [
           {
-            "id": 92,
+            "id": 123,
             "title": "Analizar",
             "done": false,
-            "created_at": "2026-11-01T14:44:48.528736Z"
+            "created_at": "2026-11-01T14:49:00.675082Z"
           },
           {
-            "id": 93,
+            "id": 124,
             "title": "Diseñar",
             "done": false,
-            "created_at": "2026-11-01T14:44:48.528817Z"
+            "created_at": "2026-11-01T14:49:00.675247Z"
           }
         ],
         "attachments": [],
@@ -2029,48 +2029,48 @@
         ],
         "links": [
           {
-            "id": 6,
+            "id": 8,
             "url": "https://ejemplo.com/spec",
             "label": "Especificación",
-            "created_at": "2026-11-01T14:44:48.528965Z"
+            "created_at": "2026-11-01T14:49:00.675523Z"
           }
         ],
         "activity": [
           {
-            "id": 450,
+            "id": 605,
             "action": "Enlace agregado: Especificación",
             "detail": "",
-            "created_at": "2026-11-01T14:44:48.529019Z"
+            "created_at": "2026-11-01T14:49:00.675605Z"
           },
           {
-            "id": 449,
+            "id": 604,
             "action": "Etiqueta agregada: backend",
             "detail": "",
-            "created_at": "2026-11-01T14:44:48.528944Z"
+            "created_at": "2026-11-01T14:49:00.675486Z"
           },
           {
-            "id": 448,
+            "id": 603,
             "action": "Etiqueta agregada: frontend",
             "detail": "",
-            "created_at": "2026-11-01T14:44:48.528933Z"
+            "created_at": "2026-11-01T14:49:00.675465Z"
           },
           {
-            "id": 447,
+            "id": 602,
             "action": "Subtarea agregada: Diseñar",
             "detail": "",
-            "created_at": "2026-11-01T14:44:48.528826Z"
+            "created_at": "2026-11-01T14:49:00.675262Z"
           },
           {
-            "id": 446,
+            "id": 601,
             "action": "Subtarea agregada: Analizar",
             "detail": "",
-            "created_at": "2026-11-01T14:44:48.528805Z"
+            "created_at": "2026-11-01T14:49:00.675227Z"
           },
           {
-            "id": 445,
+            "id": 600,
             "action": "Tarea creada",
             "detail": "",
-            "created_at": "2026-11-01T14:44:48.528673Z"
+            "created_at": "2026-11-01T14:49:00.674979Z"
           }
         ]
       }

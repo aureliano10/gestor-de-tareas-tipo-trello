@@ -390,7 +390,9 @@ def ui_09(page, _prepared) -> dict:
     card_locator.wait_for(timeout=10000)
 
     badge = card_locator.locator('[data-testid="priority-badge"]').inner_text().strip()
-    assignee = card_locator.locator('[data-testid="task-assignee"]').inner_text().strip()
+    assignee = (
+        card_locator.locator('[data-testid="task-assignee"]').inner_text().strip()
+    )
 
     checks = {
         "la tarjeta se creó en Pendiente": card_locator.count() == 1,
