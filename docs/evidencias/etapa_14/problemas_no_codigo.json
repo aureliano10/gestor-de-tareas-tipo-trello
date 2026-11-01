@@ -1,0 +1,90 @@
+{
+  "etapa": 14,
+  "titulo": "Revisión de artefactos no código",
+  "fecha": "2026-11-01",
+  "artefactos_revisados": [
+    "README.md",
+    "COMANDOS_BACKEND.md",
+    "backend/requirements-dev.txt"
+  ],
+  "metodologia": "Inspección cruzada (revisión de escritorio) comparando el texto de cada artefacto contra el comportamiento y la estructura reales del sistema (backend FastAPI + SQLite, frontend React + Vite) y entre sí.",
+  "problemas": [
+    {
+      "id": "PRB-01",
+      "artefacto": "README.md",
+      "ubicacion": "Sección 'Análisis estático'",
+      "problema": "El comando documentado de lint no cubre la carpeta scripts/, que también contiene código Python del proyecto. El comando queda incompleto.",
+      "antes": "ruff check backend",
+      "severidad": "Media",
+      "correccion": "ruff check backend scripts",
+      "estado": "Corregido"
+    },
+    {
+      "id": "PRB-02",
+      "artefacto": "README.md",
+      "ubicacion": "Sección 'Estructura del proyecto'",
+      "problema": "La estructura solo listaba scripts/etapa_6/, pero el repositorio también contiene los runners de pruebas scripts/etapa_8/ y scripts/etapa_9/. Estructura desactualizada.",
+      "antes": "scripts/etapa_6/           # Scripts de ejecución de los casos de prueba",
+      "severidad": "Baja",
+      "correccion": "Se agregaron las líneas de scripts/etapa_8/ y scripts/etapa_9/ describiendo los runners de pytest.",
+      "estado": "Corregido"
+    },
+    {
+      "id": "PRB-03",
+      "artefacto": "README.md",
+      "ubicacion": "Documento completo (sección nueva)",
+      "problema": "No existía ninguna instrucción para ejecutar las pruebas automatizadas (pytest, runners de Playwright/httpx), pese a ser el eje de la materia. Paso faltante.",
+      "antes": "(sin sección de pruebas)",
+      "severidad": "Alta",
+      "correccion": "Se agregó la sección 'Pruebas' con la instalación de dependencias de desarrollo y los comandos de pytest y de los runners de sistema.",
+      "estado": "Corregido"
+    },
+    {
+      "id": "PRB-04",
+      "artefacto": "README.md",
+      "ubicacion": "Sección 'Instalación y ejecución -> 1. Backend'",
+      "problema": "Indicaba levantar el backend con 'uvicorn app.main:app --reload' y nunca mencionaba backend/run_backend.sh, que COMANDOS_BACKEND.md presenta como la forma recomendada. Inconsistencia entre artefactos y paso poco claro (no aclaraba el directorio de trabajo).",
+      "antes": "cd backend\\nuvicorn app.main:app --reload",
+      "severidad": "Media",
+      "correccion": "Se alineó con el script del proyecto (bash backend/run_backend.sh) y se dejó la forma manual usando .venv/bin/python -m uvicorn.",
+      "estado": "Corregido"
+    },
+    {
+      "id": "PRB-05",
+      "artefacto": "COMANDOS_BACKEND.md",
+      "ubicacion": "Documento completo (sección nueva)",
+      "problema": "El instructivo de backend no explicaba cómo instalar las dependencias de desarrollo ni cómo ejecutar las pruebas (pytest y runners de sistema). Paso faltante.",
+      "antes": "(sin sección de pruebas)",
+      "severidad": "Media",
+      "correccion": "Se agregó la sección '5. Ejecutar las pruebas' y una nota sobre backend/requirements-dev.txt.",
+      "estado": "Corregido"
+    },
+    {
+      "id": "PRB-06",
+      "artefacto": "backend/requirements-dev.txt",
+      "ubicacion": "Archivo completo",
+      "problema": "Las dependencias de pruebas (pytest, httpx y playwright) no estaban declaradas en ningún requirements, aunque el proyecto las usa y las tiene instaladas en .venv. En una clonación limpia los comandos de prueba documentados fallarían.",
+      "antes": "ruff==0.17.3",
+      "severidad": "Alta",
+      "correccion": "Se agregaron pytest==9.2.0, httpx==0.28.1 y playwright==1.64.1 al archivo de dependencias de desarrollo.",
+      "estado": "Corregido"
+    },
+    {
+      "id": "PRB-07",
+      "artefacto": "COMANDOS_BACKEND.md",
+      "ubicacion": "Sección 'Notas'",
+      "problema": "La forma verbal 'no te olvidés' no es la estándar del imperativo negativo en español rioplatense. Falta de ortografía/redacción.",
+      "antes": "Si usás el comando manual, no te olvidés del cd backend.",
+      "severidad": "Baja",
+      "correccion": "Si usás el comando manual, no te olvides del cd backend.",
+      "estado": "Corregido"
+    }
+  ],
+  "resumen": {
+    "total": 7,
+    "alta": 2,
+    "media": 3,
+    "baja": 2,
+    "corregidos": 7
+  }
+}

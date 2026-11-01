@@ -50,7 +50,9 @@ frontend/
     styles/app.css
   package.json
 docs/                      # Documentación de cada etapa
-scripts/etapa_6/           # Scripts de ejecución de los casos de prueba
+scripts/etapa_6/           # Scripts de ejecución de los casos de prueba de sistema
+scripts/etapa_8/           # Runner de las pruebas unitarias (pytest)
+scripts/etapa_9/           # Runner de las pruebas de integración (pytest)
 ```
 
 ## Requisitos previos
@@ -62,12 +64,19 @@ scripts/etapa_6/           # Scripts de ejecución de los casos de prueba
 
 ### 1. Backend
 
+Desde la raíz del proyecto:
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r backend/requirements.txt
-cd backend
-uvicorn app.main:app --reload
+bash backend/run_backend.sh
+```
+
+Forma manual, sin el script (equivale a lo que hace `run_backend.sh`):
+
+```bash
+cd backend && ../.venv/bin/python -m uvicorn app.main:app --reload
 ```
 
 La API queda disponible en `http://127.0.0.1:8000`.
@@ -91,7 +100,7 @@ Con el entorno virtual activado, desde la raíz del proyecto:
 
 ```bash
 pip install -r backend/requirements-dev.txt
-ruff check backend
+ruff check backend scripts
 python -m compileall backend/app
 ```
 
@@ -102,6 +111,30 @@ cd frontend
 npm run lint
 npm run build
 ```
+
+## Pruebas
+
+Las dependencias de lint y de pruebas (pytest, httpx y Playwright) se instalan con el archivo de desarrollo, ya que no forman parte de las dependencias de ejecución del backend:
+
+```bash
+pip install -r backend/requirements-dev.txt
+```
+
+Pruebas de backend (unitarias e integración) con pytest, sin necesidad de levantar el servidor:
+
+```bash
+.venv/bin/python -m pytest backend/tests -v
+```
+
+Casos de sistema (API con httpx, interfaz con Playwright y caja blanca). Requieren el backend y el frontend levantados:
+
+```bash
+.venv/bin/python scripts/etapa_6/ejecutar_api.py
+.venv/bin/python scripts/etapa_6/ejecutar_ui.py
+.venv/bin/python scripts/etapa_6/ejecutar_caja_blanca.py
+```
+
+Cada runner guarda sus resultados en `docs/evidencias/etapa_6/`.
 
 ## Endpoints de la API
 

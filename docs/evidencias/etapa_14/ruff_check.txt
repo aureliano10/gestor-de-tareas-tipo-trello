@@ -1,0 +1,3 @@
+$ .venv/bin/ruff check backend scripts
+All checks passed!
+exit=0
