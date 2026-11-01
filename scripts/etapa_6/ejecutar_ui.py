@@ -379,6 +379,105 @@ def ui_08(page, task) -> dict:
     )
 
 
+def ui_09(page, _prepared) -> dict:
+    title = "Tarea con prioridad y responsable"
+    page.fill(FORM_TITLE, title)
+    page.select_option('[data-testid="new-task-priority"]', "Alta")
+    page.fill('[data-testid="new-task-assignee"]', "Ana")
+    page.click(FORM_SUBMIT)
+
+    card_locator = task_in(page, "Pendiente", title)
+    card_locator.wait_for(timeout=10000)
+
+    badge = card_locator.locator('[data-testid="priority-badge"]').inner_text().strip()
+    assignee = card_locator.locator('[data-testid="task-assignee"]').inner_text().strip()
+
+    checks = {
+        "la tarjeta se creó en Pendiente": card_locator.count() == 1,
+        "la insignia de prioridad muestra Alta": badge == "Alta",
+        "el responsable se muestra en la tarjeta": assignee == "Ana",
+    }
+    obtained = f"insignia={badge!r}; responsable={assignee!r}"
+    return make_result(
+        "CP-UI-09",
+        checks,
+        obtained,
+        "Alta desde el formulario con prioridad y responsable; verifica la tarjeta.",
+    )
+
+
+def prepare_search():
+    return {
+        "match": create_task("Informe de ventas", "Detalle del informe"),
+        "other": create_task("Reunión de equipo", "Coordinar la reunión"),
+    }
+
+
+def ui_10(page, _prepared) -> dict:
+    page.wait_for_function(
+        "() => document.querySelectorAll('.task').length === 2", timeout=10000
+    )
+    page.fill('[data-testid="task-search"]', "informe")
+    page.wait_for_function(
+        "() => document.querySelectorAll('.task').length === 1", timeout=10000
+    )
+
+    visible_titles = page.eval_on_selector_all(
+        '[data-testid="task-title"]', "elements => elements.map((e) => e.textContent)"
+    )
+    summary = page.inner_text('[data-testid="task-count"]').strip()
+    other_visible = page.locator(".task", has_text="Reunión de equipo").count()
+
+    checks = {
+        "queda una sola tarjeta": len(visible_titles) == 1,
+        "la tarjeta visible coincide": visible_titles == ["Informe de ventas"],
+        "la tarjeta ajena desaparece": other_visible == 0,
+        "el resumen muestra 1 tarea": summary == "1 tarea",
+    }
+    obtained = f"tarjetas visibles={visible_titles}; resumen={summary!r}"
+    return make_result(
+        "CP-UI-10",
+        checks,
+        obtained,
+        "Búsqueda por texto desde la interfaz.",
+    )
+
+
+def ui_11(page, task) -> dict:
+    title = task["title"]
+    drag_task(page, task["id"], "En curso")
+    task_in(page, "En curso", title).wait_for(timeout=10000)
+
+    open_detail(page, task["id"])
+    page.wait_for_selector('[data-testid="activity-timeline"]', timeout=10000)
+    entries = page.locator(
+        '[data-testid="activity-timeline"] .timeline__item'
+    ).count()
+    actions = page.eval_on_selector_all(
+        '[data-testid="activity-timeline"] .timeline__action',
+        "elements => elements.map((e) => e.textContent)",
+    )
+
+    checks = {
+        "la tarjeta se movió a En curso": task_in(page, "En curso", title).count() == 1,
+        "la cronología está visible": page.locator(
+            '[data-testid="activity-timeline"]'
+        ).count()
+        == 1,
+        "hay al menos una entrada": entries >= 1,
+        "el movimiento quedó registrado": any(
+            "Movida a En curso" in action for action in actions
+        ),
+    }
+    obtained = f"entradas={entries}; acciones={actions}"
+    return make_result(
+        "CP-UI-11",
+        checks,
+        obtained,
+        "Historial visible en el detalle después de mover la tarea.",
+    )
+
+
 CASES = [
     ("CP-UI-01", ui_01, None),
     ("CP-UI-02", ui_02, None),
@@ -388,6 +487,9 @@ CASES = [
     ("CP-UI-06", ui_06, prepare_single("Checklist desde interfaz")),
     ("CP-UI-07", ui_07, prepare_single("Adjuntos desde interfaz")),
     ("CP-UI-08", ui_08, prepare_single("Eliminar desde interfaz")),
+    ("CP-UI-09", ui_09, None),
+    ("CP-UI-10", ui_10, prepare_search),
+    ("CP-UI-11", ui_11, prepare_single("Mover y ver historial")),
 ]
 
 

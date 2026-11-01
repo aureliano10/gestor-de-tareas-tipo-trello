@@ -49,6 +49,12 @@ def only_task(task_id: int):
     return next((item for item in list_tasks() if item["id"] == task_id), None)
 
 
+def list_tags() -> list[str]:
+    response = api("GET", "/api/tags")
+    response.raise_for_status()
+    return response.json()
+
+
 # --- Crear tarea (CP-CRE-01 a CP-CRE-09) -----------------------------------
 
 
@@ -877,6 +883,508 @@ def cp_lis_01() -> dict:
     )
 
 
+# --- Prioridad (CP-PRI-01 a CP-PRI-04) -------------------------------------
+
+
+def cp_pri_01() -> dict:
+    reset_server_db()
+    response, body = post({"title": "Tarea prioritaria", "priority": "Alta"})
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "prioridad Alta": body.get("priority") == "Alta",
+        "título correcto": body.get("title") == "Tarea prioritaria",
+    }
+    obtained = 'HTTP 201; la tarea se creó con priority "Alta"'
+    return make_result(
+        "CP-PRI-01",
+        checks,
+        obtained,
+        "Clase válida de prioridad con un valor extremo del conjunto.",
+        body,
+    )
+
+
+def cp_pri_02() -> dict:
+    reset_server_db()
+    response, body = post({"title": "Tarea sin prioridad"})
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "prioridad por defecto Media": body.get("priority") == "Media",
+    }
+    obtained = 'HTTP 201; al omitir priority la tarea quedó con "Media"'
+    return make_result(
+        "CP-PRI-02",
+        checks,
+        obtained,
+        "Clase válida por omisión del campo priority.",
+        body,
+    )
+
+
+def cp_pri_03() -> dict:
+    reset_server_db()
+    response, body = post({"title": "Prioridad inválida", "priority": "Urgente"})
+    tasks = list_tasks()
+    detail = error_detail(body)
+    checks = {
+        "HTTP 422": response.status_code == 422,
+        "mensaje de prioridad": "prioridad" in detail.lower(),
+        "listado vacío": tasks == [],
+    }
+    obtained = "HTTP 422; prioridad fuera del conjunto rechazada y listado sin cambios"
+    return make_result(
+        "CP-PRI-03", checks, obtained, "Clase inválida de prioridad.", body
+    )
+
+
+def cp_pri_04() -> dict:
+    reset_server_db()
+    task = create_task("Cambiar prioridad")
+    response, body = put(task["id"], {"title": task["title"], "priority": "Baja"})
+    actions = [entry.get("action") for entry in body.get("activity", [])]
+    stored = only_task(task["id"])
+    checks = {
+        "HTTP 200": response.status_code == 200,
+        "prioridad Baja": body.get("priority") == "Baja",
+        "persistida Baja": stored.get("priority") == "Baja",
+        "actividad de prioridad": "Prioridad cambiada a Baja" in actions,
+    }
+    obtained = 'PUT 200; prioridad "Baja" aplicada y registrada en la actividad'
+    return make_result(
+        "CP-PRI-04",
+        checks,
+        obtained,
+        "Actualización de la prioridad con registro en el historial.",
+        body,
+    )
+
+
+# --- Responsable (CP-ASG-01 a CP-ASG-03) -----------------------------------
+
+
+def cp_asg_01() -> dict:
+    reset_server_db()
+    response, body = post(
+        {"title": "Responsable con espacios", "assignee": "  Ana Gómez  "}
+    )
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "responsable recortado": body.get("assignee") == "Ana Gómez",
+    }
+    obtained = 'HTTP 201; los espacios externos se recortaron a "Ana Gómez"'
+    return make_result(
+        "CP-ASG-01", checks, obtained, "Clase válida con normalización.", body
+    )
+
+
+def cp_asg_02() -> dict:
+    reset_server_db()
+    response, body = post({"title": "Responsable largo", "assignee": "a" * 61})
+    tasks = list_tasks()
+    detail = error_detail(body)
+    checks = {
+        "HTTP 422": response.status_code == 422,
+        "mensaje de responsable": "responsable" in detail.lower(),
+        "listado vacío": tasks == [],
+    }
+    obtained = "HTTP 422; responsable de 61 caracteres rechazado y listado sin cambios"
+    return make_result(
+        "CP-ASG-02",
+        checks,
+        obtained,
+        "Valor límite superior inválido del responsable.",
+        body,
+    )
+
+
+def cp_asg_03() -> dict:
+    reset_server_db()
+    task = create_task("Asignar responsable")
+    response, body = put(task["id"], {"title": task["title"], "assignee": "Luis"})
+    actions = [entry.get("action") for entry in body.get("activity", [])]
+    stored = only_task(task["id"])
+    checks = {
+        "HTTP 200": response.status_code == 200,
+        "responsable Luis": body.get("assignee") == "Luis",
+        "persistido": stored.get("assignee") == "Luis",
+        "actividad de responsable": "Responsable asignado a Luis" in actions,
+    }
+    obtained = 'PUT 200; responsable "Luis" asignado y registrado en la actividad'
+    return make_result(
+        "CP-ASG-03",
+        checks,
+        obtained,
+        "Actualización del responsable con registro en el historial.",
+        body,
+    )
+
+
+# --- Etiquetas (CP-TAG-01 a CP-TAG-04) -------------------------------------
+
+
+def cp_tag_01() -> dict:
+    reset_server_db()
+    response, body = post({"title": "Tarea etiquetada", "tags": ["backend", "pruebas"]})
+    tags = list_tags()
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "etiquetas en la respuesta": sorted(body.get("tags") or []) == ["backend", "pruebas"],
+        "backend en el catálogo": "backend" in tags,
+        "pruebas en el catálogo": "pruebas" in tags,
+    }
+    obtained = "HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags"
+    return make_result("CP-TAG-01", checks, obtained, "Clase válida de etiquetas.", body)
+
+
+def cp_tag_02() -> dict:
+    reset_server_db()
+    response, body = post(
+        {"title": "Demasiadas etiquetas", "tags": ["a", "b", "c", "d", "e", "f"]}
+    )
+    detail = error_detail(body)
+    checks = {
+        "HTTP 409": response.status_code == 409,
+        "mensaje del límite": "5 etiquetas" in detail,
+        "listado vacío": list_tasks() == [],
+    }
+    obtained = "HTTP 409 con el detalle del límite; no se creó ninguna tarea"
+    return make_result(
+        "CP-TAG-02", checks, obtained, "Valor límite superior inválido de etiquetas.", body
+    )
+
+
+def cp_tag_03() -> dict:
+    reset_server_db()
+    empty, empty_body = post({"title": "Etiqueta vacía", "tags": [""]})
+    spaces, _ = post({"title": "Etiqueta con espacios", "tags": ["   "]})
+    detail = error_detail(empty_body)
+    checks = {
+        "vacía HTTP 422": empty.status_code == 422,
+        "solo espacios HTTP 422": spaces.status_code == 422,
+        "mensaje de etiqueta": "etiqueta" in detail.lower(),
+        "listado vacío": list_tasks() == [],
+    }
+    obtained = "HTTP 422 con la etiqueta vacía y con la de solo espacios"
+    return make_result(
+        "CP-TAG-03",
+        checks,
+        obtained,
+        "Clase inválida y valor límite inferior de la etiqueta.",
+        empty_body,
+    )
+
+
+def cp_tag_04() -> dict:
+    reset_server_db()
+    task = create_task("Reemplazar etiquetas")
+    put(task["id"], {"title": task["title"], "tags": ["uno", "dos"]})
+    response, body = put(task["id"], {"title": task["title"], "tags": ["dos", "tres"]})
+    actions = [entry.get("action") for entry in body.get("activity", [])]
+    checks = {
+        "HTTP 200": response.status_code == 200,
+        "etiquetas reemplazadas": sorted(body.get("tags") or []) == ["dos", "tres"],
+        "actividad de eliminación": "Etiqueta eliminada: uno" in actions,
+        "actividad de alta": "Etiqueta agregada: tres" in actions,
+    }
+    obtained = 'PUT 200; se quitó "uno", se agregó "tres" y ambas acciones quedaron registradas'
+    return make_result(
+        "CP-TAG-04",
+        checks,
+        obtained,
+        "Reemplazo completo de etiquetas con registro en el historial.",
+        body,
+    )
+
+
+# --- Enlaces (CP-ENL-01 a CP-ENL-04) ---------------------------------------
+
+
+def cp_enl_01() -> dict:
+    reset_server_db()
+    response, body = post(
+        {
+            "title": "Tarea con enlace",
+            "links": [{"url": "https://ejemplo.com/doc", "label": "Documento"}],
+        }
+    )
+    links = body.get("links") or []
+    first = links[0] if links else {}
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "un enlace": len(links) == 1,
+        "url correcta": first.get("url") == "https://ejemplo.com/doc",
+        "label correcto": first.get("label") == "Documento",
+    }
+    obtained = "HTTP 201; el enlace https quedó persistido con su nombre"
+    return make_result("CP-ENL-01", checks, obtained, "Clase válida de enlace https.", body)
+
+
+def cp_enl_02() -> dict:
+    reset_server_db()
+    ftp, ftp_body = post(
+        {"title": "Enlace ftp", "links": [{"url": "ftp://ejemplo.com"}]}
+    )
+    plain, _ = post({"title": "Enlace sin esquema", "links": [{"url": "ejemplo.com"}]})
+    detail = error_detail(ftp_body)
+    checks = {
+        "ftp HTTP 422": ftp.status_code == 422,
+        "sin esquema HTTP 422": plain.status_code == 422,
+        "mensaje de enlace": "http" in detail.lower(),
+        "listado vacío": list_tasks() == [],
+    }
+    obtained = "HTTP 422 con ftp:// y con una url sin esquema"
+    return make_result(
+        "CP-ENL-02", checks, obtained, "Clase inválida de esquema del enlace.", ftp_body
+    )
+
+
+def cp_enl_03() -> dict:
+    reset_server_db()
+    links = [{"url": f"https://ejemplo.com/{index}"} for index in range(1, 7)]
+    response, body = post({"title": "Demasiados enlaces", "links": links})
+    detail = error_detail(body)
+    checks = {
+        "HTTP 409": response.status_code == 409,
+        "mensaje del límite": "5 enlaces" in detail,
+        "listado vacío": list_tasks() == [],
+    }
+    obtained = "HTTP 409 con el detalle del límite; no se creó ninguna tarea"
+    return make_result(
+        "CP-ENL-03", checks, obtained, "Valor límite superior inválido de enlaces.", body
+    )
+
+
+def cp_enl_04() -> dict:
+    reset_server_db()
+    duplicated = [
+        {"url": "https://ejemplo.com/repetido"},
+        {"url": "https://ejemplo.com/repetido"},
+    ]
+    response, body = post({"title": "Enlaces duplicados", "links": duplicated})
+    detail = error_detail(body)
+    checks = {
+        "HTTP 409": response.status_code == 409,
+        "mensaje de duplicado": "ya está agregado" in detail,
+        "listado vacío": list_tasks() == [],
+    }
+    obtained = "HTTP 409 con el detalle del enlace duplicado; no se creó ninguna tarea"
+    return make_result(
+        "CP-ENL-04",
+        checks,
+        obtained,
+        "Clase inválida: enlaces repetidos en la misma tarea.",
+        body,
+    )
+
+
+# --- Historial de actividad (CP-HIS-01 y CP-HIS-02) ------------------------
+
+
+def cp_his_01() -> dict:
+    reset_server_db()
+    task = create_task("Historial de la tarea")
+    created = only_task(task["id"])
+    created_actions = [entry.get("action") for entry in created.get("activity", [])]
+    move(task["id"], {"status": "En curso"})
+    updated = only_task(task["id"])
+    updated_actions = [entry.get("action") for entry in updated.get("activity", [])]
+    checks = {
+        "creación registrada": "Tarea creada" in created_actions,
+        "acción posterior registrada": "Movida a En curso" in updated_actions,
+        "historial crece": len(updated_actions) > len(created_actions),
+    }
+    obtained = 'La creación dejó "Tarea creada" y el movimiento agregó "Movida a En curso"'
+    return make_result(
+        "CP-HIS-01", checks, obtained, "Registro del historial de la tarea.", updated
+    )
+
+
+def cp_his_02() -> dict:
+    reset_server_db()
+    subtasks = [f"Paso {index:02d}" for index in range(1, 21)]
+    response, body = post({"title": "Historial extenso", "subtasks": subtasks})
+    activity = body.get("activity") or []
+    actions = [entry.get("action") for entry in activity]
+    ids = [entry.get("id") for entry in activity]
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "máximo 20 entradas": len(activity) == 20,
+        "más nueva primero": ids == sorted(ids, reverse=True),
+        "la más nueva es el último paso": actions[0] == "Subtarea agregada: Paso 20",
+        "la creación queda fuera": "Tarea creada" not in actions,
+    }
+    obtained = "El historial devolvió 20 entradas como máximo, con la más reciente primero"
+    return make_result(
+        "CP-HIS-02",
+        checks,
+        obtained,
+        "Valor límite de cantidad del historial y orden descendente.",
+        {"total": len(activity), "primera": actions[0] if actions else None},
+    )
+
+
+# --- Búsqueda y filtros (CP-FIL-01 a CP-FIL-03) ----------------------------
+
+
+def cp_fil_01() -> dict:
+    reset_server_db()
+    high = post({"title": "Prioridad alta", "priority": "Alta"})[1]
+    post({"title": "Prioridad baja", "priority": "Baja"})
+    post({"title": "Prioridad media", "priority": "Media"})
+    response = api("GET", "/api/tasks?priority=Alta")
+    filtered = response.json()
+    checks = {
+        "filtro HTTP 200": response.status_code == 200,
+        "solo la de prioridad Alta": [item["id"] for item in filtered] == [high["id"]],
+        "sin filtro devuelve tres": len(list_tasks()) == 3,
+    }
+    obtained = "El filtro priority devolvió solo la tarea de prioridad Alta"
+    return make_result(
+        "CP-FIL-01", checks, obtained, "Filtro por prioridad.", {"filtered": filtered}
+    )
+
+
+def cp_fil_02() -> dict:
+    reset_server_db()
+    tagged = post({"title": "Tarea etiquetada", "tags": ["backend"]})[1]
+    post({"title": "Tarea sin etiqueta"})
+    response = api("GET", "/api/tasks?tag=backend")
+    filtered = response.json()
+    checks = {
+        "filtro HTTP 200": response.status_code == 200,
+        "solo la etiquetada": [item["id"] for item in filtered] == [tagged["id"]],
+        "sin filtro devuelve dos": len(list_tasks()) == 2,
+    }
+    obtained = "El filtro tag devolvió solo la tarea con la etiqueta indicada"
+    return make_result(
+        "CP-FIL-02", checks, obtained, "Filtro por etiqueta.", {"filtered": filtered}
+    )
+
+
+def cp_fil_03() -> dict:
+    reset_server_db()
+    by_title = post({"title": "Informe mensual", "description": "Sin coincidencias"})[1]
+    by_description = post(
+        {"title": "Otra tarea", "description": "Revisar el INFORME final"}
+    )[1]
+    post({"title": "Tarea ajena", "description": "Sin relación"})
+    response = api("GET", "/api/tasks?q=informe")
+    filtered = response.json()
+    found = sorted(item["id"] for item in filtered)
+    checks = {
+        "filtro HTTP 200": response.status_code == 200,
+        "coincide por título y descripción": found
+        == sorted([by_title["id"], by_description["id"]]),
+        "sin distinguir mayúsculas": by_description["id"] in found,
+        "excluye la ajena": len(filtered) == 2,
+    }
+    obtained = "La búsqueda encontró coincidencias en el título y en la descripción, sin distinguir mayúsculas"
+    return make_result(
+        "CP-FIL-03",
+        checks,
+        obtained,
+        "Búsqueda por texto en título y descripción.",
+        {"filtered": filtered},
+    )
+
+
+# --- Orden (CP-ORD-01 y CP-ORD-02) -----------------------------------------
+
+
+def cp_ord_01() -> dict:
+    reset_server_db()
+    post({"title": "Baja", "priority": "Baja"})
+    post({"title": "Alta", "priority": "Alta"})
+    post({"title": "Media", "priority": "Media"})
+    response = api("GET", "/api/tasks?sort=priority")
+    ordered = response.json()
+    order = [item["title"] for item in ordered]
+    checks = {
+        "HTTP 200": response.status_code == 200,
+        "orden Alta, Media, Baja": order == ["Alta", "Media", "Baja"],
+        "devuelve las tres": len(ordered) == 3,
+    }
+    obtained = "sort=priority ordenó las tareas como Alta, Media y Baja"
+    return make_result(
+        "CP-ORD-01",
+        checks,
+        obtained,
+        "Orden por prioridad dentro del mismo estado.",
+        {"order": order},
+    )
+
+
+def cp_ord_02() -> dict:
+    reset_server_db()
+    response = api("GET", "/api/tasks?sort=invalido")
+    body = json_body(response)
+    checks = {
+        "HTTP 422": response.status_code == 422,
+        "error de validación": isinstance(body, dict) and "detail" in body,
+    }
+    obtained = "HTTP 422 por valor de sort fuera de los permitidos"
+    return make_result(
+        "CP-ORD-02", checks, obtained, "Clase inválida del parámetro de orden.", body
+    )
+
+
+# --- Alta enriquecida (CP-ALT-01 y CP-ALT-02) ------------------------------
+
+
+def cp_alt_01() -> dict:
+    reset_server_db()
+    payload = {
+        "title": "Alta enriquecida",
+        "priority": "Alta",
+        "assignee": "Marta",
+        "subtasks": ["Analizar", "Diseñar"],
+        "tags": ["frontend", "backend"],
+        "links": [{"url": "https://ejemplo.com/spec", "label": "Especificación"}],
+    }
+    response, body = post(payload)
+    checks = {
+        "HTTP 201": response.status_code == 201,
+        "prioridad Alta": body.get("priority") == "Alta",
+        "responsable Marta": body.get("assignee") == "Marta",
+        "subtask_total 2": body.get("subtask_total") == 2,
+        "dos subtareas": [item.get("title") for item in body.get("subtasks") or []]
+        == ["Analizar", "Diseñar"],
+        "dos etiquetas": sorted(body.get("tags") or []) == ["backend", "frontend"],
+        "un enlace": len(body.get("links") or []) == 1,
+    }
+    obtained = (
+        "HTTP 201; prioridad, responsable, 2 subtareas, 2 etiquetas y 1 enlace "
+        "persistidos en un solo POST"
+    )
+    return make_result(
+        "CP-ALT-01",
+        checks,
+        obtained,
+        "Alta enriquecida en una sola petición.",
+        body,
+    )
+
+
+def cp_alt_02() -> dict:
+    reset_server_db()
+    subtasks = [f"Paso {index}" for index in range(1, 22)]
+    response, body = post({"title": "Demasiadas subtareas", "subtasks": subtasks})
+    detail = error_detail(body)
+    checks = {
+        "HTTP 409": response.status_code == 409,
+        "mensaje del límite": "20 subtareas" in detail,
+        "listado vacío": list_tasks() == [],
+    }
+    obtained = "HTTP 409 con el detalle del límite; no se creó ninguna tarea"
+    return make_result(
+        "CP-ALT-02",
+        checks,
+        obtained,
+        "Valor límite superior inválido de subtareas.",
+        body,
+    )
+
+
 CASES = [
     cp_cre_01,
     cp_cre_02,
@@ -916,6 +1424,30 @@ CASES = [
     cp_res_01,
     cp_res_02,
     cp_lis_01,
+    cp_pri_01,
+    cp_pri_02,
+    cp_pri_03,
+    cp_pri_04,
+    cp_asg_01,
+    cp_asg_02,
+    cp_asg_03,
+    cp_tag_01,
+    cp_tag_02,
+    cp_tag_03,
+    cp_tag_04,
+    cp_enl_01,
+    cp_enl_02,
+    cp_enl_03,
+    cp_enl_04,
+    cp_his_01,
+    cp_his_02,
+    cp_fil_01,
+    cp_fil_02,
+    cp_fil_03,
+    cp_ord_01,
+    cp_ord_02,
+    cp_alt_01,
+    cp_alt_02,
 ]
 
 

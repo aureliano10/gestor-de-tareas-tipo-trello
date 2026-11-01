@@ -40,6 +40,14 @@ Criterios generales:
 | Archivos adjuntos | RF11, RF12, RF13 y restricciones de extensión, tamaño y cantidad | CP-ADJ-01 a CP-ADJ-06, CP-UI-07, CP-CB-04 |
 | Eliminar y restaurar | RF14, RF15 | CP-ELI-01, CP-ELI-02, CP-RES-01, CP-RES-02, CP-UI-08, CP-CB-03 |
 | Listar tareas y persistencia | RF1, RF2 y persistencia | CP-LIS-01 |
+| Prioridad | RF16 y restricción del conjunto {Baja, Media, Alta} | CP-PRI-01 a CP-PRI-04, CP-UI-09 |
+| Responsable | RF17 y restricción de 60 caracteres | CP-ASG-01 a CP-ASG-03, CP-UI-09 |
+| Etiquetas | RF18 y restricciones de cantidad (5) y longitud (30) | CP-TAG-01 a CP-TAG-04 |
+| Enlaces | RF19 y restricciones de esquema, cantidad (5) y duplicados | CP-ENL-01 a CP-ENL-04 |
+| Historial de actividad | RF20 y restricción de 20 entradas | CP-HIS-01, CP-HIS-02, CP-UI-11 |
+| Búsqueda y filtros | RF21 | CP-FIL-01 a CP-FIL-03, CP-UI-10 |
+| Orden del tablero | RF22 y restricción del conjunto de criterios | CP-ORD-01, CP-ORD-02 |
+| Alta enriquecida | RF23 | CP-ALT-01, CP-ALT-02, CP-UI-09 |
 
 ## Caja negra
 
@@ -73,6 +81,21 @@ Criterios generales:
 | Archivo adjunto: tamaño | Más de 5 MB | Inválido | 5 MB + 1 byte | CP-ADJ-05 |
 | Archivo adjunto: cantidad | Hasta 3 archivos por tarea | Válido | 3 archivos | CP-ADJ-06 |
 | Archivo adjunto: cantidad | Un cuarto archivo | Inválido | 4.º archivo | CP-ADJ-06 |
+| Prioridad | Uno de los tres valores permitidos u omitida | Válida | "Baja", "Media", "Alta" | CP-PRI-01, CP-PRI-02 |
+| Prioridad | Cualquier otro valor | Inválida | "Urgente" | CP-PRI-03 |
+| Responsable | Cadena de hasta 60 caracteres tras recortar, opcional | Válida | "Ana Gómez" | CP-ASG-01 |
+| Responsable | Cadena de 61 caracteres | Inválida | 61 caracteres | CP-ASG-02 |
+| Etiqueta | Nombre de 1 a 30 caracteres, hasta 5 por tarea | Válida | "backend" | CP-TAG-01 |
+| Etiqueta | Nombre vacío o de solo espacios | Inválida | "", "   " | CP-TAG-03 |
+| Etiqueta | Más de 5 etiquetas por tarea | Inválida | 6 etiquetas | CP-TAG-02 |
+| Enlace: url | URL http(s) de hasta 500 caracteres | Válida | "https://ejemplo.com/doc" | CP-ENL-01 |
+| Enlace: url | URL con otro esquema o sin esquema | Inválida | "ftp://...", "ejemplo.com" | CP-ENL-02 |
+| Enlace: cantidad | Hasta 5 enlaces por tarea | Válida | 5 enlaces | CP-ENL-01 |
+| Enlace: cantidad | Un sexto enlace o un enlace repetido | Inválida | 6 enlaces, url duplicada | CP-ENL-03, CP-ENL-04 |
+| Criterio de orden (`sort`) | Uno de {position, priority, due, created} | Válido | "priority" | CP-ORD-01 |
+| Criterio de orden (`sort`) | Cualquier otro valor | Inválido | "invalido" | CP-ORD-02 |
+| Subtareas en el alta | Hasta 20 por tarea | Válida | 2 subtareas | CP-ALT-01 |
+| Subtareas en el alta | 21 o más subtareas | Inválida | 21 subtareas | CP-ALT-02 |
 
 ### Análisis de valores límite
 
@@ -87,6 +110,13 @@ Criterios generales:
 | Tamaño del adjunto | Superior | 5 MB (máximo válido) y 5 MB + 1 byte (rechazado) | CP-ADJ-01, CP-ADJ-05 |
 | Cantidad de adjuntos | Superior | 3 (máximo válido) y 4 (rechazado) | CP-ADJ-06 |
 | Identificador | Existencia | Tarea existente, tarea inexistente y valor no numérico | CP-MOV-01, CP-MOV-03, CP-MOV-04, CP-ELI-01, CP-ELI-02 |
+| Longitud del responsable | Superior | 60 (máximo válido) y 61 (rechazado) | CP-ASG-01, CP-ASG-02 |
+| Cantidad de etiquetas | Superior | 5 (máximo válido) y 6 (rechazado) | CP-TAG-01, CP-TAG-02 |
+| Cantidad de enlaces | Superior | 5 (máximo válido) y 6 (rechazado) | CP-ENL-01, CP-ENL-03 |
+| Cantidad de subtareas en el alta | Superior | 20 (máximo válido) y 21 (rechazado) | CP-HIS-02, CP-ALT-02 |
+| Entradas del historial | Superior | 20 (máximo devuelto) | CP-HIS-02 |
+| Prioridad | Conjunto de valores permitidos | Coincidencia con el conjunto y un valor fuera del conjunto | CP-PRI-01, CP-PRI-03 |
+| Criterio de orden | Conjunto de valores permitidos | Coincidencia con el conjunto y un valor fuera del conjunto | CP-ORD-01, CP-ORD-02 |
 
 ## Caja blanca
 
@@ -187,6 +217,30 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 | CP-RES-01 | Restaurar tarea | Flujo normal | RF15 | API |
 | CP-RES-02 | Restaurar tarea | Restauración de una tarea no eliminada | RF15 | API |
 | CP-LIS-01 | Listar tareas | Flujo normal y persistencia | RF1, RF2 | API |
+| CP-PRI-01 | Prioridad | Clase de equivalencia válida | RF16 | API |
+| CP-PRI-02 | Prioridad | Clase válida por omisión | RF16 | API |
+| CP-PRI-03 | Prioridad | Clase de equivalencia inválida | RF16 | API |
+| CP-PRI-04 | Prioridad | Flujo normal de actualización | RF16, RF20 | API |
+| CP-ASG-01 | Responsable | Clase válida con normalización | RF17 | API |
+| CP-ASG-02 | Responsable | Valor límite superior inválido | RF17 | API |
+| CP-ASG-03 | Responsable | Flujo normal de actualización | RF17, RF20 | API |
+| CP-TAG-01 | Etiquetas | Clase de equivalencia válida | RF18 | API |
+| CP-TAG-02 | Etiquetas | Valor límite superior inválido | RF18 | API |
+| CP-TAG-03 | Etiquetas | Clase inválida y valor límite | RF18 | API |
+| CP-TAG-04 | Etiquetas | Flujo normal de reemplazo | RF18, RF20 | API |
+| CP-ENL-01 | Enlaces | Clase de equivalencia válida | RF19 | API |
+| CP-ENL-02 | Enlaces | Clase inválida de esquema | RF19 | API |
+| CP-ENL-03 | Enlaces | Valor límite superior inválido | RF19 | API |
+| CP-ENL-04 | Enlaces | Clase inválida de duplicados | RF19 | API |
+| CP-HIS-01 | Historial de actividad | Flujo normal | RF20 | API |
+| CP-HIS-02 | Historial de actividad | Valor límite y orden | RF20 | API |
+| CP-FIL-01 | Búsqueda y filtros | Flujo normal de filtro | RF21 | API |
+| CP-FIL-02 | Búsqueda y filtros | Flujo normal de filtro | RF21 | API |
+| CP-FIL-03 | Búsqueda y filtros | Flujo normal de búsqueda | RF21 | API |
+| CP-ORD-01 | Orden del tablero | Flujo normal de orden | RF22 | API |
+| CP-ORD-02 | Orden del tablero | Clase de equivalencia inválida | RF22 | API |
+| CP-ALT-01 | Alta enriquecida | Flujo normal | RF16, RF17, RF18, RF19, RF23 | API |
+| CP-ALT-02 | Alta enriquecida | Valor límite superior inválido | RF23 | API |
 | CP-UI-01 | Crear tarea | Flujo válido de interfaz | RF1, RF2 | Interfaz |
 | CP-UI-02 | Crear tarea | Clase inválida y valor límite | RF1 | Interfaz |
 | CP-UI-03 | Mover tarea | Flujo de interfaz | RF3 | Interfaz |
@@ -195,6 +249,9 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 | CP-UI-06 | Checklist | Flujo de interfaz con reapertura | RF6, RF7, RF8, RF9 | Interfaz |
 | CP-UI-07 | Adjuntos | Flujo de interfaz de subida y descarga | RF11, RF12 | Interfaz |
 | CP-UI-08 | Eliminar y restaurar | Flujo de interfaz con deshacer | RF14, RF15 | Interfaz |
+| CP-UI-09 | Alta enriquecida | Flujo de interfaz | RF16, RF17, RF23 | Interfaz |
+| CP-UI-10 | Búsqueda y filtros | Flujo de interfaz | RF21 | Interfaz |
+| CP-UI-11 | Historial de actividad | Flujo de interfaz | RF20 | Interfaz |
 | CP-CB-01 | Validar título | Caja blanca - decisiones | RF1 y restricciones del título | Backend (unidad) |
 | CP-CB-02 | Mover tarea | Caja blanca - decisiones | RF3, RF9 | Backend (unidad) |
 | CP-CB-03 | Eliminar y restaurar | Caja blanca - decisiones | RF14, RF15 | Backend (unidad) |
@@ -227,6 +284,14 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 | Un solo estado válido por tarea | CP-CRE-01, CP-MOV-01 a CP-MOV-04, CP-UI-03, CP-CB-02 |
 | Hasta 3 adjuntos de 5 MB con extensiones permitidas | CP-ADJ-01, CP-ADJ-04, CP-ADJ-05, CP-ADJ-06, CP-CB-04 |
 | Persistencia de los cambios | CP-LIS-01, CP-UI-01, CP-UI-03, CP-UI-05, CP-UI-06, CP-UI-07, CP-UI-08, CP-CB-02, CP-CB-03 |
+| RF16: prioridad de la tarea | CP-PRI-01 a CP-PRI-04, CP-ALT-01, CP-UI-09 |
+| RF17: responsable de la tarea | CP-ASG-01 a CP-ASG-03, CP-ALT-01, CP-UI-09 |
+| RF18: etiquetas | CP-TAG-01 a CP-TAG-04, CP-ALT-01 |
+| RF19: enlaces | CP-ENL-01 a CP-ENL-04, CP-ALT-01 |
+| RF20: historial de actividad | CP-PRI-04, CP-ASG-03, CP-TAG-04, CP-HIS-01, CP-HIS-02, CP-UI-11 |
+| RF21: búsqueda y filtros | CP-FIL-01 a CP-FIL-03, CP-UI-10 |
+| RF22: orden del tablero | CP-ORD-01, CP-ORD-02 |
+| RF23: alta enriquecida | CP-ALT-01, CP-ALT-02, CP-UI-09 |
 
 ## Fichas de casos de prueba
 
@@ -239,7 +304,7 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 - Datos de entrada: {"title": "Preparar informe"}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y luego consultar GET /api/tasks.
 - Resultado esperado: HTTP 201, con id entero, title "Preparar informe", description "", status "Pendiente", due_date nulo, position 0, overdue falso, subtask_total 0, subtasks y attachments vacíos; la tarea aparece en el listado.
-- Resultado obtenido: HTTP 201; tarea #197 creada en estado Pendiente, position 0 y overdue falso, presente en el listado.
+- Resultado obtenido: HTTP 201; tarea #81 creada en estado Pendiente, position 0 y overdue falso, presente en el listado.
 - Estado: Aprobado.
 - Observaciones: Clase de equivalencia válida típica. Verifica además RF2 y la forma completa de la respuesta.
 - Técnica: Caja negra - clase de equivalencia válida.
@@ -351,7 +416,7 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 - Datos de entrada: {"title": "Informe final", "description": "Detalle de la tarea", "due_date": fecha de hoy más 7 días}
 - Procedimiento: Enviar POST /api/tasks con el JSON indicado y observar los campos devueltos.
 - Resultado esperado: HTTP 201 con description "Detalle de la tarea", due_date igual a la enviada y overdue falso.
-- Resultado obtenido: HTTP 201; descripción y fecha límite (2026-11-06) almacenadas y overdue falso.
+- Resultado obtenido: HTTP 201; descripción y fecha límite (2026-11-08) almacenadas y overdue falso.
 - Estado: Aprobado.
 - Observaciones: Valor límite de fecha permitido y verificación del estado calculado.
 - Técnica: Caja negra - clase de equivalencia válida.
@@ -495,7 +560,7 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 - Datos de entrada: PUT con {"title": "Revisar informe", "due_date": fecha de hace 2 días}.
 - Procedimiento: Enviar PUT /api/tasks/{id} y observar la fecha y el estado de vencimiento.
 - Resultado esperado: HTTP 200 con la fecha límite pasada almacenada y overdue verdadero.
-- Resultado obtenido: HTTP 200; la edición admitió la fecha pasada (2026-10-28) y overdue quedó verdadero.
+- Resultado obtenido: HTTP 200; la edición admitió la fecha pasada (2026-10-30) y overdue quedó verdadero.
 - Estado: Aprobado.
 - Observaciones: La restricción de fecha futura se aplica solo al crear; en la edición se admite una fecha pasada.
 - Técnica: Caja negra - valor límite permitido.
@@ -838,6 +903,390 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 - Requisito: RF1, RF2
 - Capa: API
 
+### CP-PRI-01
+
+- ID: CP-PRI-01
+- Funcionalidad: Prioridad de la tarea
+- Objetivo: Verificar el alta de una tarea con la prioridad "Alta".
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Tarea prioritaria", "priority": "Alta"}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y observar el campo priority devuelto.
+- Resultado esperado: HTTP 201 con priority "Alta" y title "Tarea prioritaria".
+- Resultado obtenido: HTTP 201; la tarea se creó con priority "Alta".
+- Estado: Aprobado.
+- Observaciones: Clase válida de prioridad con un valor extremo del conjunto.
+- Técnica: Caja negra - clase de equivalencia válida.
+- Requisito: RF16
+- Capa: API
+
+### CP-PRI-02
+
+- ID: CP-PRI-02
+- Funcionalidad: Prioridad de la tarea
+- Objetivo: Verificar que al omitir la prioridad la tarea toma el valor por defecto "Media".
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Tarea sin prioridad"}
+- Procedimiento: Enviar POST /api/tasks sin el campo priority y observar el valor devuelto.
+- Resultado esperado: HTTP 201 con priority "Media".
+- Resultado obtenido: HTTP 201; al omitir priority la tarea quedó con "Media".
+- Estado: Aprobado.
+- Observaciones: Clase válida por omisión del campo, con el valor por defecto del requisito.
+- Técnica: Caja negra - clase de equivalencia válida.
+- Requisito: RF16
+- Capa: API
+
+### CP-PRI-03
+
+- ID: CP-PRI-03
+- Funcionalidad: Prioridad de la tarea
+- Objetivo: Verificar el rechazo de una prioridad fuera del conjunto permitido.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Prioridad inválida", "priority": "Urgente"}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
+- Resultado esperado: HTTP 422 con un mensaje que menciona la prioridad; la tarea no se crea.
+- Resultado obtenido: HTTP 422; prioridad fuera del conjunto rechazada y listado sin cambios.
+- Estado: Aprobado.
+- Observaciones: Clase de equivalencia inválida; verifica que el listado no cambia.
+- Técnica: Caja negra - clase de equivalencia inválida.
+- Requisito: RF16
+- Capa: API
+
+### CP-PRI-04
+
+- ID: CP-PRI-04
+- Funcionalidad: Prioridad de la tarea
+- Objetivo: Verificar el cambio de la prioridad de una tarea existente y su registro en el historial.
+- Precondiciones: Existe una tarea con identificador conocido.
+- Datos de entrada: PUT con {"title": "Cambiar prioridad", "priority": "Baja"}.
+- Procedimiento: Enviar PUT /api/tasks/{id}, consultar la tarea y revisar su actividad.
+- Resultado esperado: HTTP 200 con priority "Baja" persistida y la acción "Prioridad cambiada a Baja" en la actividad.
+- Resultado obtenido: PUT 200; prioridad "Baja" aplicada y registrada en la actividad.
+- Estado: Aprobado.
+- Observaciones: Actualización de la prioridad con registro en el historial de la tarea.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF16, RF20
+- Capa: API
+
+### CP-ASG-01
+
+- ID: CP-ASG-01
+- Funcionalidad: Responsable de la tarea
+- Objetivo: Verificar el alta de una tarea con responsable y la normalización de los espacios extremos.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Responsable con espacios", "assignee": "  Ana Gómez  "}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y observar el campo assignee devuelto.
+- Resultado esperado: HTTP 201 con assignee "Ana Gómez", sin espacios extremos.
+- Resultado obtenido: HTTP 201; los espacios externos se recortaron a "Ana Gómez".
+- Estado: Aprobado.
+- Observaciones: Clase válida con normalización del responsable.
+- Técnica: Caja negra - clase de equivalencia válida.
+- Requisito: RF17
+- Capa: API
+
+### CP-ASG-02
+
+- ID: CP-ASG-02
+- Funcionalidad: Responsable de la tarea
+- Objetivo: Verificar el rechazo de un responsable que supera los 60 caracteres.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Responsable largo", "assignee": "a" repetido 61 veces}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
+- Resultado esperado: HTTP 422 con un mensaje que menciona el responsable; la tarea no se crea.
+- Resultado obtenido: HTTP 422; responsable de 61 caracteres rechazado y listado sin cambios.
+- Estado: Aprobado.
+- Observaciones: Valor límite superior inválido de longitud del responsable.
+- Técnica: Caja negra - análisis de valores límite.
+- Requisito: RF17
+- Capa: API
+
+### CP-ASG-03
+
+- ID: CP-ASG-03
+- Funcionalidad: Responsable de la tarea
+- Objetivo: Verificar la asignación de un responsable a una tarea existente y su registro en el historial.
+- Precondiciones: Existe una tarea con identificador conocido.
+- Datos de entrada: PUT con {"title": "Asignar responsable", "assignee": "Luis"}.
+- Procedimiento: Enviar PUT /api/tasks/{id}, consultar la tarea y revisar su actividad.
+- Resultado esperado: HTTP 200 con assignee "Luis" persistido y la acción "Responsable asignado a Luis" en la actividad.
+- Resultado obtenido: PUT 200; responsable "Luis" asignado y registrado en la actividad.
+- Estado: Aprobado.
+- Observaciones: Actualización del responsable con registro en el historial de la tarea.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF17, RF20
+- Capa: API
+
+### CP-TAG-01
+
+- ID: CP-TAG-01
+- Funcionalidad: Etiquetas
+- Objetivo: Verificar el alta de una tarea con etiquetas y su incorporación al catálogo.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Tarea etiquetada", "tags": ["backend", "pruebas"]}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar GET /api/tags.
+- Resultado esperado: HTTP 201 con las dos etiquetas en la tarea y presentes en el catálogo.
+- Resultado obtenido: HTTP 201; las dos etiquetas quedaron en la tarea y en /api/tags.
+- Estado: Aprobado.
+- Observaciones: Clase válida de etiquetas; verifica el catálogo además de la tarea.
+- Técnica: Caja negra - clase de equivalencia válida.
+- Requisito: RF18
+- Capa: API
+
+### CP-TAG-02
+
+- ID: CP-TAG-02
+- Funcionalidad: Etiquetas
+- Objetivo: Verificar el rechazo de una tarea con más de cinco etiquetas.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Demasiadas etiquetas", "tags": ["a", "b", "c", "d", "e", "f"]}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
+- Resultado esperado: HTTP 409 con el detalle del límite de 5 etiquetas; no se crea ninguna tarea.
+- Resultado obtenido: HTTP 409 con el detalle del límite; no se creó ninguna tarea.
+- Estado: Aprobado.
+- Observaciones: Valor límite superior inválido de cantidad de etiquetas.
+- Técnica: Caja negra - análisis de valores límite.
+- Requisito: RF18
+- Capa: API
+
+### CP-TAG-03
+
+- ID: CP-TAG-03
+- Funcionalidad: Etiquetas
+- Objetivo: Verificar el rechazo de una etiqueta vacía y de una compuesta solo por espacios.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Etiqueta vacía", "tags": [""]} y {"title": "Etiqueta con espacios", "tags": ["   "]}.
+- Procedimiento: Enviar POST /api/tasks con cada JSON y consultar el listado.
+- Resultado esperado: HTTP 422 en ambos casos con un mensaje que menciona la etiqueta; no se crea ninguna tarea.
+- Resultado obtenido: HTTP 422 con la etiqueta vacía y con la de solo espacios.
+- Estado: Aprobado.
+- Observaciones: Clase inválida y valor límite inferior de la etiqueta.
+- Técnica: Caja negra - clase de equivalencia inválida y valor límite.
+- Requisito: RF18
+- Capa: API
+
+### CP-TAG-04
+
+- ID: CP-TAG-04
+- Funcionalidad: Etiquetas
+- Objetivo: Verificar el reemplazo completo de las etiquetas y el registro de las altas y bajas.
+- Precondiciones: Existe una tarea con identificador conocido.
+- Datos de entrada: PUT con tags ["uno", "dos"] y luego con tags ["dos", "tres"].
+- Procedimiento: Enviar los dos PUT, consultar la tarea y revisar su actividad.
+- Resultado esperado: HTTP 200 con las etiquetas ["dos", "tres"] y las acciones "Etiqueta eliminada: uno" y "Etiqueta agregada: tres".
+- Resultado obtenido: PUT 200; se quitó "uno", se agregó "tres" y ambas acciones quedaron registradas.
+- Estado: Aprobado.
+- Observaciones: Actualización del conjunto de etiquetas con registro en el historial.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF18, RF20
+- Capa: API
+
+### CP-ENL-01
+
+- ID: CP-ENL-01
+- Funcionalidad: Enlaces
+- Objetivo: Verificar el alta de una tarea con un enlace https y su nombre.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Tarea con enlace", "links": [{"url": "https://ejemplo.com/doc", "label": "Documento"}]}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y observar los enlaces devueltos.
+- Resultado esperado: HTTP 201 con un enlace cuya url y label coinciden con los enviados.
+- Resultado obtenido: HTTP 201; el enlace https quedó persistido con su nombre.
+- Estado: Aprobado.
+- Observaciones: Clase válida de enlace con esquema permitido y nombre.
+- Técnica: Caja negra - clase de equivalencia válida.
+- Requisito: RF19
+- Capa: API
+
+### CP-ENL-02
+
+- ID: CP-ENL-02
+- Funcionalidad: Enlaces
+- Objetivo: Verificar el rechazo de enlaces con un esquema distinto de http(s) o sin esquema.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: links [{"url": "ftp://ejemplo.com"}] y [{"url": "ejemplo.com"}].
+- Procedimiento: Enviar POST /api/tasks con cada JSON y consultar el listado.
+- Resultado esperado: HTTP 422 en ambos casos con un mensaje que menciona http; no se crea ninguna tarea.
+- Resultado obtenido: HTTP 422 con ftp:// y con una url sin esquema.
+- Estado: Aprobado.
+- Observaciones: Clase inválida de esquema del enlace.
+- Técnica: Caja negra - clase de equivalencia inválida.
+- Requisito: RF19
+- Capa: API
+
+### CP-ENL-03
+
+- ID: CP-ENL-03
+- Funcionalidad: Enlaces
+- Objetivo: Verificar el rechazo de una tarea con más de cinco enlaces.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Demasiados enlaces", "links": seis enlaces https distintos}.
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
+- Resultado esperado: HTTP 409 con el detalle del límite de 5 enlaces; no se crea ninguna tarea.
+- Resultado obtenido: HTTP 409 con el detalle del límite; no se creó ninguna tarea.
+- Estado: Aprobado.
+- Observaciones: Valor límite superior inválido de cantidad de enlaces.
+- Técnica: Caja negra - análisis de valores límite.
+- Requisito: RF19
+- Capa: API
+
+### CP-ENL-04
+
+- ID: CP-ENL-04
+- Funcionalidad: Enlaces
+- Objetivo: Verificar el rechazo de enlaces repetidos en la misma tarea.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Enlaces duplicados", "links": dos enlaces con la misma url}.
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
+- Resultado esperado: HTTP 409 con el detalle del enlace ya agregado; no se crea ninguna tarea.
+- Resultado obtenido: HTTP 409 con el detalle del enlace duplicado; no se creó ninguna tarea.
+- Estado: Aprobado.
+- Observaciones: Clase inválida por repetición de enlaces.
+- Técnica: Caja negra - clase de equivalencia inválida.
+- Requisito: RF19
+- Capa: API
+
+### CP-HIS-01
+
+- ID: CP-HIS-01
+- Funcionalidad: Historial de actividad
+- Objetivo: Verificar el registro de la creación y de un movimiento en el historial de la tarea.
+- Precondiciones: Existe una tarea con identificador conocido.
+- Datos de entrada: crear la tarea y luego PATCH a "En curso".
+- Procedimiento: Consultar la actividad tras el alta, mover la tarea y volver a consultar la actividad.
+- Resultado esperado: la actividad incluye "Tarea creada" y, tras el movimiento, "Movida a En curso"; el historial crece.
+- Resultado obtenido: La creación dejó "Tarea creada" y el movimiento agregó "Movida a En curso".
+- Estado: Aprobado.
+- Observaciones: Verifica que las acciones relevantes quedan registradas y ordenadas.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF20
+- Capa: API
+
+### CP-HIS-02
+
+- ID: CP-HIS-02
+- Funcionalidad: Historial de actividad
+- Objetivo: Verificar el límite de 20 entradas del historial y su orden descendente.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: alta con 20 subtareas.
+- Procedimiento: Enviar POST /api/tasks con las 20 subtareas y observar la actividad devuelta.
+- Resultado esperado: HTTP 201 con exactamente 20 entradas, ordenadas de la más nueva a la más antigua, siendo la primera "Subtarea agregada: Paso 20" y sin "Tarea creada".
+- Resultado obtenido: El historial devolvió 20 entradas como máximo, con la más reciente primero.
+- Estado: Aprobado.
+- Observaciones: Valor límite de cantidad del historial y verificación del orden.
+- Técnica: Caja negra - análisis de valores límite.
+- Requisito: RF20
+- Capa: API
+
+### CP-FIL-01
+
+- ID: CP-FIL-01
+- Funcionalidad: Búsqueda y filtros
+- Objetivo: Verificar el filtro de tareas por prioridad.
+- Precondiciones: Existen tres tareas con prioridad Baja, Alta y Media.
+- Datos de entrada: GET /api/tasks?priority=Alta.
+- Procedimiento: Consultar con y sin el filtro y comparar el contenido de ambos listados.
+- Resultado esperado: el filtro devuelve solo la tarea de prioridad Alta; sin filtro se listan las tres.
+- Resultado obtenido: El filtro priority devolvió solo la tarea de prioridad Alta.
+- Estado: Aprobado.
+- Observaciones: Verifica el parámetro de consulta de prioridad.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF21
+- Capa: API
+
+### CP-FIL-02
+
+- ID: CP-FIL-02
+- Funcionalidad: Búsqueda y filtros
+- Objetivo: Verificar el filtro de tareas por etiqueta.
+- Precondiciones: Existen una tarea etiquetada y otra sin etiquetas.
+- Datos de entrada: GET /api/tasks?tag=backend.
+- Procedimiento: Consultar con y sin el filtro y comparar el contenido de ambos listados.
+- Resultado esperado: el filtro devuelve solo la tarea con la etiqueta indicada; sin filtro se listan las dos.
+- Resultado obtenido: El filtro tag devolvió solo la tarea con la etiqueta indicada.
+- Estado: Aprobado.
+- Observaciones: Verifica el parámetro de consulta de etiqueta.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF21
+- Capa: API
+
+### CP-FIL-03
+
+- ID: CP-FIL-03
+- Funcionalidad: Búsqueda y filtros
+- Objetivo: Verificar la búsqueda por texto en el título y en la descripción, sin distinguir mayúsculas.
+- Precondiciones: Existen una tarea con el texto en el título, otra con el texto en la descripción y una tercera ajena.
+- Datos de entrada: GET /api/tasks?q=informe.
+- Procedimiento: Consultar con el parámetro de búsqueda y comparar los identificadores devueltos.
+- Resultado esperado: la búsqueda devuelve las tareas que contienen "informe" en el título o en la descripción, incluyendo coincidencias en mayúsculas, y excluye a la ajena.
+- Resultado obtenido: La búsqueda encontró coincidencias en el título y en la descripción, sin distinguir mayúsculas.
+- Estado: Aprobado.
+- Observaciones: Verifica la búsqueda parcial y la insensibilidad a mayúsculas.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF21
+- Capa: API
+
+### CP-ORD-01
+
+- ID: CP-ORD-01
+- Funcionalidad: Orden del tablero
+- Objetivo: Verificar el orden de las tareas por prioridad.
+- Precondiciones: Existen tareas de prioridad Baja, Alta y Media.
+- Datos de entrada: GET /api/tasks?sort=priority.
+- Procedimiento: Consultar con el criterio de orden por prioridad y observar el orden de los títulos.
+- Resultado esperado: HTTP 200 con el orden Alta, Media, Baja.
+- Resultado obtenido: sort=priority ordenó las tareas como Alta, Media y Baja.
+- Estado: Aprobado.
+- Observaciones: Verifica el criterio de orden por prioridad dentro del mismo estado.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF22
+- Capa: API
+
+### CP-ORD-02
+
+- ID: CP-ORD-02
+- Funcionalidad: Orden del tablero
+- Objetivo: Verificar el rechazo de un criterio de orden fuera del conjunto permitido.
+- Precondiciones: API en ejecución.
+- Datos de entrada: GET /api/tasks?sort=invalido.
+- Procedimiento: Consultar con el criterio inválido y registrar el código de respuesta.
+- Resultado esperado: HTTP 422 por error de validación del parámetro de orden.
+- Resultado obtenido: HTTP 422 por valor de sort fuera de los permitidos.
+- Estado: Aprobado.
+- Observaciones: Clase inválida del parámetro de orden.
+- Técnica: Caja negra - clase de equivalencia inválida.
+- Requisito: RF22
+- Capa: API
+
+### CP-ALT-01
+
+- ID: CP-ALT-01
+- Funcionalidad: Alta enriquecida
+- Objetivo: Verificar el alta de una tarea con prioridad, responsable, subtareas, etiquetas y enlaces en una sola petición.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Alta enriquecida", "priority": "Alta", "assignee": "Marta", "subtasks": ["Analizar", "Diseñar"], "tags": ["frontend", "backend"], "links": [{"url": "https://ejemplo.com/spec", "label": "Especificación"}]}
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y observar todos los campos enriquecidos.
+- Resultado esperado: HTTP 201 con prioridad Alta, responsable Marta, subtask_total 2, dos subtareas, dos etiquetas y un enlace persistidos.
+- Resultado obtenido: HTTP 201; prioridad, responsable, 2 subtareas, 2 etiquetas y 1 enlace persistidos en un solo POST.
+- Estado: Aprobado.
+- Observaciones: Integra en una sola petición las funcionalidades de las nuevas etapas.
+- Técnica: Caja negra - flujo normal.
+- Requisito: RF16, RF17, RF18, RF19, RF23
+- Capa: API
+
+### CP-ALT-02
+
+- ID: CP-ALT-02
+- Funcionalidad: Alta enriquecida
+- Objetivo: Verificar el rechazo de un alta con más de veinte subtareas.
+- Precondiciones: API en ejecución y base de datos accesible.
+- Datos de entrada: {"title": "Demasiadas subtareas", "subtasks": 21 títulos}.
+- Procedimiento: Enviar POST /api/tasks con el JSON indicado y consultar el listado.
+- Resultado esperado: HTTP 409 con el detalle del límite de 20 subtareas; no se crea ninguna tarea.
+- Resultado obtenido: HTTP 409 con el detalle del límite; no se creó ninguna tarea.
+- Estado: Aprobado.
+- Observaciones: Valor límite superior inválido de cantidad de subtareas en el alta.
+- Técnica: Caja negra - análisis de valores límite.
+- Requisito: RF23
+- Capa: API
+
 ### CP-UI-01
 
 - ID: CP-UI-01
@@ -966,6 +1415,54 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 - Requisito: RF14, RF15
 - Capa: Interfaz
 
+### CP-UI-09
+
+- ID: CP-UI-09
+- Funcionalidad: Alta enriquecida desde la interfaz
+- Objetivo: Verificar el alta desde el formulario con prioridad y responsable y su reflejo en la tarjeta.
+- Precondiciones: Backend y frontend en ejecución; tablero cargado.
+- Datos de entrada: Título "Tarea con prioridad y responsable", prioridad "Alta" y responsable "Ana".
+- Procedimiento: Completar el título, seleccionar la prioridad Alta, escribir "Ana" en responsable, presionar "Agregar tarea" y observar la tarjeta.
+- Resultado esperado: la tarjeta aparece en "Pendiente", la insignia de prioridad muestra "Alta" y el responsable "Ana".
+- Resultado obtenido: insignia='Alta'; responsable='Ana'.
+- Estado: Aprobado.
+- Observaciones: Verifica que la prioridad y el responsable ingresados en el formulario se reflejan en la tarjeta.
+- Técnica: Caja negra - flujo normal de interfaz.
+- Requisito: RF16, RF17, RF23
+- Capa: Interfaz
+
+### CP-UI-10
+
+- ID: CP-UI-10
+- Funcionalidad: Búsqueda desde la interfaz
+- Objetivo: Verificar que el buscador filtra las tarjetas por texto.
+- Precondiciones: Existen dos tareas en el tablero: "Informe de ventas" y "Reunión de equipo".
+- Datos de entrada: "informe" en el campo de búsqueda.
+- Procedimiento: Escribir "informe" en el buscador y observar las tarjetas visibles y el resumen.
+- Resultado esperado: queda una sola tarjeta ("Informe de ventas"), desaparece la ajena y el resumen muestra "1 tarea".
+- Resultado obtenido: tarjetas visibles=['Informe de ventas']; resumen='1 tarea'.
+- Estado: Aprobado.
+- Observaciones: Verifica la búsqueda parcial desde el tablero y la actualización del resumen.
+- Técnica: Caja negra - flujo normal de interfaz.
+- Requisito: RF21
+- Capa: Interfaz
+
+### CP-UI-11
+
+- ID: CP-UI-11
+- Funcionalidad: Historial desde la interfaz
+- Objetivo: Verificar la visualización de la cronología de actividad tras mover una tarea.
+- Precondiciones: Existe una tarea en la columna "Pendiente".
+- Datos de entrada: Arrastrar la tarjeta de "Pendiente" a "En curso" y abrir el detalle.
+- Procedimiento: Mover la tarjeta, abrir su detalle y revisar la cronología.
+- Resultado esperado: la tarjeta queda en "En curso" y la cronología muestra al menos una entrada, incluida "Movida a En curso".
+- Resultado obtenido: entradas=2; acciones=['Movida a En curso', 'Tarea creada'].
+- Estado: Aprobado.
+- Observaciones: Verifica que el movimiento queda registrado y visible en el detalle.
+- Técnica: Caja negra - flujo normal de interfaz.
+- Requisito: RF20
+- Capa: Interfaz
+
 ### CP-CB-01
 
 - ID: CP-CB-01
@@ -1091,22 +1588,30 @@ La cobertura real se verificó durante la ejecución de la Etapa 6; las pruebas 
 | Archivos adjuntos | 7 | 1 | 8 |
 | Eliminar y restaurar tarea | 5 | 1 | 6 |
 | Listar tareas | 1 | 0 | 1 |
-| Total | 46 | 7 | 53 |
+| Prioridad | 4 | 0 | 4 |
+| Responsable | 3 | 0 | 3 |
+| Etiquetas | 4 | 0 | 4 |
+| Enlaces | 4 | 0 | 4 |
+| Historial de actividad | 3 | 0 | 3 |
+| Búsqueda y filtros | 4 | 0 | 4 |
+| Orden del tablero | 2 | 0 | 2 |
+| Alta enriquecida | 3 | 0 | 3 |
+| Total | 73 | 7 | 80 |
 
 Cada caso se contabiliza en una sola fila, según su funcionalidad principal en la matriz de trazabilidad. Algunos casos cubren además otras funcionalidades o requisitos, por ejemplo `CP-UI-06`, `CP-CB-02` y `CP-CB-05` en el control de finalización, sin alterar el total.
 
 | Técnica principal | Casos |
 |-------------------|-------|
-| Clases de equivalencia y valores límite (caja negra) | CP-CRE-01 a CP-CRE-09, CP-MOV-01 a CP-MOV-05, CP-EDI-01 a CP-EDI-03, CP-FEC-01, CP-FEC-02, CP-ADJ-04 a CP-ADJ-06, CP-UI-02 |
-| Flujos normales y reglas de negocio sobre la API (caja negra) | CP-SUB-01 a CP-SUB-04, CP-BLO-01 a CP-BLO-04, CP-ADJ-01 a CP-ADJ-03, CP-ELI-01, CP-ELI-02, CP-RES-01, CP-RES-02, CP-LIS-01 |
-| Flujos normales sobre la interfaz (caja negra) | CP-UI-01, CP-UI-03 a CP-UI-08 |
+| Clases de equivalencia y valores límite (caja negra) | CP-CRE-01 a CP-CRE-09, CP-MOV-01 a CP-MOV-05, CP-EDI-01 a CP-EDI-03, CP-FEC-01, CP-FEC-02, CP-ADJ-04 a CP-ADJ-06, CP-UI-02, CP-PRI-01 a CP-PRI-03, CP-ASG-01, CP-ASG-02, CP-TAG-02, CP-TAG-03, CP-ENL-02 a CP-ENL-04, CP-HIS-02, CP-ORD-02, CP-ALT-02 |
+| Flujos normales y reglas de negocio sobre la API (caja negra) | CP-SUB-01 a CP-SUB-04, CP-BLO-01 a CP-BLO-04, CP-ADJ-01 a CP-ADJ-03, CP-ELI-01, CP-ELI-02, CP-RES-01, CP-RES-02, CP-LIS-01, CP-PRI-04, CP-ASG-03, CP-TAG-01, CP-TAG-04, CP-ENL-01, CP-HIS-01, CP-FIL-01 a CP-FIL-03, CP-ORD-01, CP-ALT-01 |
+| Flujos normales sobre la interfaz (caja negra) | CP-UI-01, CP-UI-03 a CP-UI-11 |
 | Caja blanca - decisiones y condiciones | CP-CB-01 a CP-CB-07 |
 
-Algunos casos aplican más de una técnica, por lo que la agrupación refleja la técnica principal de cada uno y suma los 53 casos únicos.
+Algunos casos aplican más de una técnica, por lo que la agrupación refleja la técnica principal de cada uno y suma los 80 casos únicos.
 
 ## Conclusión de la etapa
 
-Se diseñaron 53 casos de prueba que cubren las ocho funcionalidades del sistema y los requisitos RF1 a RF15, incluidas las restricciones de título, descripción, fecha límite, adjuntos y cantidad de archivos. La caja negra aporta casos de clases de equivalencia, valores límite y reglas de negocio sobre la API y la interfaz; la caja blanca permite cubrir las decisiones y condiciones principales del backend y del frontend. El conjunto queda listo para su ejecución y registro en la Etapa 6.
+Se diseñaron 80 casos de prueba que cubren las funcionalidades del sistema y los requisitos RF1 a RF23, incluidas las restricciones de título, descripción, fecha límite, adjuntos, cantidad de archivos, prioridad, responsable, etiquetas, enlaces, historial, búsqueda, orden y alta enriquecida. La caja negra aporta casos de clases de equivalencia, valores límite y reglas de negocio sobre la API y la interfaz; la caja blanca permite cubrir las decisiones y condiciones principales del backend y del frontend. El conjunto queda listo para su ejecución y registro en la Etapa 6.
 
 ## Próxima etapa
 
