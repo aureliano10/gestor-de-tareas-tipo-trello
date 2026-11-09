@@ -1,8 +1,12 @@
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-export const MAX_ATTACHMENT_BYTES = 4 * 1024 * 1024;
+export const MAX_ATTACHMENT_MB = 50;
+export const MAX_ATTACHMENT_BYTES = MAX_ATTACHMENT_MB * 1024 * 1024;
 export const MAX_ATTACHMENTS = 3;
 export const ALLOWED_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg", ".txt", ".docx"];
+
+const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp", ".gif"];
+const PREVIEWABLE_EXTENSIONS = [".pdf", ...IMAGE_EXTENSIONS];
 
 function parseISODate(iso) {
   const [year, month, day] = iso.split("-").map(Number);
@@ -44,6 +48,16 @@ export function formatSize(bytes) {
 export function extensionOf(filename) {
   const index = filename.lastIndexOf(".");
   return index === -1 ? "" : filename.slice(index).toLowerCase();
+}
+
+/** Indica si el archivo es una imagen (se previsualiza con <img>). */
+export function isImageFile(filename) {
+  return IMAGE_EXTENSIONS.includes(extensionOf(filename));
+}
+
+/** Indica si el archivo admite vista previa en el navegador (imagen o PDF). */
+export function isPreviewableFile(filename) {
+  return PREVIEWABLE_EXTENSIONS.includes(extensionOf(filename));
 }
 
 export function formatDateTime(iso) {

@@ -23,6 +23,7 @@ import {
 } from "./api.js";
 import Board from "./components/Board.jsx";
 import ConfirmDialog from "./components/ConfirmDialog.jsx";
+import TaskList from "./components/TaskList.jsx";
 import Toast from "./components/Toast.jsx";
 
 // AUD-17: el detalle es el componente más pesado y sólo se usa bajo interacción,
@@ -56,6 +57,10 @@ export default function App() {
   const [priorityFilter, setPriorityFilter] = useState("");
   const [tagFilter, setTagFilter] = useState("");
   const [sort, setSort] = useState("position");
+  const [view, setView] = useState("board");
+  // "normal": tarjeta completa (por defecto). "simple": supercompacta, sólo
+  // con título, prioridad y vencimiento.
+  const [cardMode, setCardMode] = useState("normal");
   const [tagOptions, setTagOptions] = useState([]);
 
   const [detailId, setDetailId] = useState(null);
@@ -303,6 +308,48 @@ export default function App() {
 
       <div className="toolbar">
         <div className="toolbar__filters">
+          <div className="view-switch" role="group" aria-label="Vista del tablero">
+            <button
+              type="button"
+              className={view === "board" ? "is-active" : ""}
+              aria-pressed={view === "board"}
+              data-testid="view-board"
+              onClick={() => setView("board")}
+            >
+              Tablero
+            </button>
+            <button
+              type="button"
+              className={view === "list" ? "is-active" : ""}
+              aria-pressed={view === "list"}
+              data-testid="view-list"
+              onClick={() => setView("list")}
+            >
+              Lista
+            </button>
+          </div>
+
+          <div className="view-switch" role="group" aria-label="Modo de las tarjetas">
+            <button
+              type="button"
+              className={cardMode === "simple" ? "is-active" : ""}
+              aria-pressed={cardMode === "simple"}
+              data-testid="mode-simple"
+              onClick={() => setCardMode("simple")}
+            >
+              Simple
+            </button>
+            <button
+              type="button"
+              className={cardMode === "normal" ? "is-active" : ""}
+              aria-pressed={cardMode === "normal"}
+              data-testid="mode-normal"
+              onClick={() => setCardMode("normal")}
+            >
+              Normal
+            </button>
+          </div>
+
           <label className="toggle">
             <input
               type="checkbox"
@@ -390,7 +437,10 @@ export default function App() {
       ) : (
         // AUD-30: el tablero permanece montado; la recarga se superpone sin
         // reemplazarlo (sin salto de layout).
-        <div className="board-area" aria-busy={loading}>
+        <div
+          className={`board-area board-area--${cardMode}`}
+          aria-busy={loading}
+        >
           {loading && (
             <div className="board-overlay">
               <span className="board-overlay__chip" role="status" aria-live="polite">
@@ -398,13 +448,17 @@ export default function App() {
               </span>
             </div>
           )}
-          <Board
-            tasks={tasks}
-            canReorder={canReorder}
-            onMove={handleBoardMove}
-            onOpen={openDetail}
-            onDelete={requestDelete}
-          />
+          {view === "board" ? (
+            <Board
+              tasks={tasks}
+              canReorder={canReorder}
+              onMove={handleBoardMove}
+              onOpen={openDetail}
+              onDelete={requestDelete}
+            />
+          ) : (
+            <TaskList tasks={tasks} onOpen={openDetail} onDelete={requestDelete} />
+          )}
         </div>
       )}
 

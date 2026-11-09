@@ -716,18 +716,18 @@ def cp_adj_04() -> dict:
 def cp_adj_05() -> dict:
     reset_server_db()
     task = create_task("Archivo muy grande")
-    content = b"x" * (4 * 1024 * 1024 + 1)
+    content = b"x" * (50 * 1024 * 1024 + 1)
     response = upload(task["id"], "grande.txt", content)
     body = json_body(response)
     detail = error_detail(body)
     stored = only_task(task["id"])
     checks = {
         "HTTP 413": response.status_code == 413,
-        "detalle de tamaño": detail == "El archivo supera el tamaño máximo de 4 MB",
+        "detalle de tamaño": detail == "El archivo supera el tamaño máximo de 50 MB",
         "tarea sin adjuntos": stored.get("attachments") == [],
     }
     obtained = (
-        'HTTP 413 con el detalle "El archivo supera el tamaño máximo de 4 MB"; '
+        'HTTP 413 con el detalle "El archivo supera el tamaño máximo de 50 MB"; '
         "sin adjuntos"
     )
     return make_result(

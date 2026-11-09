@@ -3,6 +3,7 @@ import {
   ALLOWED_EXTENSIONS,
   MAX_ATTACHMENTS,
   MAX_ATTACHMENT_BYTES,
+  MAX_ATTACHMENT_MB,
   extensionOf,
   formatSize,
   todayISO,
@@ -211,7 +212,7 @@ function TaskForm({ onCreate, onUpload, tagOptions = [], onClose }) {
         continue;
       }
       if (file.size > MAX_ATTACHMENT_BYTES) {
-        message = `El archivo ${file.name} supera el tamaño máximo de 4 MB.`;
+        message = `El archivo ${file.name} supera el tamaño máximo de ${MAX_ATTACHMENT_MB} MB.`;
         continue;
       }
       next.push({ id: nextId(), file });
@@ -584,7 +585,7 @@ function TaskForm({ onCreate, onUpload, tagOptions = [], onClose }) {
               onChange={handleFileChange}
             />
             <p className="hint">
-              Hasta {MAX_ATTACHMENTS} archivos de 4 MB. Formatos:{" "}
+              Hasta {MAX_ATTACHMENTS} archivos de {MAX_ATTACHMENT_MB} MB. Formatos:{" "}
               {ALLOWED_EXTENSIONS.join(", ")}.
             </p>
             {fileError && (

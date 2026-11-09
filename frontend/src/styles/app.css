@@ -154,21 +154,21 @@ select {
 /* ================================ Layout ================================= */
 
 .app {
-  max-width: 1180px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 3rem 1.5rem 6rem;
+  padding: 1.5rem 1.5rem 2.5rem;
 }
 
 .app__header {
   position: relative;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .app__header::before {
   content: "Tablero Kanban";
   display: inline-block;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   background: var(--primary-soft);
@@ -181,8 +181,8 @@ select {
 }
 
 .app__header h1 {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   background: linear-gradient(120deg, var(--text) 30%, var(--primary));
@@ -745,15 +745,27 @@ select {
 
 .column {
   --accent: var(--border-strong);
+  display: flex;
+  flex-direction: column;
   background: color-mix(in srgb, var(--surface) 60%, transparent);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1rem;
+  padding: 0.9rem;
   min-height: 240px;
+  /* La columna se limita a la altura visible: scrollea por dentro y el
+     encabezado queda siempre a la vista. */
+  max-height: max(320px, calc(100vh - 230px));
   transition:
     background 0.15s ease,
     border-color 0.15s ease,
     box-shadow 0.15s ease;
+}
+
+/* En el layout apilado cada columna crece según su contenido (sin scroll interno). */
+@media (max-width: 860px) {
+  .column {
+    max-height: none;
+  }
 }
 
 .column--drag-over {
@@ -815,7 +827,10 @@ select {
 .column__tasks {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.55rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .column__empty {
@@ -836,7 +851,7 @@ select {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 0.8rem 0.9rem;
+  padding: 0.7rem 0.8rem;
   box-shadow: var(--shadow-xs);
   cursor: grab;
   transition:
@@ -915,6 +930,22 @@ select {
 .task__actions {
   display: flex;
   gap: 0.1rem;
+  /* Modo denso: las acciones se muestran al pasar el mouse o al enfocar la
+     tarjeta, liberando espacio vertical en cada tarjeta. */
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.task:hover .task__actions,
+.task:focus-within .task__actions {
+  opacity: 1;
+}
+
+/* En pantallas táctiles no hay hover: las acciones quedan siempre visibles. */
+@media (hover: none) {
+  .task__actions {
+    opacity: 1;
+  }
 }
 
 .task__action {
@@ -944,6 +975,57 @@ select {
 .task__action--danger:hover {
   background: var(--danger-soft);
   color: var(--danger);
+}
+
+/* Modo "Normal" de las tarjetas: más amplitud, descripción completa y acciones
+   siempre visibles. */
+.board-area--normal .column__tasks {
+  gap: 0.85rem;
+}
+
+.board-area--normal .task {
+  padding: 1rem 1.05rem;
+}
+
+.board-area--normal .task__title {
+  font-size: 1.05rem;
+}
+
+.board-area--normal .task__description {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+  font-size: 0.88rem;
+}
+
+.board-area--normal .task__badges {
+  margin-top: 0.7rem;
+}
+
+.board-area--normal .task__actions {
+  opacity: 1;
+}
+
+/* Modo "Simple": tarjeta supercompacta — sólo título, prioridad y
+   vencimiento. El resto de la información queda en el detalle. */
+.board-area--simple .task {
+  padding: 0.55rem 0.7rem;
+}
+
+.board-area--simple .task__title {
+  font-size: 0.92rem;
+}
+
+.board-area--simple .task__badges {
+  margin-top: 0.45rem;
+}
+
+.board-area--simple .task__description,
+.board-area--simple .task__meta,
+.board-area--simple .task__footer,
+.board-area--simple .badge--checklist,
+.board-area--simple .badge--files {
+  display: none;
 }
 
 /* ================================ Etiquetas ============================== */
@@ -1099,6 +1181,36 @@ select {
   padding: 0.9rem 1.4rem;
   border-top: 1px solid var(--border);
   background: var(--surface-2);
+}
+
+/* Vista previa de adjuntos (imagen o PDF), al estilo Drive. */
+.modal--preview {
+  width: min(960px, 100%);
+  height: min(90vh, 860px);
+}
+
+.modal__body--preview {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--surface-3);
+}
+
+.preview__image {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview__frame {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
 }
 
 .panel {
@@ -1306,6 +1418,15 @@ select {
 
 .attachments__name:hover {
   text-decoration: underline;
+}
+
+/* El nombre del adjunto previsualizable es un botón que abre el modal. */
+.attachments__name--button {
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 .attachments__meta {
@@ -1725,7 +1846,7 @@ select {
 /* ================= Alta de tarea: botón y modal ======================== */
 
 .app__new-task {
-  margin-top: 1.25rem;
+  margin-top: 0.85rem;
 }
 
 /* Modal del formulario de alta: cabecera + cuerpo desplazable + acciones. */
@@ -1787,4 +1908,195 @@ select {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+
+/* ==================== Selector de vista: Tablero / Lista =============== */
+
+.view-switch {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.view-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.view-switch button:not(.is-active):hover {
+  background: var(--surface-3);
+}
+
+.view-switch button.is-active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ===================== Vista Lista (filas densas) ====================== */
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.task-list__group {
+  --accent: var(--border-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+
+.task-list__group[data-status="Pendiente"] {
+  --accent: var(--pending);
+}
+
+.task-list__group[data-status="En curso"] {
+  --accent: var(--progress);
+}
+
+.task-list__group[data-status="Terminada"] {
+  --accent: var(--done);
+}
+
+.task-list__group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.task-list__group-header h2 {
+  margin: 0;
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.task-list__group-dot {
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.task-list__table-wrap {
+  overflow-x: auto;
+}
+
+.task-list__table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.task-list__table th {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.task-list__table td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.task-list__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.task-list__table tbody tr:hover {
+  background: var(--surface-3);
+}
+
+.task-list__table tr.is-overdue .task-list__title {
+  color: var(--danger-dark);
+}
+
+.task-list__title {
+  font-weight: 600;
+}
+
+.task-list__id {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.task-list__open {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.task-list__open:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.task-list__actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.task-list__actions button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.task-list__actions button:hover {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.task-list__actions button.danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.task-list__empty {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  color: var(--muted);
+  font-size: 0.82rem;
 }

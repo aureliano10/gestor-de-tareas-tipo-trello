@@ -64,14 +64,14 @@ function Column({
       return;
     }
 
-    const task = tasks.find((item) => item.id === taskId);
-    if (!task) {
-      return;
-    }
+    // `tasks` son las tarjetas de esta columna: si la arrastrada ya está acá,
+    // es un reordenamiento dentro de la misma columna. Si viene de otra
+    // columna no aparece en la lista y el movimiento debe proceder igual.
+    const isSameColumn = tasks.some((item) => item.id === taskId);
 
     // Con filtros u otro orden, el índice visible no representa la columna
     // real: se permite cambiar de estado, pero se agrega al final.
-    if (!canReorder && task.status === status) {
+    if (!canReorder && isSameColumn) {
       return;
     }
     const position = canReorder

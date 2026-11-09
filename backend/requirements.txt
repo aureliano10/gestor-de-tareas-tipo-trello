@@ -4,3 +4,4 @@ pydantic==2.13.4
 python-multipart==0.0.32
 turso_serverless==0.1.0
 vercel-blob==0.5.1
+pillow==12.1.1

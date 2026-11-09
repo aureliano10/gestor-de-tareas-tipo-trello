@@ -172,6 +172,7 @@ export function deleteAttachment(taskId, attachmentId) {
   });
 }
 
-export function attachmentUrl(taskId, attachmentId) {
-  return `${API_URL}/tasks/${taskId}/attachments/${attachmentId}`;
+export function attachmentUrl(taskId, attachmentId, { download = false } = {}) {
+  const base = `${API_URL}/tasks/${taskId}/attachments/${attachmentId}`;
+  return download ? `${base}?download=1` : base;
 }

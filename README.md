@@ -213,7 +213,7 @@ Para reproducir el trabajo `e2e` en un entorno local, los scripts de la suite re
 - Al agregar una subtarea pendiente o al desmarcar una subtarea de una tarea finalizada, la tarea vuelve a `En curso`.
 - Al crear una tarea, la fecha límite no puede ser anterior a hoy; al editarla sí se admite una fecha pasada.
 - Una tarea está vencida cuando su fecha límite ya pasó y la tarea no está terminada. Es un estado calculado, no almacenado.
-- Cada tarea admite hasta 3 archivos adjuntos, de 4 MB como máximo, con extensión `.pdf`, `.png`, `.jpg`, `.jpeg`, `.txt` o `.docx`.
+- Cada tarea admite hasta 3 archivos adjuntos, de 50 MB como máximo, con extensión `.pdf`, `.png`, `.jpg`, `.jpeg`, `.txt` o `.docx`. Las imágenes se convierten a WebP al subirlas y las imágenes y PDF se previsualizan en el detalle sin descargarse.
 - La prioridad debe ser `Baja`, `Media` o `Alta`; si no se indica, se usa `Media`.
 - El responsable es opcional y admite hasta 60 caracteres.
 - Cada tarea admite hasta 5 etiquetas, de hasta 30 caracteres cada una, que se reutilizan entre tareas sin distinguir mayúsculas; las existentes se ofrecen como sugerencias en `GET /api/tags`.

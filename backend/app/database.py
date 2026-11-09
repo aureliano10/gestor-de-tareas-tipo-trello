@@ -215,6 +215,37 @@ def _migrate_tasks(conn: sqlite3.Connection) -> None:
                     raise
 
 
+def _attachments_table_outdated(conn: sqlite3.Connection) -> bool:
+    """Detecta si el ``CHECK`` de tamaño de `attachments` quedó desactualizado.
+
+    El límite se incrusta en el ``CREATE TABLE``; como ``CREATE TABLE IF NOT
+    EXISTS`` no lo actualiza en bases existentes, se compara el SQL guardado
+    con el definido por la aplicación.
+    """
+    sql = _table_sql(conn, "attachments")
+    if sql is None:
+        return False
+    return " ".join(sql.split()) != " ".join(CREATE_ATTACHMENTS_TABLE.split())
+
+
+def _migrate_attachments(conn: sqlite3.Connection) -> None:
+    """Reconstruye `attachments` para aplicar el nuevo límite de tamaño.
+
+    SQLite no permite modificar una restricción ``CHECK``, así que se renombra,
+    se crea la tabla actualizada y se copian las filas. Nada referencia a
+    `attachments`, por lo que el reemplazo no rompe claves foráneas.
+    """
+    conn.execute("ALTER TABLE attachments RENAME TO attachments_legacy")
+    conn.execute(CREATE_ATTACHMENTS_TABLE)
+    conn.execute(
+        "INSERT INTO attachments (id, task_id, filename, stored_name, "
+        "content_type, size_bytes, created_at) "
+        "SELECT id, task_id, filename, stored_name, content_type, size_bytes, "
+        "created_at FROM attachments_legacy"
+    )
+    conn.execute("DROP TABLE attachments_legacy")
+
+
 def init_db() -> None:
     if (
         _ON_VERCEL
@@ -239,6 +270,8 @@ def init_db() -> None:
     with connection() as conn:
         if _needs_migration(conn):
             _migrate_tasks(conn)
+        if _attachments_table_outdated(conn):
+            _migrate_attachments(conn)
         conn.execute(CREATE_TASKS_TABLE)
         conn.execute(CREATE_SUBTASKS_TABLE)
         conn.execute(CREATE_ATTACHMENTS_TABLE)

@@ -3,12 +3,15 @@ import {
   ALLOWED_EXTENSIONS,
   MAX_ATTACHMENTS,
   MAX_ATTACHMENT_BYTES,
+  MAX_ATTACHMENT_MB,
   daysUntil,
   dueInfo,
   extensionOf,
   formatDate,
   formatDateTime,
   formatSize,
+  isImageFile,
+  isPreviewableFile,
   prioritySlug,
   todayISO,
 } from "./format.js";
@@ -26,9 +29,26 @@ function isoOffset(days) {
 describe("constantes de adjuntos", () => {
   it("expone los límites y las extensiones permitidas", () => {
     expect(MAX_ATTACHMENTS).toBe(3);
-    expect(MAX_ATTACHMENT_BYTES).toBe(4 * 1024 * 1024);
+    expect(MAX_ATTACHMENT_MB).toBe(50);
+    expect(MAX_ATTACHMENT_BYTES).toBe(50 * 1024 * 1024);
     expect(ALLOWED_EXTENSIONS).toContain(".pdf");
     expect(ALLOWED_EXTENSIONS).toContain(".docx");
+  });
+});
+
+describe("isImageFile / isPreviewableFile", () => {
+  it("reconoce imágenes por su extensión", () => {
+    expect(isImageFile("foto.PNG")).toBe(true);
+    expect(isImageFile("foto.jpg")).toBe(true);
+    expect(isImageFile("informe.pdf")).toBe(false);
+    expect(isImageFile("notas.txt")).toBe(false);
+  });
+
+  it("habilita vista previa para imágenes y PDF", () => {
+    expect(isPreviewableFile("informe.pdf")).toBe(true);
+    expect(isPreviewableFile("foto.jpeg")).toBe(true);
+    expect(isPreviewableFile("notas.txt")).toBe(false);
+    expect(isPreviewableFile("contrato.docx")).toBe(false);
   });
 });
 

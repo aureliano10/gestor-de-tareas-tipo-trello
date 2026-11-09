@@ -4,9 +4,12 @@ import {
   ALLOWED_EXTENSIONS,
   MAX_ATTACHMENTS,
   MAX_ATTACHMENT_BYTES,
+  MAX_ATTACHMENT_MB,
   extensionOf,
   formatSize,
+  isPreviewableFile,
 } from "../format.js";
+import AttachmentPreview from "./AttachmentPreview.jsx";
 
 const UNDO_WINDOW_MS = 7000;
 
@@ -19,6 +22,7 @@ export default function DetailAttachments({
 }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [preview, setPreview] = useState(null);
   // AUD-35: se recuerda el archivo recién subido para poder restaurarlo.
   const uploadedFiles = useRef(new Map());
 
@@ -41,7 +45,7 @@ export default function DetailAttachments({
       return;
     }
     if (file.size > MAX_ATTACHMENT_BYTES) {
-      setError("El archivo supera el tamaño máximo de 4 MB.");
+      setError(`El archivo supera el tamaño máximo de ${MAX_ATTACHMENT_MB} MB.`);
       return;
     }
 
@@ -99,13 +103,24 @@ export default function DetailAttachments({
         <ul className="attachments">
           {task.attachments.map((attachment) => (
             <li key={attachment.id} className="attachments__item">
-              <a
-                className="attachments__name"
-                href={attachmentUrl(task.id, attachment.id)}
-                download={attachment.filename}
-              >
-                {attachment.filename}
-              </a>
+              {isPreviewableFile(attachment.filename) ? (
+                <button
+                  type="button"
+                  className="attachments__name attachments__name--button"
+                  onClick={() => setPreview(attachment)}
+                  data-testid={`attachment-preview-${attachment.id}`}
+                >
+                  {attachment.filename}
+                </button>
+              ) : (
+                <a
+                  className="attachments__name"
+                  href={attachmentUrl(task.id, attachment.id, { download: true })}
+                  download={attachment.filename}
+                >
+                  {attachment.filename}
+                </a>
+              )}
               <span className="attachments__meta">
                 {formatSize(attachment.size_bytes)}
               </span>
@@ -142,9 +157,17 @@ export default function DetailAttachments({
         </p>
       )}
       <p className="hint">
-        Hasta {MAX_ATTACHMENTS} archivos de 4 MB. Formatos:{" "}
-        {ALLOWED_EXTENSIONS.join(", ")}.
+        Hasta {MAX_ATTACHMENTS} archivos de {MAX_ATTACHMENT_MB} MB. Formatos:{" "}
+        {ALLOWED_EXTENSIONS.join(", ")}. Las imágenes se optimizan a WebP.
       </p>
+
+      {preview && (
+        <AttachmentPreview
+          task={task}
+          attachment={preview}
+          onClose={() => setPreview(null)}
+        />
+      )}
     </section>
   );
 }
