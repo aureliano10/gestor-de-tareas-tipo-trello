@@ -37,6 +37,7 @@ export default function TaskDetailModal({
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(() => draftFrom(task));
   const [formError, setFormError] = useState("");
+  const [moveError, setMoveError] = useState("");
   const [saving, setSaving] = useState(false);
   const [moving, setMoving] = useState(false);
 
@@ -84,8 +85,11 @@ export default function TaskDetailModal({
       return;
     }
     setMoving(true);
+    setMoveError("");
     try {
       await onMove(task.id, status, 0);
+    } catch (err) {
+      setMoveError(err.message);
     } finally {
       setMoving(false);
     }
@@ -156,6 +160,12 @@ export default function TaskDetailModal({
                 ))}
               </select>
             </div>
+
+            {moveError && (
+              <p className="field-error" role="alert" data-testid="move-error">
+                {moveError}
+              </p>
+            )}
 
             {editing ? (
               <form onSubmit={handleSave} noValidate>

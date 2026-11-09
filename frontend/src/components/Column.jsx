@@ -27,6 +27,7 @@ function Column({
   status,
   tasks,
   emptyHint,
+  canReorder = true,
   onMove,
   onOpen,
   onDelete,
@@ -62,7 +63,21 @@ function Column({
     if (!Number.isInteger(taskId) || taskId <= 0) {
       return;
     }
-    onMove(taskId, status, dropIndex(event.currentTarget, taskId, event.clientY));
+
+    const task = tasks.find((item) => item.id === taskId);
+    if (!task) {
+      return;
+    }
+
+    // Con filtros u otro orden, el índice visible no representa la columna
+    // real: se permite cambiar de estado, pero se agrega al final.
+    if (!canReorder && task.status === status) {
+      return;
+    }
+    const position = canReorder
+      ? dropIndex(event.currentTarget, taskId, event.clientY)
+      : null;
+    onMove(taskId, status, position);
   }
 
   return (

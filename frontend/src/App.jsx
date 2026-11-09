@@ -102,6 +102,15 @@ export default function App() {
     [overdueOnly, debouncedQuery, priorityFilter, tagFilter, sort],
   );
 
+  // El índice de drop se calcula sobre las tarjetas visibles. Sólo coincide
+  // con la columna real cuando no hay filtros y el orden es por posición.
+  const canReorder =
+    sort === "position" &&
+    !debouncedQuery &&
+    !priorityFilter &&
+    !tagFilter &&
+    !overdueOnly;
+
   const load = useCallback(async (filters, { silent = false } = {}) => {
     const requestId = requestRef.current + 1;
     requestRef.current = requestId;
@@ -130,9 +139,9 @@ export default function App() {
     } finally {
       if (requestId === requestRef.current) {
         setLoaded(true);
-        if (!silent) {
-          setLoading(false);
-        }
+        // Aunque la última petición sea silenciosa, debe apagar el overlay:
+        // si reemplazó a una carga normal, esa carga ya no lo apagará.
+        setLoading(false);
       }
     }
   }, []);
@@ -195,9 +204,15 @@ export default function App() {
     [mutate, showToast],
   );
 
-  const handleMove = useCallback(
+  // Desde el tablero el error se muestra en el aviso general; desde el modal
+  // se propaga para que el detalle pueda mostrar el 409 (subtareas pendientes).
+  const handleBoardMove = useCallback(
     (id, status, position) => mutateBoard(() => moveTask(id, { status, position })),
     [mutateBoard],
+  );
+  const handleMove = useCallback(
+    (id, status, position) => mutate(() => moveTask(id, { status, position })),
+    [mutate],
   );
   const handleAddSubtask = useCallback(
     (taskId, title) => mutate(() => createSubtask(taskId, title)),
@@ -367,7 +382,8 @@ export default function App() {
           )}
           <Board
             tasks={tasks}
-            onMove={handleMove}
+            canReorder={canReorder}
+            onMove={handleBoardMove}
             onOpen={openDetail}
             onDelete={requestDelete}
           />

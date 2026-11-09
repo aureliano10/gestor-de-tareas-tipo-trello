@@ -23,7 +23,8 @@ Sistema gestor de tareas tipo Kanban desarrollado para la materia **Verificació
 
 - **Frontend:** React + JavaScript + CSS (Vite).
 - **Backend:** Python + FastAPI.
-- **Base de datos:** SQLite.
+- **Base de datos:** SQLite en desarrollo local y Turso (libSQL) en Vercel.
+- **Adjuntos:** disco local en desarrollo y Vercel Blob en producción.
 
 ## Estructura del proyecto
 
@@ -31,7 +32,8 @@ Sistema gestor de tareas tipo Kanban desarrollado para la materia **Verificació
 backend/
   app/
     main.py                # Aplicación FastAPI y configuración
-    database.py            # Conexión, restricciones e inicialización de SQLite
+    database.py            # Conexión SQLite/Turso, restricciones e inicialización
+    storage.py             # Almacenamiento de adjuntos (disco local o Vercel Blob)
     schemas.py             # Modelos y validaciones (Pydantic)
     repository.py          # Acceso a datos y reglas de negocio
     routers/
@@ -93,6 +95,25 @@ npm run dev
 ```
 
 La aplicación queda disponible en `http://localhost:5173`.
+
+## Despliegue en Vercel
+
+El backend se despliega como servicio de Vercel y necesita una base de datos y un almacenamiento que sobrevivan entre invocaciones. Sin ellos, cada instancia usaría un `/tmp` distinto y las tareas o los adjuntos desaparecerían.
+
+1. **Crear la base de datos Turso**: en el panel de Vercel, entra en **Storage → Create Database → Turso Cloud** (o créala en [turso.tech](https://turso.tech) y copia la URL `libsql://...` y un token).
+2. **Crear el almacenamiento de adjuntos**: en **Storage → Create → Blob**, elige acceso **privado** (no se puede cambiar después) y copia el token de lectura/escritura.
+3. **Configurar las variables de entorno** del proyecto en Vercel (**Settings → Environment Variables**) para Production, Preview y Development:
+
+| Variable | Obligatoria | Descripción |
+|----------|-------------|-------------|
+| `TURSO_DATABASE_URL` | Sí en producción | URL `libsql://...` de la base de datos. |
+| `TURSO_AUTH_TOKEN` | Sí en producción | Token de acceso a Turso. |
+| `BLOB_READ_WRITE_TOKEN` | Sí en producción | Token del almacén Blob privado. |
+| `KANBAN_ALLOW_EPHEMERAL` | No | `1` permite arrancar en Vercel sin Turso usando `/tmp` (solo para una demo desechable). |
+
+4. **Redesplegar** el proyecto. El endpoint `/api/health` debe responder `database: "turso"` y `storage: "blob"`.
+
+En local no hace falta configurar nada: si no existen `TURSO_DATABASE_URL` ni `BLOB_READ_WRITE_TOKEN`, se usa SQLite y el disco local. Para forzar el almacenamiento local aunque las variables existan, define `KANBAN_STORAGE=local`.
 
 ## Análisis estático
 
@@ -167,7 +188,7 @@ Para reproducir el trabajo `e2e` en un entorno local, los scripts de la suite re
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| GET | `/api/health` | Estado del servicio |
+| GET | `/api/health` | Estado del servicio e indicación de la base de datos (`sqlite`/`turso`) y del almacenamiento (`local`/`blob`) en uso |
 | GET | `/api/tasks` | Lista las tareas; acepta los filtros `?q=`, `?priority=`, `?tag=` y `?overdue=true`, y el orden `?sort=` (`position`, `priority`, `due` o `created`) |
 | POST | `/api/tasks` | Crea una tarea (admite `priority`, `assignee`, `subtasks`, `tags` y `links`) |
 | PUT | `/api/tasks/{id}` | Edita el título, la descripción, la fecha límite, la prioridad, el responsable, las etiquetas y los enlaces |

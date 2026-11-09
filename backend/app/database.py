@@ -2,6 +2,7 @@ import os
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Any
 
 from .schemas import (
     MAX_ASSIGNEE_LENGTH,
@@ -115,7 +116,28 @@ def get_storage_path() -> Path:
     return Path(os.environ.get("KANBAN_STORAGE_PATH", DEFAULT_STORAGE_PATH))
 
 
-def get_connection() -> sqlite3.Connection:
+def _turso_url() -> str:
+    return os.environ.get("TURSO_DATABASE_URL", "").strip()
+
+
+def using_remote_db() -> bool:
+    """Indica si la aplicación usa Turso en lugar de SQLite local."""
+    return bool(_turso_url())
+
+
+def get_connection() -> Any:
+    url = _turso_url()
+    if url:
+        import turso_serverless
+
+        connection = turso_serverless.connect(
+            url,
+            auth_token=os.environ.get("TURSO_AUTH_TOKEN") or None,
+        )
+        connection.row_factory = turso_serverless.Row
+        connection.execute("PRAGMA foreign_keys = ON")
+        return connection
+
     connection = sqlite3.connect(get_db_path())
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
@@ -185,13 +207,35 @@ def _migrate_tasks(conn: sqlite3.Connection) -> None:
     columns = _table_columns(conn, "tasks")
     for name, definition in MISSING_TASK_COLUMN_DEFINITIONS.items():
         if name not in columns:
-            conn.execute(f"ALTER TABLE tasks ADD COLUMN {definition}")
+            try:
+                conn.execute(f"ALTER TABLE tasks ADD COLUMN {definition}")
+            except Exception as exc:
+                # Dos instancias pueden migrar a la vez en un arranque en frío.
+                if "duplicate column" not in str(exc).lower():
+                    raise
 
 
 def init_db() -> None:
-    db_path = get_db_path()
-    db_path.parent.mkdir(parents=True, exist_ok=True)
-    get_storage_path().mkdir(parents=True, exist_ok=True)
+    if (
+        _ON_VERCEL
+        and not using_remote_db()
+        and os.environ.get("KANBAN_ALLOW_EPHEMERAL") != "1"
+    ):
+        raise RuntimeError(
+            "TURSO_DATABASE_URL no está configurada. En Vercel el sistema de "
+            "archivos es efímero y cada instancia vería una base distinta. "
+            "Configurá Turso o definí KANBAN_ALLOW_EPHEMERAL=1 para permitir "
+            "una base temporal."
+        )
+
+    if not using_remote_db():
+        db_path = get_db_path()
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    from .storage import ensure_storage_ready
+
+    ensure_storage_ready()
+
     with connection() as conn:
         if _needs_migration(conn):
             _migrate_tasks(conn)

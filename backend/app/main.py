@@ -3,8 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .database import init_db
+from .database import init_db, using_remote_db
 from .routers import attachments, subtasks, tags, tasks
+from .storage import using_blob
 
 
 @asynccontextmanager
@@ -35,4 +36,8 @@ app.include_router(tags.router)
 
 @app.get("/api/health", tags=["health"])
 def health_check():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "database": "turso" if using_remote_db() else "sqlite",
+        "storage": "blob" if using_blob() else "local",
+    }

@@ -9,7 +9,7 @@ const EMPTY_HINTS = {
   Terminada: "Todavía no hay tareas terminadas.",
 };
 
-function Board({ tasks, onMove, onOpen, onDelete }) {
+function Board({ tasks, canReorder = true, onMove, onOpen, onDelete }) {
   const grouped = useMemo(() => {
     const result = {};
     for (const status of STATUSES) {
@@ -29,6 +29,7 @@ function Board({ tasks, onMove, onOpen, onDelete }) {
           status={status}
           emptyHint={EMPTY_HINTS[status]}
           tasks={grouped[status]}
+          canReorder={canReorder}
           onMove={onMove}
           onOpen={onOpen}
           onDelete={onDelete}

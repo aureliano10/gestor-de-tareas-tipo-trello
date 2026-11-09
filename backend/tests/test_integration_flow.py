@@ -15,6 +15,12 @@ from fastapi.testclient import TestClient
 def client(tmp_path, monkeypatch):
     monkeypatch.setenv("KANBAN_DB_PATH", str(tmp_path / "tasks.db"))
     monkeypatch.setenv("KANBAN_STORAGE_PATH", str(tmp_path / "storage"))
+    monkeypatch.setenv("KANBAN_STORAGE", "local")
+    monkeypatch.delenv("TURSO_DATABASE_URL", raising=False)
+    monkeypatch.delenv("TURSO_AUTH_TOKEN", raising=False)
+    monkeypatch.delenv("BLOB_READ_WRITE_TOKEN", raising=False)
+    monkeypatch.delenv("VERCEL_BLOB_READ_WRITE_TOKEN", raising=False)
+    monkeypatch.delenv("BLOB_STORE_ID", raising=False)
 
     from app.main import app
 

@@ -46,6 +46,9 @@ def test_cp_un_17_init_db_migra_tabla_legacy(tmp_path, monkeypatch):
     db_path = tmp_path / "legacy.db"
     monkeypatch.setenv("KANBAN_DB_PATH", str(db_path))
     monkeypatch.setenv("KANBAN_STORAGE_PATH", str(tmp_path / "storage"))
+    monkeypatch.setenv("KANBAN_STORAGE", "local")
+    monkeypatch.delenv("TURSO_DATABASE_URL", raising=False)
+    monkeypatch.delenv("TURSO_AUTH_TOKEN", raising=False)
 
     with sqlite3.connect(db_path) as conn:
         conn.execute(
