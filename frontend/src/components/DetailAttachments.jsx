@@ -7,6 +7,7 @@ import {
   MAX_ATTACHMENT_MB,
   extensionOf,
   formatSize,
+  isImageFile,
   isPreviewableFile,
 } from "../format.js";
 import AttachmentPreview from "./AttachmentPreview.jsx";
@@ -101,40 +102,68 @@ export default function DetailAttachments({
         <p className="muted">Sin archivos adjuntos.</p>
       ) : (
         <ul className="attachments">
-          {task.attachments.map((attachment) => (
-            <li key={attachment.id} className="attachments__item">
-              {isPreviewableFile(attachment.filename) ? (
+          {task.attachments.map((attachment) => {
+            const previewable = isPreviewableFile(attachment.filename);
+            const image = isImageFile(attachment.filename);
+            const label =
+              extensionOf(attachment.filename).slice(1).toUpperCase() || "AR";
+            const open = () => setPreview(attachment);
+            return (
+              <li key={attachment.id} className="attachment-card">
+                <span
+                  className={`attachment-card__thumb${
+                    image ? " attachment-card__thumb--image" : ""
+                  }`}
+                  aria-hidden="true"
+                  onClick={previewable ? open : undefined}
+                >
+                  {image ? (
+                    <img
+                      src={attachmentUrl(task.id, attachment.id)}
+                      alt=""
+                      loading="lazy"
+                    />
+                  ) : (
+                    label
+                  )}
+                </span>
+                <div className="attachment-card__info">
+                  {previewable ? (
+                    <button
+                      type="button"
+                      className="attachments__name attachments__name--button"
+                      onClick={open}
+                      data-testid={`attachment-preview-${attachment.id}`}
+                    >
+                      {attachment.filename}
+                    </button>
+                  ) : (
+                    <a
+                      className="attachments__name"
+                      href={attachmentUrl(task.id, attachment.id, {
+                        download: true,
+                      })}
+                      download={attachment.filename}
+                    >
+                      {attachment.filename}
+                    </a>
+                  )}
+                  <span className="attachments__meta">
+                    {formatSize(attachment.size_bytes)}
+                  </span>
+                </div>
                 <button
                   type="button"
-                  className="attachments__name attachments__name--button"
-                  onClick={() => setPreview(attachment)}
-                  data-testid={`attachment-preview-${attachment.id}`}
+                  className="icon-button"
+                  onClick={() => handleDelete(attachment)}
+                  disabled={busy}
+                  aria-label={`Quitar ${attachment.filename}`}
                 >
-                  {attachment.filename}
+                  ×
                 </button>
-              ) : (
-                <a
-                  className="attachments__name"
-                  href={attachmentUrl(task.id, attachment.id, { download: true })}
-                  download={attachment.filename}
-                >
-                  {attachment.filename}
-                </a>
-              )}
-              <span className="attachments__meta">
-                {formatSize(attachment.size_bytes)}
-              </span>
-              <button
-                type="button"
-                className="icon-button"
-                onClick={() => handleDelete(attachment)}
-                disabled={busy}
-                aria-label={`Quitar ${attachment.filename}`}
-              >
-                ×
-              </button>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
 

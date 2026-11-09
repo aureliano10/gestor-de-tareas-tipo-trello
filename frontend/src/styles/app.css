@@ -1,4 +1,8 @@
 :root {
+  /* El navegador pinta los controles nativos (incluido el desplegable de
+     <select>) según el tema; sin esto el popup quedaba blanco en modo oscuro. */
+  color-scheme: light dark;
+
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
     sans-serif;
 
@@ -144,6 +148,14 @@ textarea,
 select {
   font: inherit;
   color: inherit;
+}
+
+/* El desplegable nativo de <select> se pinta con los colores del sistema, que
+   no siguen nuestros tokens de tema (en oscuro quedaba blanco con texto claro).
+   Forzamos fondo y texto del tema en las opciones para que sean legibles. */
+select option {
+  color: var(--text);
+  background: var(--surface);
 }
 
 :focus-visible {
@@ -1390,20 +1402,63 @@ select {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
-.attachments__item {
+/* Cada adjunto es una tarjeta con miniatura (imagen) o etiqueta de formato. */
+.attachment-card {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem;
+  gap: 0.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: background 0.15s ease;
+  background: var(--surface-2);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
-.attachments__item:hover {
+.attachment-card:hover {
+  border-color: var(--primary);
   background: var(--surface);
+}
+
+.attachment-card__thumb {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+}
+
+.attachment-card__thumb--image {
+  cursor: pointer;
+}
+
+.attachment-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.attachment-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.attachment-card__info .attachments__name {
+  flex: none;
 }
 
 .attachments__name {
@@ -1745,20 +1800,49 @@ select {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
-.links__item {
+/* Cada enlace es una tarjeta con ícono según su tipo (video, docs o link). */
+.link-card {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem;
+  gap: 0.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: background 0.15s ease;
+  background: var(--surface-2);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
-.links__item:hover {
+.link-card:hover {
+  border-color: var(--primary);
   background: var(--surface);
+}
+
+.link-card__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--primary-dark);
+}
+
+.link-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.link-card__info .links__name {
+  flex: none;
 }
 
 .links__name {
@@ -1776,8 +1860,7 @@ select {
 }
 
 .links__url {
-  flex: 0 1 auto;
-  max-width: 45%;
+  max-width: 100%;
   color: var(--muted);
   font-size: 0.72rem;
   white-space: nowrap;
