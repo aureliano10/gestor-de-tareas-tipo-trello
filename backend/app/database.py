@@ -215,6 +215,16 @@ def _migrate_tasks(conn: sqlite3.Connection) -> None:
                     raise
 
 
+def _normalize_sql(sql: str) -> str:
+    """Normaliza un ``CREATE TABLE`` para poder compararlo.
+
+    SQLite/libSQL guarda el SQL sin ``IF NOT EXISTS`` y colapsa los espacios,
+    por lo que se descarta esa cláusula antes de comparar con la definición de
+    la aplicación.
+    """
+    return " ".join(sql.replace("IF NOT EXISTS", "").split())
+
+
 def _attachments_table_outdated(conn: sqlite3.Connection) -> bool:
     """Detecta si el ``CHECK`` de tamaño de `attachments` quedó desactualizado.
 
@@ -225,7 +235,7 @@ def _attachments_table_outdated(conn: sqlite3.Connection) -> bool:
     sql = _table_sql(conn, "attachments")
     if sql is None:
         return False
-    return " ".join(sql.split()) != " ".join(CREATE_ATTACHMENTS_TABLE.split())
+    return _normalize_sql(sql) != _normalize_sql(CREATE_ATTACHMENTS_TABLE)
 
 
 def _migrate_attachments(conn: sqlite3.Connection) -> None:
@@ -235,7 +245,14 @@ def _migrate_attachments(conn: sqlite3.Connection) -> None:
     se crea la tabla actualizada y se copian las filas. Nada referencia a
     `attachments`, por lo que el reemplazo no rompe claves foráneas.
     """
-    conn.execute("ALTER TABLE attachments RENAME TO attachments_legacy")
+    try:
+        conn.execute("ALTER TABLE attachments RENAME TO attachments_legacy")
+    except Exception as exc:
+        # Dos instancias pueden migrar a la vez en un arranque en frío.
+        message = str(exc).lower()
+        if "already exists" not in message and "no such table" not in message:
+            raise
+        return
     conn.execute(CREATE_ATTACHMENTS_TABLE)
     conn.execute(
         "INSERT INTO attachments (id, task_id, filename, stored_name, "
