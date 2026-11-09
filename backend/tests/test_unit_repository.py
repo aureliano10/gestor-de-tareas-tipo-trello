@@ -91,3 +91,29 @@ def test_cp_un_15_create_attachment_limite(unit_db):
             task["id"], "f4.txt", "s4.txt", "text/plain", 10
         )
     assert len(repository.get_task(task["id"])["attachments"]) == 3
+
+
+class _SequenceRow:
+    """Imita a turso_serverless.Row: es Sequence, no Mapping."""
+
+    def __init__(self, data):
+        self._keys = tuple(data)
+        self._data = tuple(data.values())
+
+    def keys(self):
+        return list(self._keys)
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return self._data[key]
+        return self._data[self._keys.index(key)]
+
+
+def test_row_to_dict_funciona_con_filas_tipo_turso():
+    row = _SequenceRow({"id": 1, "filename": "a.txt", "content_type": "text/plain"})
+
+    assert repository._row_to_dict(row) == {
+        "id": 1,
+        "filename": "a.txt",
+        "content_type": "text/plain",
+    }

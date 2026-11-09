@@ -247,6 +247,11 @@ def _set_links(conn, task_id: int, pairs: list[tuple[str, str]]) -> None:
         )
 
 
+def _row_to_dict(row) -> dict:
+    """Convierte una fila en dict sin depender del tipo de driver."""
+    return {key: row[key] for key in row.keys()}
+
+
 def _task_dict(conn, row) -> dict:
     subtasks = _subtasks_of(conn, row["id"])
     due_date = row["due_date"]
@@ -668,7 +673,7 @@ def get_attachment(task_id: int, attachment_id: int) -> Optional[dict]:
             "SELECT * FROM attachments WHERE id = ? AND task_id = ?",
             (attachment_id, task_id),
         ).fetchone()
-        return dict(row) if row is not None else None
+        return _row_to_dict(row) if row is not None else None
 
 
 def delete_attachment(task_id: int, attachment_id: int) -> Optional[tuple]:

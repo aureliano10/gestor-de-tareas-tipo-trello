@@ -17,6 +17,8 @@ coverage/
 
 # Entorno y logs
 .env
+.env*.local
+.vercel/
 *.log
 !docs/evidencias/**/*.log
 
