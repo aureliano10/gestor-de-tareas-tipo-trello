@@ -13,6 +13,7 @@ import {
   MAX_LINK_URL_LENGTH,
   validateLink,
 } from "../links.js";
+import { useFocusTrap } from "../useFocusTrap.js";
 import TaskFields, {
   DEFAULT_PRIORITY,
   MAX_ASSIGNEE_LENGTH,
@@ -51,7 +52,8 @@ function validateExtras({ assignee, tags, subtasks, links, files }) {
   return "";
 }
 
-function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
+function TaskForm({ onCreate, onUpload, tagOptions = [], onClose }) {
+  const dialogRef = useRef(null);
   const [values, setValues] = useState(EMPTY_TASK);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -79,6 +81,15 @@ function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
     uidRef.current += 1;
     return uidRef.current;
   }
+
+  function requestClose() {
+    if (!submitting) {
+      onClose?.();
+    }
+  }
+
+  // El modal reutiliza la trampa de foco; Escape cierra salvo mientras se envía.
+  useFocusTrap(dialogRef, { onEscape: requestClose });
 
   function resetForm() {
     setValues(EMPTY_TASK);
@@ -260,30 +271,69 @@ function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
       }
       if (failed.length > 0) {
         setError(`La tarea se creó, pero no se pudieron adjuntar: ${failed.join(", ")}.`);
+        setSubmitting(false);
+        return;
       }
     }
 
     setSubmitting(false);
+    onClose?.();
   }
 
   return (
-    <form
-      className="task-form"
-      onSubmit={handleSubmit}
-      noValidate
-      data-testid="task-form"
-    >
-      <h2 className="task-form__heading">Nueva tarea</h2>
+    <div className="overlay" onClick={requestClose}>
+      <div
+        className="modal modal--form"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="new-task-modal-title"
+        data-testid="task-form-modal"
+        ref={dialogRef}
+        tabIndex={-1}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="modal__header">
+          <div>
+            <h2 id="new-task-modal-title" className="modal__title">
+              Nueva tarea
+            </h2>
+            <p className="modal__meta">
+              Los campos marcados con * son obligatorios.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="modal__close"
+            onClick={requestClose}
+            disabled={submitting}
+            aria-label="Cerrar formulario de nueva tarea"
+            data-testid="task-form-close"
+          >
+            ×
+          </button>
+        </header>
 
-      <TaskFields
-        idPrefix="new-task"
-        values={values}
-        onChange={setValues}
-        disabled={submitting}
-        minDueDate={todayISO()}
-      />
+        <form
+          className="modal__form"
+          onSubmit={handleSubmit}
+          noValidate
+          data-testid="task-form"
+        >
+          <div className="modal__body">
+            <TaskFields
+              idPrefix="new-task"
+              values={values}
+              onChange={setValues}
+              disabled={submitting}
+              minDueDate={todayISO()}
+              showGroups
+            />
 
-      <div className="extras">
+            <fieldset className="field-group">
+              <legend className="field-group__legend field-group__legend--optional">
+                Complementos opcionales
+              </legend>
+              <div className="extras">
         <details className="extras__section">
           <summary className="extras__summary">
             Etiquetas
@@ -544,25 +594,37 @@ function TaskForm({ onCreate, onUpload, tagOptions = [] }) {
             )}
           </div>
         </details>
-      </div>
+              </div>
+            </fieldset>
+            {error && (
+              <p className="task-form__error" role="alert" data-testid="task-form-error">
+                {error}
+              </p>
+            )}
+          </div>
 
-      <div className="task-form__actions">
-        <button
-          type="submit"
-          className="btn"
-          data-testid="task-submit"
-          disabled={submitting}
-        >
-          {submitting ? "Agregando..." : "Agregar tarea"}
-        </button>
+          <footer className="modal__footer">
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={requestClose}
+              disabled={submitting}
+              data-testid="task-form-cancel"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn"
+              data-testid="task-submit"
+              disabled={submitting}
+            >
+              {submitting ? "Agregando..." : "Agregar tarea"}
+            </button>
+          </footer>
+        </form>
       </div>
-
-      {error && (
-        <p className="task-form__error" role="alert" data-testid="task-form-error">
-          {error}
-        </p>
-      )}
-    </form>
+    </div>
   );
 }
 

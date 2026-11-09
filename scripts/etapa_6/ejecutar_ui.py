@@ -15,6 +15,7 @@ from common import (  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
 from ui_helpers import (  # noqa: E402
     FORM_ERROR,
+    FORM_MODAL,
     FORM_SUBMIT,
     FORM_TITLE,
     attachments_panel,
@@ -27,6 +28,7 @@ from ui_helpers import (  # noqa: E402
     launch_browser,
     open_detail,
     open_page,
+    open_task_form,
     reload_board,
     request_bodies,
     screenshot,
@@ -39,12 +41,13 @@ from ui_helpers import (  # noqa: E402
 
 def ui_01(page, _prepared) -> dict:
     title = "Tarea desde interfaz"
+    open_task_form(page)
     page.fill(FORM_TITLE, title)
     page.click(FORM_SUBMIT)
     task_in(page, "Pendiente", title).wait_for(timeout=10000)
 
     visible = task_in(page, "Pendiente", title).count() == 1
-    input_value = page.input_value(FORM_TITLE)
+    modal_closed = page.locator(FORM_MODAL).count() == 0
     summary = page.inner_text('[data-testid="task-count"]').strip()
     pending_count = column_count(page, "Pendiente")
 
@@ -53,13 +56,13 @@ def ui_01(page, _prepared) -> dict:
 
     checks = {
         "tarjeta visible en Pendiente": visible,
-        "el campo de título queda vacío": input_value == "",
+        "el modal de alta se cierra tras crear": modal_closed,
         "el resumen general muestra 1 tarea": summary == "1 tarea",
         "el contador de Pendiente muestra 1": pending_count == "1",
         "la tarea persiste tras recargar": persisted,
     }
     obtained = (
-        f"tarjeta visible={visible}; input={input_value!r}; resumen={summary!r}; "
+        f"visible={visible}; modal cerrado={modal_closed}; resumen={summary!r}; "
         f"contador Pendiente={pending_count!r}; persistió={persisted}"
     )
     return make_result(
@@ -74,6 +77,7 @@ def ui_02(page, _prepared) -> dict:
     posts = track_requests(page, "POST", "/api/tasks")
     expected = "El título es obligatorio y no puede contener solo espacios."
 
+    open_task_form(page)
     page.fill(FORM_TITLE, "     ")
     page.click(FORM_SUBMIT)
     error = wait_text(page.locator(FORM_ERROR), expected, timeout=5.0)
@@ -382,6 +386,7 @@ def ui_08(page, task) -> dict:
 
 def ui_09(page, _prepared) -> dict:
     title = "Tarea con prioridad y responsable"
+    open_task_form(page)
     page.fill(FORM_TITLE, title)
     page.select_option('[data-testid="new-task-priority"]', "Alta")
     page.fill('[data-testid="new-task-assignee"]', "Ana")

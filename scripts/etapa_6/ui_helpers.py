@@ -10,6 +10,8 @@ from common import EVIDENCE_DIR
 APP_URL = "http://127.0.0.1:5173/"
 SCREENSHOT_DIR = EVIDENCE_DIR / "screenshots"
 
+FORM_OPEN = '[data-testid="new-task-open"]'
+FORM_MODAL = '[data-testid="task-form-modal"]'
 FORM_TITLE = '[data-testid="new-task-title"]'
 FORM_DESCRIPTION = '[data-testid="new-task-description"]'
 FORM_DUE = '[data-testid="new-task-due"]'
@@ -47,6 +49,20 @@ def goto_board(page) -> None:
 def reload_board(page) -> None:
     page.reload(wait_until="domcontentloaded")
     page.wait_for_selector(".column", timeout=15000)
+
+
+def open_task_form(page) -> None:
+    """Abre el modal de alta de tareas.
+
+    El formulario ya no está siempre visible: se muestra en un modal que se
+    abre desde el botón ``new-task-open`` y se cierra automáticamente al crear
+    la tarea.
+    """
+    if page.locator(FORM_MODAL).count() > 0:
+        return
+    page.click(FORM_OPEN)
+    page.wait_for_selector(FORM_MODAL, timeout=10000)
+    page.wait_for_selector(FORM_TITLE, timeout=10000)
 
 
 def screenshot(page, case_id: str) -> Path:

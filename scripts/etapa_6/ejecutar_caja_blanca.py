@@ -23,12 +23,14 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 from ui_helpers import (  # noqa: E402
     FORM_DESCRIPTION,
     FORM_ERROR,
+    FORM_MODAL,
     FORM_SUBMIT,
     FORM_TITLE,
     drag_task,
     drop_raw,
     launch_browser,
     open_page,
+    open_task_form,
     request_bodies,
     screenshot,
     set_field_value,
@@ -259,6 +261,7 @@ def cb_06(page, _prepared) -> dict:
     long_title_expected = "El título no puede superar los 100 caracteres."
     long_description_expected = "La descripción no puede superar los 500 caracteres."
 
+    open_task_form(page)
     page.click(FORM_SUBMIT)
     empty_message = wait_text(page.locator(FORM_ERROR), empty_expected, timeout=5.0)
 
@@ -305,7 +308,7 @@ def cb_06(page, _prepared) -> dict:
     page.click(FORM_SUBMIT)
     task_in(page, "Pendiente", "Tarea válida").wait_for(timeout=10000)
     valid_created = task_in(page, "Pendiente", "Tarea válida").count() == 1
-    input_after_valid = page.input_value(FORM_TITLE)
+    form_closed_after_valid = page.locator(FORM_MODAL).count() == 0
     total_posts = len(posts)
 
     checks = {
@@ -320,7 +323,7 @@ def cb_06(page, _prepared) -> dict:
         "el error de la API se muestra": api_error == "Error simulado de red",
         "sin tarjeta tras el error de la API": cards_after_error == 0,
         "el alta válida crea la tarjeta": valid_created,
-        "el campo queda limpio tras el alta": input_after_valid == "",
+        "el modal se cierra tras el alta": form_closed_after_valid,
         "se emitieron dos POST: el fallido y el válido": total_posts == 2,
     }
     obtained = (
@@ -329,7 +332,7 @@ def cb_06(page, _prepared) -> dict:
         f"descripción larga={long_description_message!r}; "
         f"POST inválidos={posts_after_invalid}; error API={api_error!r}; "
         f"tarjetas tras error={cards_after_error}; alta válida={valid_created}; "
-        f"input tras alta={input_after_valid!r}; POST totales={total_posts}"
+        f"modal cerrado tras alta={form_closed_after_valid}; POST totales={total_posts}"
     )
     return make_result(
         "CP-CB-06",

@@ -23,12 +23,14 @@ import {
 } from "./api.js";
 import Board from "./components/Board.jsx";
 import ConfirmDialog from "./components/ConfirmDialog.jsx";
-import TaskForm from "./components/TaskForm.jsx";
 import Toast from "./components/Toast.jsx";
 
 // AUD-17: el detalle es el componente más pesado y sólo se usa bajo interacción,
 // por lo que se carga de forma diferida (code splitting).
 const TaskDetailModal = lazy(() => import("./components/TaskDetailModal.jsx"));
+// El alta de tareas ahora vive en un modal y sólo se usa tras una interacción,
+// por lo que también se carga de forma diferida.
+const TaskForm = lazy(() => import("./components/TaskForm.jsx"));
 
 const UNDO_WINDOW_MS = 7000;
 const SUCCESS_WINDOW_MS = 3500;
@@ -57,6 +59,7 @@ export default function App() {
   const [tagOptions, setTagOptions] = useState([]);
 
   const [detailId, setDetailId] = useState(null);
+  const [formOpen, setFormOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
   const [toast, setToast] = useState(null);
 
@@ -242,6 +245,8 @@ export default function App() {
 
   const openDetail = useCallback((id) => setDetailId(id), []);
   const closeDetail = useCallback(() => setDetailId(null), []);
+  const openForm = useCallback(() => setFormOpen(true), []);
+  const closeForm = useCallback(() => setFormOpen(false), []);
 
   const confirmDelete = useCallback(async () => {
     const target = pendingDelete;
@@ -275,13 +280,26 @@ export default function App() {
       <header className="app__header">
         <h1>Tablero de Tareas</h1>
         <p>Organizá tus actividades, seguí su avance y sumá lo que necesites.</p>
+        <button
+          type="button"
+          className="btn app__new-task"
+          onClick={openForm}
+          data-testid="new-task-open"
+        >
+          + Nueva tarea
+        </button>
       </header>
 
-      <TaskForm
-        onCreate={handleCreate}
-        onUpload={handleUpload}
-        tagOptions={tagOptions}
-      />
+      {formOpen && (
+        <Suspense fallback={null}>
+          <TaskForm
+            onCreate={handleCreate}
+            onUpload={handleUpload}
+            tagOptions={tagOptions}
+            onClose={closeForm}
+          />
+        </Suspense>
+      )}
 
       <div className="toolbar">
         <div className="toolbar__filters">

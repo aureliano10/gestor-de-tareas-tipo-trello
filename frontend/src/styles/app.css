@@ -1721,3 +1721,70 @@ select {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ================= Alta de tarea: botón y modal ======================== */
+
+.app__new-task {
+  margin-top: 1.25rem;
+}
+
+/* Modal del formulario de alta: cabecera + cuerpo desplazable + acciones. */
+.modal--form {
+  width: min(720px, 100%);
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Agrupación de campos obligatorios / opcionales dentro del modal. */
+.field-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.field-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.field-group__legend {
+  padding: 0;
+  margin-bottom: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-soft);
+}
+
+.field-group__legend--optional {
+  color: var(--muted);
+}
+
+.fields--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.field__required {
+  color: var(--danger);
+}
+
+.field__optional {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--surface-3);
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
